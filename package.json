@@ -1,0 +1,27 @@
+{
+  "name": "lights-web",
+  "version": "0.1.0",
+  "description": "Remote control web app for Particle devices running Lights.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://alexanderweiss@github.com/lights-app/lights-web.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lights-app/lights-web/issues"
+  },
+  "homepage": "https://github.com/lights-app/lights-web#readme",
+  "devDependencies": {
+    "bower": "^1.7.1",
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "gulp-csso": "^1.0.1",
+    "gulp-less": "^3.0.5",
+    "gulp-plumber": "^1.0.1",
+    "yargs": "^3.31.0"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "lights-web",
+  "description": "Remote control web app for Particle devices running Lights.",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "https://github.com/lights-app/lights-web",
+  "moduleType": [
+    "es6"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize-css": "normalize.css#~3.0.3"
+  }
+}
