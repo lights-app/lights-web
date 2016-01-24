@@ -1,16 +1,29 @@
 var gulp = require('gulp')
+var jade = require('gulp-jade')
 var less = require('gulp-less')
 var csso = require('gulp-csso')
 var plumber = require('gulp-plumber')
 var argv = require('yargs').argv
 var concat = require('gulp-concat')
 var sourcemaps = require('gulp-sourcemaps')
-var server = require('gulp-express')
+var gls = require('gulp-live-server')
+var server
 
-gulp.task('html', function() {
-
-	var stream = gulp.src('./index.html')
+gulp.task('jade', function() {
+	
+	var stream = gulp.src('./jade/index.jade')
+		.pipe(plumber({
+			errorHandler: function (err) {
+				
+				console.warn(err)
+				this.emit('end')
+				
+			}
+		}))
+		.pipe(jade({}))
 		.pipe(gulp.dest('./build'))
+		
+	stream = stream.pipe(server.notify())
 
 	return stream
 
@@ -38,9 +51,9 @@ gulp.task('js', function() {
 
 })
 
-gulp.task('css', function() {
+gulp.task('less', function() {
 	
-	var stream = gulp.src('./css/app.less')
+	var stream = gulp.src('./less/app.less')
 		.pipe(sourcemaps.init())
 		.pipe(plumber({
 			errorHandler: function (err) {
@@ -88,9 +101,11 @@ gulp.task('vendor', function() {
 
 gulp.task('dev', function() {
 	
-	server.run(['server.js'])
+	server = gls.static('build')
+	server.start()
 	
-	gulp.watch('css/**/*', ['css'])
+	gulp.watch('jade/**/*', ['jade'])
+	gulp.watch('less/**/*', ['less'])
 	gulp.watch('js/**/*', ['js'])
 	
 	
