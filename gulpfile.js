@@ -23,7 +23,7 @@ gulp.task('jade', function() {
 		.pipe(jade({}))
 		.pipe(gulp.dest('./build'))
 		
-	stream = stream.pipe(server.notify())
+	if (server) stream = stream.pipe(server.notify())
 
 	return stream
 
@@ -45,7 +45,7 @@ gulp.task('js', function() {
 			
 	}
 	
-	stream = stream.pipe(server.notify())
+	if (server) stream = stream.pipe(server.notify())
 	
 	return stream
 
@@ -75,7 +75,7 @@ gulp.task('less', function() {
 			.pipe(gulp.dest('./build/static/css'))
 	}
 	
-	stream = stream.pipe(server.notify())
+	if (server) stream = stream.pipe(server.notify())
 	
 	return stream
 	
@@ -98,6 +98,8 @@ gulp.task('vendor', function() {
 	return stream
 	
 })
+
+gulp.task('default', ['vendor', 'js', 'less', 'jade'])
 
 gulp.task('dev', function() {
 	
