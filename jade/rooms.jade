@@ -1,0 +1,9 @@
+mixin roomTemplates
+
+	li.room-list-item(data-template='LITRoomListItem')
+		h3
+			| Name 
+			span(data-outlet='name')
+			
+	div.room(data-template='LITRoom')
+		h1(data-outlet='name')

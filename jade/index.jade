@@ -6,5 +6,32 @@ html
 	link(href='/static/css/app.css' rel='stylesheet' type='text/css')
 
 body
+	.app
+		.setup(data-view='LITSetup:setup')
+			.welcome-page
+			.login-page(data-view='LITSetupLogin:login')
+				form(data-action='submit:login()')
+					label(for='setup-login-username') Username
+					input#setup-login-username(type='text' data-outlet='username')
+					
+					label(for='setup-login-password') Password
+					input#setup-login-password(type='password' data-outlet='password')
+					
+					button(type='submit') Login
+				
+		.settings
+		.rooms(data-view='LITRooms:rooms')
+			.overview(data-view='LITRoomOverview:overview')
+				ul(data-view='LRSList:roomList:LITRoomListItem')
+	
+	script.templates(type='text/html')
+		include ./rooms
+		+roomTemplates
+	
 	script(src='/static/js/vendor.js')
 	script(src='/static/js/app.js')
+	script.
+		document.addEventListener('DOMContentLoaded', function() {
+			window.lrs.LRSView.parseTemplates()
+			window.lit.app = new window.lit.LITApp(document.querySelector('.app'))
+		})
