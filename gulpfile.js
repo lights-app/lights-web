@@ -83,7 +83,7 @@ gulp.task('less', function() {
 
 gulp.task('vendor', function() {
 	
-	var stream = gulp.src(['./vendor/lars/lrs.js'])
+	var stream = gulp.src(['./vendor/lars/lrs-es6.js', './vendor/spark/dist/spark.min.js'])
 		.pipe(concat('vendor.js'))
 		.pipe(gulp.dest('./build/static/js'))
 		
