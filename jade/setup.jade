@@ -1,0 +1,7 @@
+mixin setupTemplates
+
+	li.device-list-item(data-template='LITDeviceListItem' data-action='click:toggle()')
+		div.status
+		h3
+			| Name: 
+			span(data-outlet='name')

@@ -5,6 +5,8 @@ class LITApp extends lrs.LRSView {
 	constructor(el, options) {
 		
 		super(el, options)
+
+		this.devices = []
 		
 		return this
 			

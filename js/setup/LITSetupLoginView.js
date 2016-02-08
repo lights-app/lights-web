@@ -11,6 +11,8 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 	}
 
 	loginAction(view, el, e) {
+
+		e.preventDefault()
 		
 		var _this = this
 		
@@ -19,7 +21,8 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		this.disable()
 		
 		spark.login({username: this.username, password: this.password}).then( function(result) {
-			
+		
+		_this.owner.views.devices.init()
 			
 			
 		}).catch( function(err) {
