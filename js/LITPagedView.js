@@ -71,7 +71,7 @@ class LITPagedView extends lrs.LRSView {
 		
 		if (this.views.content[0] === view) {
 			
-			view.updateBackButton(null)
+			view.updateBackButton(false)
 			
 		} else if (parentView && parentView.title) {
 			
@@ -92,13 +92,34 @@ class LITPagedView extends lrs.LRSView {
 		
 	}
 	
+	backAction(...args) {
+		
+		if (this.views.content.length === 1) {
+			
+			return this.dispatch('closeAction', args)
+			
+		}
+		
+		return this.showView(this.views.content[this.views.content.length - 2])
+		
+	}
+	
 }
 
 class LITPageView extends lrs.LRSView {
 	
 	updateBackButton(title) {
 		
-		
+		if (title === false) {
+			
+			this.views.backBtn.title = ''
+			this.views.backBtn.classList.add('close')
+			
+		} else {
+			
+			this.views.backBtn.title = title
+			
+		}
 		
 	}
 
