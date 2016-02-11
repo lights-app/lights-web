@@ -7,6 +7,7 @@ var argv = require('yargs').argv
 var concat = require('gulp-concat')
 var sourcemaps = require('gulp-sourcemaps')
 var gls = require('gulp-live-server')
+var babel = require('gulp-babel')
 var server
 
 gulp.task('jade', function() {
@@ -34,6 +35,9 @@ gulp.task('js', function() {
 	var stream = gulp.src('./js/**/*.js')
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
+		.pipe(babel({
+			presets: ['es2015']
+		}))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./build/static/js'))
 		
@@ -106,6 +110,7 @@ gulp.task('dev', function() {
 	server = gls.static('build')
 	server.start()
 	
+	gulp.watch('vendor/**/*', ['vendor'])
 	gulp.watch('jade/**/*', ['jade'])
 	gulp.watch('less/**/*', ['less'])
 	gulp.watch('js/**/*', ['js'])
