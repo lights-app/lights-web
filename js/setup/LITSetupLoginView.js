@@ -9,17 +9,13 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		
 		super(el, options)
 		
-		this.el.querySelector('button') // e.preventDefault()
+		this.el.querySelector('form').addEventListener('submit', function(e) { e.preventDefault() })
 		
 	}
 
 	loginAction(view, el, e) {
-
-		e.preventDefault()
 		
-		var _this = this
-		
-		
+		var _this = this		
 		
 		this.disable()
 		
