@@ -4,6 +4,9 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 	
 	constructor(el, options) {
 		
+		if (!options) options = {}
+		options.template = 'LITSetupLogin'
+		
 		super(el, options)
 		
 		this.el.querySelector('button') // e.preventDefault()
@@ -22,7 +25,7 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		
 		spark.login({username: this.username, password: this.password}).then( function(result) {
 		
-		_this.owner.views.devices.init()
+			_this.owner.showView(new lrs.LRSView.views.LITDevicesPageView())
 			
 			
 		}).catch( function(err) {

@@ -8,36 +8,8 @@ html
 body
 	.app
 		.setup(data-view='LITSetup:setup')
-			section.welcome-page
-			section.login-page(data-view='LITSetupLogin:login')
-				form(data-action='submit:login()')
-					label(for='setup-login-username') Username
-					input#setup-login-username(type='text' data-outlet='username')
-					
-					label(for='setup-login-password') Password
-					input#setup-login-password(type='password' data-outlet='password')
-					
-					button(type='submit') Login
-
-			section.devices-page(data-view='LITDevicesPage:devices')
-				h2 Select devices
-				p Select the devices you want to use as Lights devices. Other devices you select that do not have the Lights software yet will be reprogrammed.
-
-				h2 Lights devices
-				ul.device-list(data-view='LRSList:lightsDeviceList:LITDeviceListItem')
-
-				h2 Other devices
-				ul.device-list(data-view='LRSList:otherDeviceList:LITDeviceListItem')
-
-				button(type='button' data-action='click:next()') Next
-
-			section.devices-reprogramming-page(data-view='LITDevicesReprogrammingPage:devicesReprogramming')
-				h2 Reprogramming devices...
-				p We're reprogramming your devices, shouldn't take too long now.
-
-			section.devices-naming-page(data-view='LITDevicesNamingPage:devicesNaming')
-				h2 Name your Lights
-				p Scroll through your new Lights devices below and rename them
+			section.welcome-page(data-view='LITPage:preloaded')
+				button(data-action='click:start()') Start
 
 		.settings
 		.rooms(data-view='LITRooms:rooms')

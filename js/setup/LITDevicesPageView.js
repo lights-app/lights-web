@@ -4,11 +4,10 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 	
 	constructor(el, options) {
 		
+		if (!options) options = {}
+		options.template = 'LITDevicesPage'
+		
 		super(el, options)
-
-	}
-
-	init() {
 
 		var _this = this
 

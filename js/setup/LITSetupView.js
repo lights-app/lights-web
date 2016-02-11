@@ -2,7 +2,11 @@
 
 class LITSetupView extends lrs.LRSView.views.LITPagedView {
 	
-	
+	startAction() {
+		
+		this.showView(new lrs.LRSView.views.LITSetupLoginView())
+		
+	}
 	
 }
 
