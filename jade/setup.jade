@@ -1,14 +1,18 @@
 mixin setupTemplates
 
 	section.login-page(data-template='LITSetupLogin')
-		form(data-action='submit:login()')
-			label(for='setup-login-username') Username
-			input#setup-login-username(type='text' data-outlet='username')
-			
-			label(for='setup-login-password') Password
-			input#setup-login-password(type='password' data-outlet='password')
-			
-			button(type='submit') Login
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Login
+		section.page-content
+			form(data-action='submit:login()')
+				label(for='setup-login-username') Username
+				input#setup-login-username(type='text' data-outlet='username')
+				
+				label(for='setup-login-password') Password
+				input#setup-login-password(type='password' data-outlet='password')
+				
+				button(type='submit') Login
 	
 	section.devices-page(data-template='LITDevicesPage')
 		h2 Select devices

@@ -9,7 +9,11 @@ body
 	.app
 		.setup(data-view='LITSetup:setup')
 			section.welcome-page(data-view='LITPage:preloaded')
-				button(data-action='click:start()') Start
+				header.toolbar
+					button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+					h1(data-outlet='title') Welcome
+				section.page-content
+					button(data-action='click:start()') Start
 
 		.settings
 		.rooms(data-view='LITRooms:rooms')
