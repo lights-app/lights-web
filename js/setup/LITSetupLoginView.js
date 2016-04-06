@@ -23,7 +23,6 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		
 			_this.owner.showView(new lrs.LRSView.views.LITDevicesPageView())
 			
-			
 		}).catch( function(err) {
 			
 			_this.enable()
