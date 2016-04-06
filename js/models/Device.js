@@ -1,6 +1,6 @@
 'use strict';
 
-class LITDevice extends lrs.LRSObject {
+class Device extends lrs.LRSObject {
 
 	static fromSparkDevice(device) {
 
@@ -39,4 +39,4 @@ class LITDevice extends lrs.LRSObject {
 
 }
 
-window.lit.LITDevice = LITDevice
+window.lit.Device = Device

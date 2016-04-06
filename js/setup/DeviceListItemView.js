@@ -1,11 +1,11 @@
 'use strict';
 
-class LITDeviceListItemView extends lrs.LRSView.views.LRSListItemView {
+class DeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 	
 	constructor(el, options) {
 
 		if (!options) options = {}
-		options.template = 'LITDeviceListItem'
+		options.template = 'DeviceListItem'
 		
 		super(el, options)
 		
@@ -35,4 +35,4 @@ class LITDeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 
 }
 
-window.lrs.LRSView.views.LITDeviceListItemView = LITDeviceListItemView
+window.lrs.LRSView.views.DeviceListItemView = DeviceListItemView

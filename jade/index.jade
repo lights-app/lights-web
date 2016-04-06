@@ -7,8 +7,8 @@ html
 
 body
 	.app
-		.setup(data-view='LITSetup:setup')
-			section.welcome-page(data-view='LITPage:preloaded')
+		.setup(data-view='Setup:setup')
+			section.welcome-page(data-view='Page:preloaded')
 				header.toolbar
 					button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
 					h1(data-outlet='title') Welcome
@@ -16,9 +16,9 @@ body
 					button(data-action='click:start()') Start
 
 		.settings
-		.rooms(data-view='LITRooms:rooms')
-			.overview(data-view='LITRoomOverview:overview')
-				ul(data-view='LRSList:roomList:LITRoomListItem')
+		.rooms(data-view='Rooms:rooms')
+			.overview(data-view='RoomOverview:overview')
+				ul(data-view='LRSList:roomList:RoomListItem')
 	
 	script.templates(type='text/html')
 		include ./rooms
@@ -32,5 +32,5 @@ body
 	script.
 		document.addEventListener('DOMContentLoaded', function() {
 			window.lrs.LRSView.parseTemplates()
-			window.lit.app = new window.lit.LITApp(document.querySelector('.app'))
+			window.lit.app = new window.lit.App(document.querySelector('.app'))
 		})

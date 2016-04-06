@@ -1,6 +1,6 @@
 'use strict';
 
-class LITRoomOverviewView extends lrs.LRSView.views.LITPageView {
+class RoomOverviewView extends lrs.LRSView.views.PageView {
 
 	constructor(el, options) {
 	
@@ -27,4 +27,4 @@ class LITRoomOverviewView extends lrs.LRSView.views.LITPageView {
 
 }
 
-window.lrs.LRSView.views.LITRoomOverviewView = LITRoomOverviewView
+window.lrs.LRSView.views.RoomOverviewView = RoomOverviewView

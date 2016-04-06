@@ -1,6 +1,6 @@
 'use strict';
 	
-class LITApp extends lrs.LRSView {
+class App extends lrs.LRSView {
 	
 	constructor(el, options) {
 		
@@ -29,4 +29,4 @@ class LITApp extends lrs.LRSView {
 }
 
 window.lit = window.lit || {}
-window.lit.LITApp = LITApp
+window.lit.App = App

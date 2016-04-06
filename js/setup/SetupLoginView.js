@@ -1,11 +1,11 @@
 'use strict';
 
-class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
+class SetupLoginView extends lrs.LRSView.views.PageView {
 	
 	constructor(el, options) {
 		
 		if (!options) options = {}
-		options.template = 'LITSetupLogin'
+		options.template = 'SetupLogin'
 		
 		super(el, options)
 		
@@ -21,7 +21,7 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		
 		spark.login({username: this.username, password: this.password}).then( function(result) {
 		
-			_this.owner.showView(new lrs.LRSView.views.LITDevicesPageView())
+			_this.owner.showView(new lrs.LRSView.views.DevicesPageView())
 			
 			
 		}).catch( function(err) {
@@ -36,4 +36,4 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 
 }
 
-window.lrs.LRSView.views.LITSetupLoginView = LITSetupLoginView
+window.lrs.LRSView.views.SetupLoginView = SetupLoginView

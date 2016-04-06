@@ -1,11 +1,11 @@
 'use strict';
 
-class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
+class DevicesPageView extends lrs.LRSView.views.PageView {
 	
 	constructor(el, options) {
 		
 		if (!options) options = {}
-		options.template = 'LITDevicesPage'
+		options.template = 'DevicesPage'
 		
 		super(el, options)
 
@@ -21,7 +21,7 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 			for (let device of devices) {
 
-				let _device = lit.LITDevice.fromSparkDevice(device)
+				let _device = lit.Device.fromSparkDevice(device)
 
 				console.log(_device)
 
@@ -61,4 +61,4 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 }
 
-window.lrs.LRSView.views.LITDevicesPageView = LITDevicesPageView
+window.lrs.LRSView.views.DevicesPageView = DevicesPageView
