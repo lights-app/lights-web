@@ -39,11 +39,19 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 	nextAction(view, el, e) {
 
-		var deviceViews = this.views.lightsDeviceList.views.content.concat(this.views.otherDeviceList.views.content)
+		var _this = this
 
-		for (let deviceView of deviceViews) {
+		var containsNonLightsDevices = false
+
+		for (let deviceView of this.views.lightsDeviceList.views.content) {
 
 			if (deviceView.selected) {
+
+				if (!deviceView.object.isLightsDevice) {
+
+					containsNonLightsDevices = true
+
+				}
 
 				lit.app.devices.push(deviceView.object)
 
@@ -51,7 +59,15 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 		}
 
-		console.log(lit.app.devices)
+		if(containsNonLightsDevices) {
+
+			_this.owner.showView(new lrs.LRSView.views.LITDevicesReprogrammingPageView())
+
+		} else {
+
+			_this.owner.showView(new lrs.LRSView.views.LITDevicesNamingPageView())
+
+		}
 
 	}
 
