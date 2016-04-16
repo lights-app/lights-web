@@ -12,8 +12,6 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 		var _this = this
 
 		var lightsDevices = []
-		var otherDevices = []
-		var selectedDevices = []
 
 		this.views.lightsDeviceList
 
@@ -25,13 +23,11 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 				console.log(_device)
 
-				;(_device.isLightsDevice ? lightsDevices : otherDevices).push(_device)
+				lightsDevices.push(_device)
 
 			}
 
 			_this.views.lightsDeviceList.reset(lightsDevices)
-			_this.views.otherDeviceList.reset(otherDevices)
-
 
 		}).catch( function(err) {
 

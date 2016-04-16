@@ -23,11 +23,8 @@ mixin setupTemplates
 			h2 Select devices
 			p Select the devices you want to use as Lights devices. Other devices you select that do not have the Lights software yet will be reprogrammed.
 		
-			h2 Lights devices
+			h2 Devices
 			ul.device-list(data-view='LRSList:lightsDeviceList:LITDeviceListItem')
-		
-			h2 Other devices
-			ul.device-list(data-view='LRSList:otherDeviceList:LITDeviceListItem')
 		
 			button(type='button' data-action='click:next()') Next
 	
@@ -50,7 +47,8 @@ mixin setupTemplates
 			p Scroll through your new Lights devices below and rename them
 
 	li.device-list-item(data-template='LITDeviceListItem' data-action='click:toggle()')
-		div.status
 		h3
 			| Name: 
 			span(data-outlet='name')
+			span.lights-device-icon
+			span.status

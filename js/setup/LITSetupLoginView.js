@@ -15,7 +15,9 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 
 	loginAction(view, el, e) {
 		
-		var _this = this		
+		var _this = this
+
+		console.log(this.username, this.password)
 		
 		this.disable()
 		
