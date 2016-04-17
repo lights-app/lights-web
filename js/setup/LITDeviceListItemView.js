@@ -6,7 +6,7 @@ class LITDeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 
 		if (!options) options = {}
 		options.template = 'LITDeviceListItem'
-		
+
 		super(el, options)
 		
 	}
@@ -22,6 +22,18 @@ class LITDeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 		this._object = object
 
 		this.name = this.object.roomName || this.object.name
+
+		if (this.object.attributes.connected) {
+
+			this.classList.add('connected')
+
+		}
+
+		if (this.object.isLightsDevice) {
+
+			this.classList.add('lights-device')
+
+		}
 
 	}
 
