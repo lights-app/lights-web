@@ -1,24 +1,58 @@
 var particle = new Particle();
-var token
+var token = localStorage.getItem('accessToken')
+var deviceId = localStorage.getItem('deviceId')
+$('#deviceid').val(deviceId)
 var payload = ''
 
-particle.login({username: $('#username').val(), password: $('#password').val()}).then( function(result) {
+if(token === null) {
 
-	console.log(result)
-	token = result.body.access_token
+	$('#variables').addClass('hidden')
 
-}).catch( function(err) {
+} else {
 
-	// window.alert('Something went wrong')
-	console.log('Something went wrong')
+	$('#account-info').addClass('hidden')
+	$('#variables').removeClass('hidden')
+
+}
+
+$('#log-in').on('click tap', function() {
+
+	particleLogin()
 
 })
+
+function particleLogin() {
+
+	particle.login({username: $('#username').val(), password: $('#password').val()}).then( function(result) {
+
+		console.log(result)
+		token = result.body.access_token
+
+		localStorage.setItem('accessToken', token)
+		localStorage.setItem('username', $('#username').val())
+		localStorage.setItem('password', $('#password').val())
+
+		$('#account-info').addClass('hidden')
+		$('#variables').removeClass('hidden')
+
+		}).catch( function(err) {
+
+			$('#account-info').removeClass('hidden')
+			$('#variables').addClass('hidden')
+		// window.alert('Something went wrong')
+		console.log('Something went wrong')
+
+	})
+
+}
+
 
 $('#send').on('click tap', function() {
 
 	encodeData()
 
-	var deviceId = $('#deviceid').val()
+	deviceId = $('#deviceid').val()
+	localStorage.setItem('deviceId', deviceId)
 
 	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
 
@@ -32,7 +66,7 @@ $('#send').on('click tap', function() {
 
 			console.log('An error occurred:', err)
 
-	})
+		})
 
 })
 
