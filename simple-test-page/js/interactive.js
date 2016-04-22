@@ -2,7 +2,6 @@ var particle = new Particle();
 var token = localStorage.getItem('accessToken')
 var deviceId = localStorage.getItem('deviceId')
 $('#deviceid').val(deviceId)
-var payload = ''
 
 if(token === null) {
 
@@ -17,7 +16,53 @@ if(token === null) {
 
 $('#log-in').on('click tap', function() {
 
-	particleLogin()
+	
+
+})
+
+$('#on-btn').on('click tap', function() {
+
+	var payload = encodeData([16128, 10000, 0, 16128, 10000, 0])
+
+	deviceId = $('#deviceid').val()
+	localStorage.setItem('deviceId', deviceId)
+
+	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
+
+	fnPr.then(
+
+		function(data) {
+
+			console.log('Function called succesfully:', data)
+
+		}, function(err) {
+
+			console.log('An error occurred:', err)
+
+		})
+
+})
+
+$('#off-btn').on('click tap', function() {
+
+	var payload = encodeData([0, 0, 0, 0, 0, 0])
+	
+	deviceId = $('#deviceid').val()
+	localStorage.setItem('deviceId', deviceId)
+
+	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
+
+	fnPr.then(
+
+		function(data) {
+
+			console.log('Function called succesfully:', data)
+
+		}, function(err) {
+
+			console.log('An error occurred:', err)
+
+		})
 
 })
 
@@ -49,7 +94,7 @@ function particleLogin() {
 
 $('#send').on('click tap', function() {
 
-	encodeData()
+	var payload = encodeData(getColorValues())
 
 	deviceId = $('#deviceid').val()
 	localStorage.setItem('deviceId', deviceId)
@@ -72,19 +117,49 @@ $('#send').on('click tap', function() {
 
 $('#encode-data').on('click tap', function() {
 
-	encodeData()
-
-})
-
-function encodeData() {
-
-	payload = 'c'
-
-	payload += String.fromCharCode(127)
+	var colors = []
+	var i = 0
 
 	$('.color').each(function(obj) {
 
-		var val = $(this).val()
+		var val = parseInt($(this).val())
+		colors[i] = val
+		i++
+
+	})
+
+	console.log(colors)
+
+	encodeData(getColorValues())
+
+})
+
+function getColorValues(){
+
+	var colors = []
+	var i = 0
+
+	$('.color').each(function(obj) {
+
+		var val = parseInt($(this).val())
+		colors[i] = val
+		i++
+
+	})
+
+	return colors
+
+}
+
+function encodeData(colors) {
+
+	var payload = 'c'
+
+	payload += String.fromCharCode(127)
+
+	colors.forEach(function(obj) {
+
+		var val = obj
 
 		// If the value exceeds the maximum allowed, cut off
 		// Since we can't send '0', the range is 127 values per byte (1-127)
@@ -121,5 +196,7 @@ function encodeData() {
 
 	console.log('Payload', payload)
 	console.log('Payload length', payload.length)
+
+	return payload
 
 }
