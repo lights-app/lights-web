@@ -8,7 +8,19 @@ class LITDevicesNamingPageView extends lrs.LRSView.views.LITPageView {
 		options.template = 'LITDevicesNamingPage'
 		
 		super(el, options)
+
+		var _this = this
+
+		_this.views.lightsDeviceList.reset(lit.app.devices)
 		
+	}
+
+	doneAction(view, el, e) {
+
+		var _this = this
+
+		_this.owner.showView(new lrs.LRSView.views.LITSetupCompletePageView())
+
 	}
 
 }

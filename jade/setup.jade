@@ -40,15 +40,26 @@ mixin setupTemplates
 	section.devices-naming-page(data-template='LITDevicesNamingPage')
 		header.toolbar
 			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			h1(data-outlet='title') Name your devices
+			h1(data-outlet='title') Naming
 
 		section.page-content
 			h2 Name your Lights
-			p Scroll through your new Lights devices below and rename them
+			p Tap on a device to name it. 
+			ul.device-list(data-view='LRSList:lightsDeviceList:LITDeviceListItem')
+
+			button(type='button' data-action='click:done()') Done
+
+	section.setup-complete-page(data-template='LITSetupCompletePage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Setup complete
+
+		section.page-content
+			h2 Setup complete!
+			
 
 	li.device-list-item(data-template='LITDeviceListItem' data-action='click:toggle()')
 		h3
-			| Name: 
 			span(data-outlet='name')
 			span.lights-device-icon
 			span.status

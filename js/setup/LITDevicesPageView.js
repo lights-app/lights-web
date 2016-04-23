@@ -51,6 +51,8 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 					containsNonLightsDevices = true
 
+					deviceView.object.reprogram = true
+
 				}
 
 				lit.app.devices.push(deviceView.object)
@@ -59,13 +61,21 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 		}
 
-		if(containsNonLightsDevices) {
+		if (lit.app.devices.length > 0) {
 
-			_this.owner.showView(new lrs.LRSView.views.LITDevicesReprogrammingPageView())
+			if(containsNonLightsDevices) {
+
+				_this.owner.showView(new lrs.LRSView.views.LITDevicesReprogrammingPageView())
+
+			} else {
+
+				_this.owner.showView(new lrs.LRSView.views.LITDevicesNamingPageView())
+
+			}
 
 		} else {
 
-			_this.owner.showView(new lrs.LRSView.views.LITDevicesNamingPageView())
+			console.log("No devices selected")
 
 		}
 
