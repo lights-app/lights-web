@@ -13,6 +13,7 @@ class LITDevicesNamingPageView extends lrs.LRSView.views.LITPageView {
 
 		_this.views.lightsDeviceList.reset(lit.app.devices)
 		
+		return this
 	}
 
 	doneAction(view, el, e) {

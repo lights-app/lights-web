@@ -12,11 +12,21 @@ body {
 
 	background-color: @blue-0;
 
+	font-family: 'Roboto';
+
 }
 
 h1, h2, p {
 
 	color: @text-color;
+	font-weight: 300;
+
+}
+
+h1 {
+
+	font-size: 17px;
+	font-weight: 400;
 
 }
 
@@ -24,4 +34,29 @@ button {
 
 	color: #444;
 	
+}
+
+ul {
+
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+
+}
+
+.toolbar {
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	background-color: @blue-1;
+
+}
+
+.page-content {
+
+	max-width: 1024px;
+	margin: 0 auto;
+
 }

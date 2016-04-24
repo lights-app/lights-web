@@ -10,6 +10,8 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		super(el, options)
 		
 		this.el.querySelector('form').addEventListener('submit', function(e) { e.preventDefault() })
+
+		return this
 		
 	}
 
@@ -22,8 +24,13 @@ class LITSetupLoginView extends lrs.LRSView.views.LITPageView {
 		this.disable()
 		
 		spark.login({username: this.username, password: this.password}).then( function(result) {
-		
+
+			lit.app.accessToken = result.access_token
+			lit.app.refreshToken = result.refresh_token
+
 			_this.owner.showView(new lrs.LRSView.views.LITDevicesPageView())
+
+			console.log(result)
 			
 		}).catch( function(err) {
 			

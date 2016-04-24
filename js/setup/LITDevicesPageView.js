@@ -35,6 +35,8 @@ class LITDevicesPageView extends lrs.LRSView.views.LITPageView {
 
 		})
 
+		return this
+
 	}
 
 	nextAction(view, el, e) {

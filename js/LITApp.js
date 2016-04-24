@@ -7,7 +7,10 @@ class LITApp extends lrs.LRSView {
 		super(el, options)
 
 		this.devices = []
-		
+
+		this.accessToken = window.localStorage.accessToken || null
+		this.refreshToken = window.localStorage.refreshToken || null
+				
 		return this
 			
 	}
@@ -24,6 +27,34 @@ class LITApp extends lrs.LRSView {
 		
 		window.localStorage.user = user
 		
+	}
+
+	get accessToken() {
+
+		return this._accessToken
+
+	}
+
+	set accessToken(accessToken) {
+
+		this._accessToken = accessToken
+
+		window.localStorage.accessToken = accessToken
+
+	}
+
+	get refreshToken() {
+
+		return this._refreshToken
+
+	}
+
+	set refreshToken(refreshToken) {
+
+		this._refreshToken = refreshToken
+
+		window.localStorage.refreshToken = refreshToken
+
 	}
 	
 }

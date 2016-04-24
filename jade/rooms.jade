@@ -1,9 +1,20 @@
 mixin roomTemplates
 
+	section.rooms-page(data-template='LITRooms')
+		header.toolbar
+			button.settings-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Lights
+		section.page-content
+			h1 Test
+
+			.overview(data-view='LITRoomOverview:overview')
+				ul(data-view='LRSList:roomList:LITRoomListItem')
+
 	li.room-list-item(data-template='LITRoomListItem')
 		h3
-			| Name 
 			span(data-outlet='name')
 			
 	div.room(data-template='LITRoom')
 		h1(data-outlet='name')
+
+	
