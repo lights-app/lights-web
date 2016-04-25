@@ -15,10 +15,8 @@ gulp.task('jade', function() {
 	var stream = gulp.src('./jade/index.jade')
 		.pipe(plumber({
 			errorHandler: function (err) {
-				
 				console.warn(err)
 				this.emit('end')
-				
 			}
 		}))
 		.pipe(jade({}))
@@ -33,6 +31,12 @@ gulp.task('jade', function() {
 gulp.task('js', function() {
 	
 	var stream = gulp.src('./js/**/*.js')
+		.pipe(plumber({
+			errorHandler: function (err) {
+				console.warn(err)
+				this.emit('end')
+			}
+		}))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
 		.pipe(babel({
