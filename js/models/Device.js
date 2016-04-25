@@ -2,11 +2,9 @@
 
 class Device extends lrs.LRSObject {
 
-	static fromSparkDevice(device) {
+	static fromParticleDevice(device) {
 
 		var attributes = device
-
-		console.log(device)
 
 		let parsedName = device.name.split("||")
 

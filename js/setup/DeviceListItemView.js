@@ -23,7 +23,7 @@ class DeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 
 		this.name = this.object.roomName || this.object.name
 
-		if (this.object.attributes.connected) {
+		if (this.object.connected) {
 
 			this.classList.add('connected')
 

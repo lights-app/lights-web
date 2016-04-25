@@ -15,11 +15,11 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 		this.views.lightsDeviceList
 
-		spark.listDevices().then( function(devices) {
+		lights.app.particle.listDevices().then( function(response) {
 
-			for (let device of devices) {
+			for (let device of response.body) {
 
-				let _device = lights.Device.fromSparkDevice(device)
+				let _device = lights.Device.fromParticleDevice(device)
 
 				console.log(_device)
 

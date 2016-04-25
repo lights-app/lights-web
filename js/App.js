@@ -10,7 +10,22 @@ class App extends lrs.LRSView {
 
 		this.accessToken = window.localStorage.accessToken || null
 		this.refreshToken = window.localStorage.refreshToken || null
-				
+			
+		this.particle = new ParticleWrapper({
+			baseUrl: 'https://api.particle.io',
+			clientSecret: 'particle-api',
+			clientId: 'particle-api',
+			tokenDuration: 63072000, // 2 years
+		})
+		
+		if (this.accessToken) {
+			
+			this.particle.auth = {
+				access_token: this.accessToken
+			}
+			
+		}
+		
 		return this
 			
 	}

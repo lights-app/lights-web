@@ -17,6 +17,7 @@
   "dependencies": {
     "normalize-css": "normalize.css#~3.0.3",
     "lars": "#develop",
-    "spark": "~1.1.0"
+    "spark": "~1.1.0",
+    "particle-api-js": "~5.2.6"
   }
 }

@@ -18,24 +18,20 @@ class SetupLoginView extends lrs.LRSView.views.PageView {
 	loginAction(view, el, e) {
 		
 		var _this = this
-
-		console.log(this.username, this.password)
 		
 		this.disable()
 		
-		spark.login({username: this.username, password: this.password}).then( function(result) {
-
-			lights.app.accessToken = result.access_token
-			lights.app.refreshToken = result.refresh_token
-
+		lights.app.particle.login({username: this.username, password: this.password}).then( function(response) {
+			
+			lights.app.accessToken = response.body.access_token
+			lights.app.refreshToken = response.body.refresh_token
+			
 			_this.owner.showView(new lrs.LRSView.views.DevicesPageView())
-
-			console.log(result)
 			
 		}).catch( function(err) {
 			
 			_this.enable()
-			
+			console.error(err)
 			window.alert('Something went wrong')
 			
 		})
