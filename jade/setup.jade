@@ -15,27 +15,51 @@ mixin setupTemplates
 				button(type='submit') Login
 	
 	section.devices-page(data-template='DevicesPage')
-		h2 Select devices
-		p Select the devices you want to use as Lights devices. Other devices you select that do not have the Lights software yet will be reprogrammed.
-	
-		h2 Lights devices
-		ul.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
-	
-		h2 Other devices
-		ul.device-list(data-view='LRSList:otherDeviceList:DeviceListItem')
-	
-		button(type='button' data-action='click:next()') Next
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Select devices
+
+		section.page-content
+			h2 Select devices
+			p Select the devices you want to use as Lights devices. Other devices you select that do not have the Lights software yet will be reprogrammed.
+		
+			h2 Devices
+			ul.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
+		
+			button(type='button' data-action='click:next()') Next
 	
 	section.devices-reprogramming-page(data-template='DevicesReprogrammingPage')
-		h2 Reprogramming devices...
-		p We're reprogramming your devices, shouldn't take too long now.
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Reprogramming
+
+		section.page-content
+			h2 Reprogramming devices...
+			p We're reprogramming your devices, shouldn't take too long now.
 	
 	section.devices-naming-page(data-template='DevicesNamingPage')
-		h2 Name your Lights
-		p Scroll through your new Lights devices below and rename them
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Naming
+
+		section.page-content
+			h2 Name your Lights
+			p Tap on a device to name it. 
+			ul.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
+
+			button(type='button' data-action='click:done()') Done
+
+	section.setup-complete-page(data-template='SetupCompletePage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Setup complete
+
+		section.page-content
+			h2 Setup complete!
+			
 
 	li.device-list-item(data-template='DeviceListItem' data-action='click:toggle()')
-		div.status
 		h3
-			| Name: 
 			span(data-outlet='name')
+			span.lights-device-icon
+			span.status

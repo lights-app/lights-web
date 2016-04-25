@@ -1,0 +1,81 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Simple test page</title>
+
+	<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+</head>
+
+<body>
+	<div id="account-info">
+		<ul>
+			<li>	
+				<label>Username</label>
+				<input id="username"></input>
+			</li>
+			<li>	
+				<label>password</label>
+				<input id="password"></input>
+			</li>
+		</ul>
+		<button id="log-in">Log in</button>
+	</div>
+
+	<div id="variables">
+		<h1>Logged in</h1>
+
+		<ul>
+			<li>	
+				<label>Device ID</label>
+				<input id="deviceid"></input>
+			</li>
+			<li>	
+				<label>C0r</label>
+				<input id="c0r" class="color" value="16128"></input>
+				<label>max 16.128</label>
+			</li>
+			<li>
+				<label>C0g</label>
+				<input id="c0g" class="color" value="16128"></input>
+			</li>
+			<li>
+				<label>C0b</label>
+				<input id="c0b" class="color" value="16128"></input>
+			</li>
+			<li>
+				<label>C1r</label>
+				<input id="c1r" class="color" value="16128"></input>
+			</li>
+			<li>
+				<label>C1g</label>
+				<input id="c1g" class="color" value="16128"></input>
+			</li>
+			<li>
+				<label>C1b</label>
+				<input id="c1b" class="color" value="16128"></input>
+			</li>
+			<li>
+				<label>Interpolation time</label>
+				<input id="interpolationtime" value="50"></input>
+				<label>10ths of seconds (max 2.048.382)</label>
+			</li>
+		</ul>
+
+		<button id="encode-data">Encode data</button>
+		<button id="send">Send</button>
+
+		<div>
+			<button class="wide-btn" id="on-btn">On</button>
+			<button class="wide-btn" id="off-btn">Off</button>
+		</div>
+
+	</div>
+
+	<script src="js/jquery-2.2.3.min.js" ></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/particle-api-js/5/particle.min.js"></script>
+	<script src="js/interactive.js" ></script>
+</body>
+</html>

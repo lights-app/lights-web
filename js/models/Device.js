@@ -4,7 +4,7 @@ class Device extends lrs.LRSObject {
 
 	static fromSparkDevice(device) {
 
-		var attributes = {}
+		var attributes = device
 
 		console.log(device)
 
@@ -17,6 +17,7 @@ class Device extends lrs.LRSObject {
 
 		} else {
 
+			attributes.roomName = device.name
 			attributes.isLightsDevice = false
 
 		}

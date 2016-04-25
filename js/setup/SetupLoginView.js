@@ -10,19 +10,27 @@ class SetupLoginView extends lrs.LRSView.views.PageView {
 		super(el, options)
 		
 		this.el.querySelector('form').addEventListener('submit', function(e) { e.preventDefault() })
+
+		return this
 		
 	}
 
 	loginAction(view, el, e) {
 		
-		var _this = this		
+		var _this = this
+
+		console.log(this.username, this.password)
 		
 		this.disable()
 		
 		spark.login({username: this.username, password: this.password}).then( function(result) {
-		
+
+			lit.app.accessToken = result.access_token
+			lit.app.refreshToken = result.refresh_token
+
 			_this.owner.showView(new lrs.LRSView.views.DevicesPageView())
-			
+
+			console.log(result)
 			
 		}).catch( function(err) {
 			

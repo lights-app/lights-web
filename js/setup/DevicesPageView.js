@@ -12,8 +12,6 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 		var _this = this
 
 		var lightsDevices = []
-		var otherDevices = []
-		var selectedDevices = []
 
 		this.views.lightsDeviceList
 
@@ -25,13 +23,11 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 				console.log(_device)
 
-				;(_device.isLightsDevice ? lightsDevices : otherDevices).push(_device)
+				lightsDevices.push(_device)
 
 			}
 
 			_this.views.lightsDeviceList.reset(lightsDevices)
-			_this.views.otherDeviceList.reset(otherDevices)
-
 
 		}).catch( function(err) {
 
@@ -39,15 +35,27 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 		})
 
+		return this
+
 	}
 
 	nextAction(view, el, e) {
 
-		var deviceViews = this.views.lightsDeviceList.views.content.concat(this.views.otherDeviceList.views.content)
+		var _this = this
 
-		for (let deviceView of deviceViews) {
+		var containsNonLightsDevices = false
+
+		for (let deviceView of this.views.lightsDeviceList.views.content) {
 
 			if (deviceView.selected) {
+
+				if (!deviceView.object.isLightsDevice) {
+
+					containsNonLightsDevices = true
+
+					deviceView.object.reprogram = true
+
+				}
 
 				lit.app.devices.push(deviceView.object)
 
@@ -55,7 +63,23 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 		}
 
-		console.log(lit.app.devices)
+		if (lit.app.devices.length > 0) {
+
+			if(containsNonLightsDevices) {
+
+				_this.owner.showView(new lrs.LRSView.views.DevicesReprogrammingPageView())
+
+			} else {
+
+				_this.owner.showView(new lrs.LRSView.views.DevicesNamingPageView())
+
+			}
+
+		} else {
+
+			console.log("No devices selected")
+
+		}
 
 	}
 

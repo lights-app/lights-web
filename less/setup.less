@@ -1,0 +1,44 @@
+@status-symbol-size: 12px;
+
+.selected {
+	
+	background-color: rgba(255, 255, 255, 0.2);
+	
+}
+
+.status {
+
+	width: @status-symbol-size;
+	height: @status-symbol-size;
+	background-color: @red;
+
+	border-radius: 1000px;
+
+	display: inline-block;
+
+}
+
+.lights-device {
+
+	.lights-device-icon {
+
+		width: @status-symbol-size;
+		height: @status-symbol-size;
+		// background-color: orange;
+		background-image: url('/static/img/Lights icon-10px.svg');
+		background-size: contain;
+
+		display: inline-block;
+	}
+
+}
+
+.connected {
+
+	.status {
+
+		background-color: @green;
+
+	}
+
+}

@@ -117,3 +117,16 @@ gulp.task('dev', function() {
 	
 	
 })
+
+gulp.task('test-page', function() {
+	
+	server = gls.static('simple-test-page')
+	server.start()
+
+	gulp.watch('simple-test-page/**/*', function(file) {
+
+		server.notify.apply(server, [file])
+
+	})
+	
+})
