@@ -31,5 +31,5 @@ body
 	script.
 		document.addEventListener('DOMContentLoaded', function() {
 			window.lrs.LRSView.parseTemplates()
-			window.lights.app = new window.lights.App(document.querySelector('.app'))
+			new window.lights.App(document.querySelector('.app'))
 		})

@@ -11,7 +11,7 @@ class SetupView extends lrs.LRSView.views.PagedView {
 
 		var _this = this
 
-		if (window.localStorage.accessToken && window.localStorage.accessToken.length > 20) {
+		if (lights.app.particle.isLoggedIn) {
 
 			_this.showView(new lrs.LRSView.views.RoomsView())
 

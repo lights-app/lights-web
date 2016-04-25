@@ -4,19 +4,24 @@ class App extends lrs.LRSView {
 	
 	constructor(el, options) {
 		
+		if (!options) options = {}
+		options.delayDomConnectionCreation = true
+		
 		super(el, options)
+		
+		window.lights.app = this
+		
+		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 
 		this.devices = []
-
-		this.accessToken = window.localStorage.accessToken || null
-		this.refreshToken = window.localStorage.refreshToken || null
 			
 		this.particle = new ParticleWrapper({
 			baseUrl: 'https://api.particle.io',
 			clientSecret: 'particle-api',
 			clientId: 'particle-api',
 			tokenDuration: 63072000, // 2 years
-		})
+		}, {auth: this.storage('particleAuth')})
+		this.particle.on('login', this.didLoginToParticle)
 		
 		if (this.accessToken) {
 			
@@ -26,8 +31,40 @@ class App extends lrs.LRSView {
 			
 		}
 		
+		this.createDomConnections()
+		
 		return this
+		
+	}
+	
+	didLoginToParticle(auth) {
+		
+		this.storage('particleAuth', auth)
+		
+	}
+	
+	storage(key, value) {
+		
+		key = `lights.${key}`
+		
+		if (value === undefined) {
 			
+			value = window.localStorage[key]
+			
+			try {
+				
+				value = JSON.parse(value)
+				
+			} catch(err) {}
+			
+			return value
+			
+		} else {
+			
+			window.localStorage[key] = typeof value === 'object' ? JSON.stringify(value) : value
+			
+		}
+		
 	}
 	
 	get user() {
@@ -42,34 +79,6 @@ class App extends lrs.LRSView {
 		
 		window.localStorage.user = user
 		
-	}
-
-	get accessToken() {
-
-		return this._accessToken
-
-	}
-
-	set accessToken(accessToken) {
-
-		this._accessToken = accessToken
-
-		window.localStorage.accessToken = accessToken
-
-	}
-
-	get refreshToken() {
-
-		return this._refreshToken
-
-	}
-
-	set refreshToken(refreshToken) {
-
-		this._refreshToken = refreshToken
-
-		window.localStorage.refreshToken = refreshToken
-
 	}
 	
 }

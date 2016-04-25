@@ -23,9 +23,6 @@ class SetupLoginView extends lrs.LRSView.views.PageView {
 		
 		lights.app.particle.login({username: this.username, password: this.password}).then( function(response) {
 			
-			lights.app.accessToken = response.body.access_token
-			lights.app.refreshToken = response.body.refresh_token
-			
 			_this.owner.showView(new lrs.LRSView.views.DevicesPageView())
 			
 		}).catch( function(err) {
