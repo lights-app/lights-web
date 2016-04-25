@@ -19,7 +19,7 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 			for (let device of devices) {
 
-				let _device = lit.Device.fromSparkDevice(device)
+				let _device = lights.Device.fromSparkDevice(device)
 
 				console.log(_device)
 
@@ -57,13 +57,13 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 				}
 
-				lit.app.devices.push(deviceView.object)
+				lights.app.devices.push(deviceView.object)
 
 			}
 
 		}
 
-		if (lit.app.devices.length > 0) {
+		if (lights.app.devices.length > 0) {
 
 			if(containsNonLightsDevices) {
 

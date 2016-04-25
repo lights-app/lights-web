@@ -59,5 +59,5 @@ class App extends lrs.LRSView {
 	
 }
 
-window.lit = window.lit || {}
-window.lit.App = App
+window.lights = window.lights || {}
+window.lights.App = App

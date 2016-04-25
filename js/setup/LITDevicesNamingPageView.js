@@ -11,7 +11,7 @@ class DevicesNamingPageView extends lrs.LRSView.views.PageView {
 
 		var _this = this
 
-		_this.views.lightsDeviceList.reset(lit.app.devices)
+		_this.views.lightsDeviceList.reset(lights.app.devices)
 		
 		return this
 	}

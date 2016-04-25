@@ -40,4 +40,4 @@ class Device extends lrs.LRSObject {
 
 }
 
-window.lit.Device = Device
+window.lights.Device = Device

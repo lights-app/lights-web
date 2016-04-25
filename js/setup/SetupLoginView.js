@@ -25,8 +25,8 @@ class SetupLoginView extends lrs.LRSView.views.PageView {
 		
 		spark.login({username: this.username, password: this.password}).then( function(result) {
 
-			lit.app.accessToken = result.access_token
-			lit.app.refreshToken = result.refresh_token
+			lights.app.accessToken = result.access_token
+			lights.app.refreshToken = result.refresh_token
 
 			_this.owner.showView(new lrs.LRSView.views.DevicesPageView())
 
