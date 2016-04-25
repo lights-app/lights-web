@@ -1,6 +1,12 @@
 'use strict';
 
-class RoomOverviewView extends lrs.LRSView.views.PageView {
+class RoomsOverviewView extends lrs.LRSView.views.PageView {
+	
+	get template() {
+		
+		return 'RoomsOverview'
+		
+	}
 
 	constructor(el, options) {
 	
@@ -27,4 +33,4 @@ class RoomOverviewView extends lrs.LRSView.views.PageView {
 
 }
 
-window.lrs.LRSView.views.RoomOverviewView = RoomOverviewView
+window.lrs.LRSView.views.RoomsOverviewView = RoomsOverviewView

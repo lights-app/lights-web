@@ -1,14 +1,13 @@
 mixin roomTemplates
 
-	section.rooms-page(data-template='Rooms')
+	section.rooms-overview-page(data-template='RoomsOverview')
 		header.toolbar
 			button.settings-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
 			h1(data-outlet='title') Lights
 		section.page-content
 			h1 Test
+			ul(data-view='LRSList:roomList:RoomListItem')
 
-			.overview(data-view='RoomOverview:overview')
-				ul(data-view='LRSList:roomList:RoomListItem')
 
 	li.room-list-item(data-template='RoomListItem')
 		h3

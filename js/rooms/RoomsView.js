@@ -1,15 +1,10 @@
 'use strict';
 
-class RoomsView extends lrs.LRSView.views.PageView {
+class RoomsView extends lrs.LRSView.views.PagedView {
 
 	constructor(el, options) {
 		
-		if (!options) options = {}
-		options.template = 'Rooms'
-		
 		super(el, options)
-
-		var _this = this
 
 		return this
 		

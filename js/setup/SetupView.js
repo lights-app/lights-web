@@ -4,16 +4,15 @@ class SetupView extends lrs.LRSView.views.PagedView {
 
 	constructor(el, options) {
 		
-		if (!options) options = {}
-		options.template = 'Setup'
-		
 		super(el, options)
 
-		var _this = this
-
 		if (lights.app.particle.isLoggedIn) {
-
-			_this.showView(new lrs.LRSView.views.RoomsView())
+			
+			// Note: Temporary; this check should happen at the app level not at the setup level.
+			var self = this
+			setTimeout( function() {
+				self.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
+			}, 1)
 
 		}
 
