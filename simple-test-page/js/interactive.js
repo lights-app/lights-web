@@ -202,3 +202,82 @@ function encodeData(colors) {
 	return payload
 
 }
+
+$('#encode-timer-data').on('click tap', function() {
+
+	var payload = encodeTimerData()
+	
+	console.log(payload)
+	console.log("Payload length", payload.length)
+
+})
+
+$('#send-timer-data').on('click tap', function() {
+
+	var payload = encodeTimerData()
+
+	deviceId = $('#deviceid').val()
+	localStorage.setItem('deviceId', deviceId)
+
+	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
+
+	fnPr.then(
+
+		function(data) {
+
+			console.log('Function called succesfully:', data)
+
+		}, function(err) {
+
+			console.log('An error occurred:', err)
+
+		})
+
+})
+
+function encodeTimerData() {
+
+	var payload = 't'
+
+	payload += String.fromCharCode(parseInt($('#timer-selector').val())  + 1)
+	payload += String.fromCharCode(parseInt($('#zero-point-selector').val()) + 1)
+
+	var zeroPointOffset = splitNumber(parseInt($('#zero-point-offset').val()), 3)
+	payload += String.fromCharCode(zeroPointOffset[0] + 1)
+	payload += String.fromCharCode(zeroPointOffset[1] + 1)
+	payload += String.fromCharCode(zeroPointOffset[2] + 1)
+
+	var interpolationTime = splitNumber(parseInt($('#timer-interpolation-time').val()), 3)
+	payload += String.fromCharCode(interpolationTime[0] + 1)
+	payload += String.fromCharCode(interpolationTime[1] + 1)
+	payload += String.fromCharCode(interpolationTime[2] + 1)
+
+	payload += String.fromCharCode(parseInt($('#mode').val()) + 1)
+
+	$('.timer-color').each(function(obj) { 
+		console.log($(this).val())
+		var colVal = splitNumber(parseInt($(this).val()), 2)
+		payload += String.fromCharCode(colVal[0] + 1)
+		payload += String.fromCharCode(colVal[1] + 1)
+
+	})
+
+	return payload
+
+}
+
+function splitNumber(numberToSplit, amountOfBytes){
+
+	var bytes = [];
+
+	for (var i = 0; i < amountOfBytes; i ++) {
+
+		bytes[i] = Math.floor(numberToSplit / Math.pow(127, (amountOfBytes - i - 1)))
+		numberToSplit -= bytes[i] * Math.pow(127, (amountOfBytes - i - 1))
+		// console.log(numberToSplit, bytes[i])
+
+	}
+
+	return bytes
+
+}
