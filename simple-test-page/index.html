@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta initial-scale="1">
 
 	<title>Simple test page</title>
 
@@ -27,11 +28,15 @@
 	<div id="variables">
 		<h1>Logged in</h1>
 
+		<h2>Devices (tap to select)</h2>
+
+		<ul id="devices">
+			
+		</ul>
+
+		<h2>Advanced options</h2>
+
 		<ul>
-			<li>	
-				<label>Device ID</label>
-				<input id="deviceid"></input>
-			</li>
 			<li>	
 				<label>C0r</label>
 				<input id="c0r" class="color" value="16128"></input>
@@ -59,7 +64,7 @@
 			</li>
 			<li>
 				<label>Interpolation time</label>
-				<input id="interpolationtime" value="50"></input>
+				<input id="interpolationtime" value="7"></input>
 				<label>10ths of seconds (max 2.048.382)</label>
 			</li>
 		</ul>
@@ -117,6 +122,10 @@
 			<button id="send-timer-data">Send timer data</button>
 
 		</ul>
+
+		<button id="log-out" class="wide-btn">
+			Log out
+		</button>
 
 	</div>
 

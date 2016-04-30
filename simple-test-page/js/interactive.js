@@ -1,7 +1,7 @@
 var particle = new Particle();
 var token = localStorage.getItem('accessToken')
 var deviceId = localStorage.getItem('deviceId')
-$('#deviceid').val(deviceId)
+var particleDevices = []
 
 if(token === null) {
 
@@ -11,6 +11,7 @@ if(token === null) {
 
 	$('#account-info').addClass('hidden')
 	$('#variables').removeClass('hidden')
+	listDevices()
 
 }
 
@@ -22,47 +23,17 @@ $('#log-in').on('click tap', function() {
 
 $('#on-btn').on('click tap', function() {
 
-	var payload = encodeData([16128, 10000, 0, 16128, 10000, 0])
+	var payload = encodeData([16128, 13000, 8000, 16128, 13000, 8000])
 
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
-
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
 
 $('#off-btn').on('click tap', function() {
 
 	var payload = encodeData([0, 0, 0, 0, 0, 0])
-	
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
 
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
 
@@ -80,10 +51,12 @@ function particleLogin() {
 		$('#account-info').addClass('hidden')
 		$('#variables').removeClass('hidden')
 
-		}).catch( function(err) {
+		listDevices()
 
-			$('#account-info').removeClass('hidden')
-			$('#variables').addClass('hidden')
+	}).catch( function(err) {
+
+		$('#account-info').removeClass('hidden')
+		$('#variables').addClass('hidden')
 		// window.alert('Something went wrong')
 		console.log('Something went wrong')
 
@@ -91,29 +64,84 @@ function particleLogin() {
 
 }
 
+function listDevices() {
+
+	var devicesPr = particle.listDevices({ auth: token })
+
+	devicesPr.then(
+		function(devices){
+
+			console.log('Devices: ', devices);
+			particleDevices = devices.body
+
+			particleDevices.forEach(function(obj) {
+
+				console.log(obj)
+
+				var elem = document.createElement("li")
+				var label = document.createElement("label")
+
+				label.innerHTML = obj.name
+
+				elem.appendChild(label)
+
+				$(elem).attr("deviceId", obj.id)
+				$(elem).addClass('device')
+
+				var list = document.getElementById("devices")
+
+				list.appendChild(elem)
+
+			})
+
+		},
+
+		function(err) {
+			console.log('List devices call failed: ', err);
+		}
+		);
+}
+
+$('#devices').on('click tap', '.device', function() {
+
+	console.log(this)
+
+	$(this).toggleClass('selected')
+
+})
+
 
 $('#send').on('click tap', function() {
 
 	var payload = encodeData(getColorValues())
 
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
-
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
+
+function sendPayload(payload) {
+
+	$('.selected').each(function() {
+
+		var thisDeviceId = $(this).attr('deviceId')
+
+		var fnPr = particle.callFunction({ deviceId: thisDeviceId, name: 'lights', argument: payload, auth: token })
+
+		fnPr.then(
+
+			function(data) {
+
+				console.log('Function called succesfully:', data)
+
+			}, function(err) {
+
+				console.log('An error occurred:', err)
+
+			})
+
+	})
+
+}
 
 $('#encode-data').on('click tap', function() {
 
@@ -216,22 +244,7 @@ $('#send-timer-data').on('click tap', function() {
 
 	var payload = encodeTimerData()
 
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
-
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
 
@@ -281,3 +294,11 @@ function splitNumber(numberToSplit, amountOfBytes){
 	return bytes
 
 }
+
+$('#log-out').on('click tap', function() {
+
+	delete localStorage.accessToken
+
+	location.reload()
+
+})
