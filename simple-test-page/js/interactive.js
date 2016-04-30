@@ -2,6 +2,8 @@ var particle = new Particle();
 var token = localStorage.getItem('accessToken')
 var deviceId = localStorage.getItem('deviceId')
 var particleDevices = []
+var _selectedDevices = localStorage.selectedDevices || null
+var selectedDevices = JSON.parse(_selectedDevices) || []
 
 if(token === null) {
 
@@ -88,6 +90,12 @@ function listDevices() {
 				$(elem).attr("deviceId", obj.id)
 				$(elem).addClass('device')
 
+				if (selectedDevices.indexOf(obj.id) > -1) {
+
+					$(elem).addClass('selected')
+
+				}
+
 				var list = document.getElementById("devices")
 
 				list.appendChild(elem)
@@ -107,6 +115,21 @@ $('#devices').on('click tap', '.device', function() {
 	console.log(this)
 
 	$(this).toggleClass('selected')
+
+	if($(this).hasClass('selected')) {
+
+		selectedDevices.push($(this).attr('deviceId'))
+
+	} else {
+
+		var index = selectedDevices.indexOf($(this).attr('deviceId'))
+		selectedDevices.splice(index, 1)
+
+	}
+
+	localStorage.selectedDevices = JSON.stringify(selectedDevices)
+
+	console.log(selectedDevices)
 
 })
 
