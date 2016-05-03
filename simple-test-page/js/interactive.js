@@ -325,3 +325,29 @@ $('#log-out').on('click tap', function() {
 	location.reload()
 
 })
+
+$('#get-variable').on('click tap', function() {
+
+	$('.selected').each(function() {
+
+		var thisDeviceId = $(this).attr('deviceId')
+
+		var fnPr = particle.getVariable({ deviceId: thisDeviceId, name: 'config', auth: token })
+
+		fnPr.then(
+
+			function(data) {
+
+				console.log('Function called succesfully:', data)
+
+				console.log(data.body.result, data.body.result.length)
+
+			}, function(err) {
+
+				console.log('An error occurred:', err)
+
+			})
+
+	})
+
+})
