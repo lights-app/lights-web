@@ -32,6 +32,20 @@ class App extends lrs.LRSView {
 		}
 		
 		this.createDomConnections()
+
+		console.log(this.particle.isLoggedIn)
+
+		if (this.particle.isLoggedIn) {
+
+			var self = this
+			console.log(self)
+
+			setTimeout( function() {
+				console.log(self)
+				self.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
+			}, 1)
+
+		}
 		
 		return this
 		

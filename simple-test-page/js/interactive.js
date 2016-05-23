@@ -1,7 +1,9 @@
 var particle = new Particle();
 var token = localStorage.getItem('accessToken')
 var deviceId = localStorage.getItem('deviceId')
-$('#deviceid').val(deviceId)
+var particleDevices = []
+var _selectedDevices = localStorage.selectedDevices || null
+var selectedDevices = JSON.parse(_selectedDevices) || []
 
 if(token === null) {
 
@@ -11,6 +13,7 @@ if(token === null) {
 
 	$('#account-info').addClass('hidden')
 	$('#variables').removeClass('hidden')
+	listDevices()
 
 }
 
@@ -22,47 +25,17 @@ $('#log-in').on('click tap', function() {
 
 $('#on-btn').on('click tap', function() {
 
-	var payload = encodeData([16128, 10000, 0, 16128, 10000, 0])
+	var payload = encodeData([16128, 13000, 8000, 16128, 13000, 8000])
 
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
-
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
 
 $('#off-btn').on('click tap', function() {
 
 	var payload = encodeData([0, 0, 0, 0, 0, 0])
-	
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
 
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
 
@@ -80,10 +53,12 @@ function particleLogin() {
 		$('#account-info').addClass('hidden')
 		$('#variables').removeClass('hidden')
 
-		}).catch( function(err) {
+		listDevices()
 
-			$('#account-info').removeClass('hidden')
-			$('#variables').addClass('hidden')
+	}).catch( function(err) {
+
+		$('#account-info').removeClass('hidden')
+		$('#variables').addClass('hidden')
 		// window.alert('Something went wrong')
 		console.log('Something went wrong')
 
@@ -91,29 +66,105 @@ function particleLogin() {
 
 }
 
+function listDevices() {
+
+	var devicesPr = particle.listDevices({ auth: token })
+
+	devicesPr.then(
+		function(devices){
+
+			console.log('Devices: ', devices);
+			particleDevices = devices.body
+
+			particleDevices.forEach(function(obj) {
+
+				console.log(obj)
+
+				var elem = document.createElement("li")
+				var label = document.createElement("label")
+
+				label.innerHTML = obj.name
+
+				elem.appendChild(label)
+
+				$(elem).attr("deviceId", obj.id)
+				$(elem).addClass('device')
+
+				if (selectedDevices.indexOf(obj.id) > -1) {
+
+					$(elem).addClass('selected')
+
+				}
+
+				var list = document.getElementById("devices")
+
+				list.appendChild(elem)
+
+			})
+
+		},
+
+		function(err) {
+			console.log('List devices call failed: ', err);
+		}
+		);
+}
+
+$('#devices').on('click tap', '.device', function() {
+
+	console.log(this)
+
+	$(this).toggleClass('selected')
+
+	if($(this).hasClass('selected')) {
+
+		selectedDevices.push($(this).attr('deviceId'))
+
+	} else {
+
+		var index = selectedDevices.indexOf($(this).attr('deviceId'))
+		selectedDevices.splice(index, 1)
+
+	}
+
+	localStorage.selectedDevices = JSON.stringify(selectedDevices)
+
+	console.log(selectedDevices)
+
+})
+
 
 $('#send').on('click tap', function() {
 
 	var payload = encodeData(getColorValues())
 
-	deviceId = $('#deviceid').val()
-	localStorage.setItem('deviceId', deviceId)
-
-	var fnPr = particle.callFunction({ deviceId: deviceId, name: 'lights', argument: payload, auth: token })
-
-	fnPr.then(
-
-		function(data) {
-
-			console.log('Function called succesfully:', data)
-
-		}, function(err) {
-
-			console.log('An error occurred:', err)
-
-		})
+	sendPayload(payload)
 
 })
+
+function sendPayload(payload) {
+
+	$('.selected').each(function() {
+
+		var thisDeviceId = $(this).attr('deviceId')
+
+		var fnPr = particle.callFunction({ deviceId: thisDeviceId, name: 'lights', argument: payload, auth: token })
+
+		fnPr.then(
+
+			function(data) {
+
+				console.log('Function called succesfully:', data)
+
+			}, function(err) {
+
+				console.log('An error occurred:', err)
+
+			})
+
+	})
+
+}
 
 $('#encode-data').on('click tap', function() {
 
@@ -202,3 +253,101 @@ function encodeData(colors) {
 	return payload
 
 }
+
+$('#encode-timer-data').on('click tap', function() {
+
+	var payload = encodeTimerData()
+	
+	console.log(payload)
+	console.log("Payload length", payload.length)
+
+})
+
+$('#send-timer-data').on('click tap', function() {
+
+	var payload = encodeTimerData()
+
+	sendPayload(payload)
+
+})
+
+function encodeTimerData() {
+
+	var payload = 't'
+
+	payload += String.fromCharCode(parseInt($('#timer-selector').val())  + 1)
+	payload += String.fromCharCode(parseInt($('#zero-point-selector').val()) + 1)
+
+	var zeroPointOffset = splitNumber(parseInt($('#zero-point-offset').val()), 3)
+	payload += String.fromCharCode(zeroPointOffset[0] + 1)
+	payload += String.fromCharCode(zeroPointOffset[1] + 1)
+	payload += String.fromCharCode(zeroPointOffset[2] + 1)
+
+	var interpolationTime = splitNumber(parseInt($('#timer-interpolation-time').val()), 3)
+	payload += String.fromCharCode(interpolationTime[0] + 1)
+	payload += String.fromCharCode(interpolationTime[1] + 1)
+	payload += String.fromCharCode(interpolationTime[2] + 1)
+
+	payload += String.fromCharCode(parseInt($('#mode').val()) + 1)
+
+	$('.timer-color').each(function(obj) { 
+		console.log($(this).val())
+		var colVal = splitNumber(parseInt($(this).val()), 2)
+		payload += String.fromCharCode(colVal[0] + 1)
+		payload += String.fromCharCode(colVal[1] + 1)
+
+	})
+
+	return payload
+
+}
+
+function splitNumber(numberToSplit, amountOfBytes){
+
+	var bytes = [];
+
+	for (var i = 0; i < amountOfBytes; i ++) {
+
+		bytes[i] = Math.floor(numberToSplit / Math.pow(127, (amountOfBytes - i - 1)))
+		numberToSplit -= bytes[i] * Math.pow(127, (amountOfBytes - i - 1))
+		// console.log(numberToSplit, bytes[i])
+
+	}
+
+	return bytes
+
+}
+
+$('#log-out').on('click tap', function() {
+
+	delete localStorage.accessToken
+
+	location.reload()
+
+})
+
+$('#get-variable').on('click tap', function() {
+
+	$('.selected').each(function() {
+
+		var thisDeviceId = $(this).attr('deviceId')
+
+		var fnPr = particle.getVariable({ deviceId: thisDeviceId, name: 'config', auth: token })
+
+		fnPr.then(
+
+			function(data) {
+
+				console.log('Function called succesfully:', data)
+
+				console.log(data.body.result, data.body.result.length)
+
+			}, function(err) {
+
+				console.log('An error occurred:', err)
+
+			})
+
+	})
+
+})

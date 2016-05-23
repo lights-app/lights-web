@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta initial-scale="1">
 
 	<title>Simple test page</title>
 
@@ -27,11 +28,15 @@
 	<div id="variables">
 		<h1>Logged in</h1>
 
+		<h2>Devices (tap to select)</h2>
+
+		<ul id="devices">
+			
+		</ul>
+
+		<h2>Advanced options</h2>
+
 		<ul>
-			<li>	
-				<label>Device ID</label>
-				<input id="deviceid"></input>
-			</li>
 			<li>	
 				<label>C0r</label>
 				<input id="c0r" class="color" value="16128"></input>
@@ -59,7 +64,7 @@
 			</li>
 			<li>
 				<label>Interpolation time</label>
-				<input id="interpolationtime" value="50"></input>
+				<input id="interpolationtime" value="7"></input>
 				<label>10ths of seconds (max 2.048.382)</label>
 			</li>
 		</ul>
@@ -71,6 +76,60 @@
 			<button class="wide-btn" id="on-btn">On</button>
 			<button class="wide-btn" id="off-btn">Off</button>
 		</div>
+
+		<ul>
+			<li>
+				<label>Timer selector</label>
+				<input id="timer-selector" value="0"></input>
+			</li>
+
+			<li>
+				<label>Zero point selector</label>
+				<input id="zero-point-selector" value="1"></input>
+			</li>
+
+			<li>
+				<label>Zero point offset</label>
+				<input id="zero-point-offset" value="0"></input>
+			</li>
+
+			<li>
+				<label>Interpolation time</label>
+				<input id="timer-interpolation-time" value="50"></input>
+			</li>
+
+			<li>
+				<label>Mode</label>
+				<input id="mode" value="2"></input>
+			</li>
+
+			<li>
+				<label>r</label>
+				<input id="timer-r" class="timer-color" value="16128"></input>
+			</li>
+
+			<li>
+				<label>g</label>
+				<input id="timer-g" class="timer-color" value="16128"></input>
+			</li>
+
+			<li>
+				<label>b</label>
+				<input id="timer-b" class="timer-color" value="16128"></input>
+			</li>
+
+			<button id="encode-timer-data">Encode timer data</button>
+			<button id="send-timer-data">Send timer data</button>
+
+		</ul>
+
+		<button id="get-variable">
+			Get Particle variable
+		</button>
+
+		<button id="log-out" class="wide-btn">
+			Log out
+		</button>
 
 	</div>
 
