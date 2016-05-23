@@ -2,10 +2,9 @@
 
 class SetupCompletePageView extends lrs.LRSView.views.PageView {
 	
+	get template() { return 'SetupCompletePage' }
+	
 	constructor(el, options) {
-
-		if (!options) options = {}
-		options.template = 'SetupCompletePage'
 
 		super(el, options)
 
