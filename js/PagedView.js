@@ -86,7 +86,7 @@ class PagedView extends lrs.LRSView {
 	animate(direction, inView, outView) {
 		
 		inView.show()
-		outView.hide()
+		if (outView) outView.hide()
 		
 		return Promise.resolve()
 		
