@@ -2,14 +2,13 @@
 
 class DevicesPageView extends lrs.LRSView.views.PageView {
 	
-	constructor(el, options) {
+	get template() { return 'DevicesPage' }
+	
+	constructor(args) {
 		
-		if (!options) options = {}
-		options.template = 'DevicesPage'
-		
-		super(el, options)
+		super(args)
 
-		var _this = this
+		var self = this
 
 		var lightsDevices = []
 
@@ -18,16 +17,12 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 		lights.app.particle.listDevices().then( function(response) {
 
 			for (let device of response.body) {
-
-				let _device = lights.Device.fromParticleDevice(device)
-
-				console.log(_device)
-
-				lightsDevices.push(_device)
+				
+				lightsDevices.push(lights.Device.fromParticleDevice(device))
 
 			}
 
-			_this.views.lightsDeviceList.reset(lightsDevices)
+			self.views.lightsDeviceList.reset(lightsDevices)
 
 		}).catch( function(err) {
 
@@ -44,7 +39,7 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 		// Clear the device list to prevent duplicate devices when user navigates back and forth
 		lights.app.devices = []
-
+		
 		var containsNonLightsDevices = false
 
 		for (let deviceView of this.views.lightsDeviceList.views.content) {

@@ -2,12 +2,11 @@
 
 class App extends lrs.LRSView {
 	
-	constructor(el, options) {
+	constructor({el, template, options = {}} = {}) {
 		
-		if (!options) options = {}
 		options.delayDomConnectionCreation = true
 		
-		super(el, options)
+		super({el, template, options})
 		
 		window.lights.app = this
 		

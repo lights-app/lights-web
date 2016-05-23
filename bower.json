@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "normalize-css": "normalize.css#~3.0.3",
-    "lars": "#develop",
+    "lars": "#release/1.2.0",
     "particle-api-js": "~5.2.6"
   }
 }

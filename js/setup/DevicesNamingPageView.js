@@ -2,12 +2,11 @@
 
 class DevicesNamingPageView extends lrs.LRSView.views.PageView {
 	
-	constructor(el, options) {
+	get template() { return 'DevicesNamingPage' }
+	
+	constructor(args) {
 		
-		if (!options) options = {}
-		options.template = 'DevicesNamingPage'
-		
-		super(el, options)
+		super(args)
 
 		this.views.lightsDeviceList.reset(lights.app.devices)
 		
@@ -17,6 +16,7 @@ class DevicesNamingPageView extends lrs.LRSView.views.PageView {
 	doneAction(view, el, e) {
 
 		console.log(this)
+		
 		this.owner.showView(new lrs.LRSView.views.SetupCompletePageView())
 
 	}
