@@ -9,18 +9,15 @@ class DevicesNamingPageView extends lrs.LRSView.views.PageView {
 		
 		super(el, options)
 
-		var _this = this
-
-		_this.views.lightsDeviceList.reset(lights.app.devices)
+		this.views.lightsDeviceList.reset(lights.app.devices)
 		
 		return this
 	}
 
 	doneAction(view, el, e) {
 
-		var _this = this
-
-		_this.owner.showView(new lrs.LRSView.views.SetupCompletePageView())
+		console.log(this)
+		this.owner.showView(new lrs.LRSView.views.SetupCompletePageView())
 
 	}
 

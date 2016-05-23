@@ -12,23 +12,16 @@ class RoomsOverviewView extends lrs.LRSView.views.PageView {
 	
 		super(el, options)
 		
-		var rooms = [
-			{
-				name: 'Room 1'
-			},
-			{
-				name: 'Room 2'
-			},
-			{
-				name: 'Room 3'
-			}
-		]
-		
-		this.views.roomList.reset(rooms)
+		this.views.roomList.reset(lights.app.rooms)
 		
 		return this
-		
 	
+	}
+
+	newRoomAction(view, el, e) {
+
+		this.owner.showView(new lrs.LRSView.views.NewRoomDevicesPageView())
+
 	}
 
 }

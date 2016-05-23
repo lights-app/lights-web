@@ -40,8 +40,10 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 	}
 
 	nextAction(view, el, e) {
+		console.log(view, el, e)
 
-		var _this = this
+		// Clear the device list to prevent duplicate devices when user navigates back and forth
+		lights.app.devices = []
 
 		var containsNonLightsDevices = false
 
@@ -58,6 +60,7 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 				}
 
 				lights.app.devices.push(deviceView.object)
+				console.log(lights.app.devices)
 
 			}
 
@@ -65,13 +68,15 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 		if (lights.app.devices.length > 0) {
 
+			lights.app.storage('devices', lights.app.devices)
+
 			if(containsNonLightsDevices) {
 
-				_this.owner.showView(new lrs.LRSView.views.DevicesReprogrammingPageView())
+				this.owner.showView(new lrs.LRSView.views.DevicesReprogrammingPageView())
 
 			} else {
 
-				_this.owner.showView(new lrs.LRSView.views.DevicesNamingPageView())
+				this.owner.showView(new lrs.LRSView.views.DevicesNamingPageView())
 
 			}
 

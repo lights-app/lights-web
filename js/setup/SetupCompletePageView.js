@@ -9,19 +9,20 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 
 		super(el, options)
 
-		var _this = this
-
-		setTimeout(_this.nextAction, 2000)
+		var self = this
+		setTimeout( function() {
+			self.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
+		}, 2000)
 
 		return this
 		
 	}
 
-	nextAction() {
+	nextAction(view, el, e) {
 
-		var _this = this
+		console.log(this)
 
-		_this.owner.showView(new lrs.LRSView.views.RoomsView())
+		this.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
 
 	}
 

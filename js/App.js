@@ -1,5 +1,5 @@
 'use strict';
-	
+
 class App extends lrs.LRSView {
 	
 	constructor(el, options) {
@@ -13,8 +13,27 @@ class App extends lrs.LRSView {
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 
-		this.devices = []
-			
+		this.devices = this.storage('devices') || []
+
+		this.particleDevices = this.storage('particleDevices') || []
+
+		this.rooms = this.storage('rooms') || []
+
+		this.roomIconList = [
+			{name: "Living Room",
+			icon: "static/img/icons/couch.svg"
+			},
+			{name: "Kitchen",
+			icon: "static/img/icons/kitchen.svg"
+			},
+			{name: "Living Room",
+			icon: "static/img/icons/couch.svg"
+			},
+			{name: "Kitchen",
+			icon: "static/img/icons/kitchen.svg"
+			}
+		]
+
 		this.particle = new ParticleWrapper({
 			baseUrl: 'https://api.particle.io',
 			clientSecret: 'particle-api',
@@ -42,6 +61,7 @@ class App extends lrs.LRSView {
 
 			setTimeout( function() {
 				console.log(self)
+				self.views.setup.hide()
 				self.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
 			}, 1)
 
