@@ -2,14 +2,16 @@
 
 class RoomIconListItemView extends lrs.LRSView.views.LRSListItemView {
 	
-	constructor(el, options) {
+	// constructor({el, options}) {
 
-		if (!options) options = {}
-		options.template = 'RoomIconListItem'
+	// 	if (!options) options = {}
+	// 	options.template = 'RoomIconListItem'
 
-		super(el, options)
+	// 	super(el, options)
 		
-	}
+	// }
+
+	get template() { return 'RoomIconListItem'}
 
 	get object() {
 

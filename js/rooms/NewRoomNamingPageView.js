@@ -8,13 +8,13 @@ class NewRoomNamingPageView extends lrs.LRSView.views.PageView {
 		
 	}
 
-	constructor(el, options, selectedDevices) {
+	constructor(args) {
 
-		super(el, options)
+		super(args)
 
-		console.log(selectedDevices)
+		console.log(args)
 
-		this.devices = selectedDevices
+		this.devices = args.selectedDevices
 
 		this.views.roomIconList.reset(lights.app.roomIconList)
 		
@@ -39,7 +39,7 @@ class NewRoomNamingPageView extends lrs.LRSView.views.PageView {
 		console.log(view)
 		console.log(newRoom)
 
-		this.owner.showView(new lrs.LRSView.views.NewRoomCompletionPageView(null, null, newRoom))
+		this.owner.showView(new lrs.LRSView.views.NewRoomCompletionPageView({newRoom}))
 
 	}
 

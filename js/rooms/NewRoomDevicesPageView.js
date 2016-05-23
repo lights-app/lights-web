@@ -38,7 +38,7 @@ class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
 
 		if (selectedDevices.length > 0) {
 
-			this.owner.showView(new lrs.LRSView.views.NewRoomNamingPageView(null, null, selectedDevices))
+			this.owner.showView(new lrs.LRSView.views.NewRoomNamingPageView({selectedDevices}))
 
 		} else {
 

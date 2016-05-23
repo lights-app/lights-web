@@ -8,11 +8,14 @@ class NewRoomCompletionPageView extends lrs.LRSView.views.PageView {
 		
 	}
 
-	constructor(el, options, room) {
+	constructor(args) {
 
-		super(el, options)
+		super(args)
 
-		this.room = room
+		console.log(args)
+		this.room = args.newRoom
+		console.log(this)
+		// this.room.name = room.name || "error"
 		
 		return this
 

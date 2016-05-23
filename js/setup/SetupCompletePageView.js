@@ -6,14 +6,14 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 	
 	constructor(args) {
 
-		var self = this
-		setTimeout( function() {
-			self.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
-		}, 2000)
-
 		super(args)
 
-		setTimeout(this.nextAction, 2000)
+		var self = this
+		
+		setTimeout( function() {
+			self.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
+			self.owner.owner.views.setup.hide()
+		}, 2000)
 
 		return this
 		
@@ -25,6 +25,7 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 
 		this.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
 		this.owner.showView(new lrs.LRSView.views.RoomsView())
+		this.owner.owner.views.setup.hide()
 
 	}
 
