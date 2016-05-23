@@ -4,9 +4,9 @@ class RoomsOverviewView extends lrs.LRSView.views.PageView {
 	
 	get template() { return 'RoomsOverview' }
 
-	constructor(el, options) {
+	constructor(args) {
 	
-		super(el, options)
+		super(args)
 		
 		var rooms = [
 			{

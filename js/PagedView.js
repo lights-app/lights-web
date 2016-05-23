@@ -2,9 +2,9 @@
 
 class PagedView extends lrs.LRSView {
 	
-	constructor(el, options) {
+	constructor(args) {
 		
-		super(el, options)
+		super(args)
 		
 		this.overlayEl = document.createElement('div')
 		this.overlayEl.classList.add('page-shadow-overlay')

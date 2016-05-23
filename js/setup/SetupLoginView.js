@@ -2,12 +2,11 @@
 
 class SetupLoginView extends lrs.LRSView.views.PageView {
 	
-	constructor(el, options) {
+	get template() { return 'SetupLogin' }
+	
+	constructor(args) {
 		
-		if (!options) options = {}
-		options.template = 'SetupLogin'
-		
-		super(el, options)
+		super(args)
 		
 		this.el.querySelector('form').addEventListener('submit', function(e) { e.preventDefault() })
 

@@ -2,14 +2,7 @@
 
 class DeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 	
-	constructor(el, options) {
-
-		if (!options) options = {}
-		options.template = 'DeviceListItem'
-
-		super(el, options)
-		
-	}
+	get template() { return 'DeviceListItem' }
 
 	get object() {
 

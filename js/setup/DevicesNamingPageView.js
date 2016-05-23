@@ -2,25 +2,20 @@
 
 class DevicesNamingPageView extends lrs.LRSView.views.PageView {
 	
-	constructor(el, options) {
+	get template() { return 'DevicesNamingPage' }
+	
+	constructor(args) {
 		
-		if (!options) options = {}
-		options.template = 'DevicesNamingPage'
-		
-		super(el, options)
+		super(args)
 
-		var _this = this
-
-		_this.views.lightsDeviceList.reset(lights.app.devices)
+		this.views.lightsDeviceList.reset(lights.app.devices)
 		
 		return this
 	}
 
 	doneAction(view, el, e) {
 
-		var _this = this
-
-		_this.owner.showView(new lrs.LRSView.views.SetupCompletePageView())
+		this.owner.showView(new lrs.LRSView.views.SetupCompletePageView())
 
 	}
 

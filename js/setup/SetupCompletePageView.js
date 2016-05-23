@@ -4,13 +4,11 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 	
 	get template() { return 'SetupCompletePage' }
 	
-	constructor(el, options) {
+	constructor(args) {
 
-		super(el, options)
+		super(args)
 
-		var _this = this
-
-		setTimeout(_this.nextAction, 2000)
+		setTimeout(this.nextAction, 2000)
 
 		return this
 		
@@ -18,9 +16,7 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 
 	nextAction() {
 
-		var _this = this
-
-		_this.owner.showView(new lrs.LRSView.views.RoomsView())
+		this.owner.showView(new lrs.LRSView.views.RoomsView())
 
 	}
 
