@@ -22,9 +22,11 @@ body
 
 	
 	script.templates(type='text/html')
+		include ./templates
 		include ./rooms
 		include ./setup
 
+		+templates
 		+roomTemplates
 		+setupTemplates
 	
