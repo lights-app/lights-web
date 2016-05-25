@@ -1,7 +1,20 @@
 // Colors
 @blue: rgb(100, 100, 255);
+@blue-raw: 100, 100, 255;
 @blue-0: rgb(21, 27, 40);
+@blue-0-raw: 21, 27, 40;
 @blue-1: rgb(39, 50, 74);
+@blue-1-raw: 39, 50, 74;
+@blue-2: rgb(59, 76, 112);
+@blue-2-raw: 59, 76, 112;
+@blue-3: rgb(197, 203, 217);
+@blue-3-raw: 197, 203, 217;
+
+.color-rgba(@color; @opacity) {
+
+	background-color: ~"rgba(@{color}, @{opacity})";
+
+}
 
 @green: rgb(60, 255, 114);
 
