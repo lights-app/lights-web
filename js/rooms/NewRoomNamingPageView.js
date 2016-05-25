@@ -1,6 +1,6 @@
 'use strict';
 
-class NewRoomNamingPageView extends lrs.LRSView.views.PageView {
+class NewRoomNamingPageView extends lrs.views.Page {
 	
 	get template() {
 		
@@ -39,7 +39,7 @@ class NewRoomNamingPageView extends lrs.LRSView.views.PageView {
 		console.log(view)
 		console.log(newRoom)
 
-		this.owner.showView(new lrs.LRSView.views.NewRoomCompletionPageView({newRoom}))
+		this.owner.showView(new lrs.views.NewRoomCompletionPage({newRoom}))
 
 	}
 
@@ -51,4 +51,4 @@ class NewRoomNamingPageView extends lrs.LRSView.views.PageView {
 
 }
 
-window.lrs.LRSView.views.NewRoomNamingPageView = NewRoomNamingPageView
+lrs.View.register(NewRoomNamingPageView)

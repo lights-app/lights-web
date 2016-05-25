@@ -1,6 +1,6 @@
 'use strict';
 
-class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
+class NewRoomDevicesPageView extends lrs.views.Page {
 	
 	get template() {
 		
@@ -14,7 +14,6 @@ class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
 
 		console.log(this)
 
-		// Populate the lightsDevicesList with all devices coupled to the user's account
 		this.views.lightsDeviceList.reset(lights.app.devices)
 		
 		return this
@@ -29,7 +28,6 @@ class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
 
 			if (deviceView.selected) {
 
-				// If the device has been selected by the user, put it in the temporary "selectedDevices" array
 				selectedDevices.push(deviceView.object)
 
 			}
@@ -38,27 +36,18 @@ class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
 
 		console.log(selectedDevices)
 
-		// Check if the user has selected at least one device
 		if (selectedDevices.length > 0) {
 
-			// If so, navigate to the NewRoomNamingPage and send the selectedDevices array as an argument
-			this.owner.showView(new lrs.LRSView.views.NewRoomNamingPageView({selectedDevices}))
+			this.owner.showView(new lrs.views.NewRoomNamingPage({selectedDevices}))
 
 		} else {
 
-			// Warn the user, visual feedback needed
 			console.log("No devices selected")
 
 		}
 
 	}
 
-	closeAction() {
-
-		this.owner.showView(this.owner.views.content[0])
-		
-	}
-
 }
 
-window.lrs.LRSView.views.NewRoomDevicesPageView = NewRoomDevicesPageView
+lrs.View.register(NewRoomDevicesPageView)

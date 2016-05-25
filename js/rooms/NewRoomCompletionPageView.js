@@ -1,6 +1,6 @@
 'use strict';
 
-class NewRoomCompletionPageView extends lrs.LRSView.views.PageView {
+class NewRoomCompletionPageView extends lrs.views.Page {
 	
 	get template() {
 		
@@ -68,4 +68,4 @@ class NewRoomCompletionPageView extends lrs.LRSView.views.PageView {
 
 }
 
-window.lrs.LRSView.views.NewRoomCompletionPageView = NewRoomCompletionPageView
+lrs.View.register(NewRoomCompletionPageView)

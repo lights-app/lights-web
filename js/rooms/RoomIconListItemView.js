@@ -1,6 +1,6 @@
 'use strict';
 
-class RoomIconListItemView extends lrs.LRSView.views.LRSListItemView {
+class RoomIconListItemView extends lrs.views.ListItem {
 	
 	// constructor({el, options}) {
 
@@ -58,4 +58,4 @@ class RoomIconListItemView extends lrs.LRSView.views.LRSListItemView {
 
 }
 
-window.lrs.LRSView.views.RoomIconListItemView = RoomIconListItemView
+lrs.View.register(RoomIconListItemView)

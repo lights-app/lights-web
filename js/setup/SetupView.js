@@ -1,13 +1,13 @@
 'use strict';
 
-class SetupView extends lrs.LRSView.views.PagedView {
+class SetupView extends lrs.views.Paged {
 	
 	startAction() {
 
-		this.showView(new lrs.LRSView.views.SetupLoginView())
+		this.showView(new lrs.views.SetupLogin())
 		
 	}
 	
 }
 
-window.lrs.LRSView.views.SetupView = SetupView
+lrs.View.register(SetupView)

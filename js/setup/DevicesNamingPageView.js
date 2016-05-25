@@ -1,6 +1,6 @@
 'use strict';
 
-class DevicesNamingPageView extends lrs.LRSView.views.PageView {
+class DevicesNamingPageView extends lrs.views.Page {
 	
 	get template() { return 'DevicesNamingPage' }
 	
@@ -17,10 +17,10 @@ class DevicesNamingPageView extends lrs.LRSView.views.PageView {
 
 		console.log(this)
 		
-		this.owner.showView(new lrs.LRSView.views.SetupCompletePageView())
+		this.owner.showView(new lrs.views.SetupCompletePage())
 
 	}
 
 }
 
-window.lrs.LRSView.views.DevicesNamingPageView = DevicesNamingPageView
+lrs.View.register(DevicesNamingPageView)

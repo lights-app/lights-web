@@ -1,6 +1,6 @@
 'use strict';
 
-class PagedView extends lrs.LRSView {
+class PagedView extends lrs.View {
 	
 	constructor(args) {
 		
@@ -106,7 +106,7 @@ class PagedView extends lrs.LRSView {
 	
 }
 
-class PageView extends lrs.LRSView {
+class PageView extends lrs.View {
 	
 	updateBackButton(title) {
 		
@@ -148,5 +148,5 @@ class PageView extends lrs.LRSView {
 
 }
 
-window.lrs.LRSView.views.PagedView = PagedView
-window.lrs.LRSView.views.PageView = PageView
+lrs.View.register(PagedView)
+lrs.View.register(PageView)

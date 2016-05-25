@@ -1,6 +1,6 @@
 'use strict';
 
-class SetupCompletePageView extends lrs.LRSView.views.PageView {
+class SetupCompletePageView extends lrs.views.Page {
 	
 	get template() { return 'SetupCompletePage' }
 	
@@ -11,7 +11,7 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 		var self = this
 		
 		setTimeout( function() {
-			self.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
+			self.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
 			self.owner.owner.views.setup.hide()
 		}, 2000)
 
@@ -23,12 +23,12 @@ class SetupCompletePageView extends lrs.LRSView.views.PageView {
 
 		console.log(this)
 
-		this.owner.owner.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
-		this.owner.showView(new lrs.LRSView.views.RoomsView())
+		this.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
+		this.owner.showView(new lrs.views.Rooms())
 		this.owner.owner.views.setup.hide()
 
 	}
 
 }
 
-window.lrs.LRSView.views.SetupCompletePageView = SetupCompletePageView
+lrs.View.register(SetupCompletePageView)

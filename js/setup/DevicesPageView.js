@@ -1,6 +1,6 @@
 'use strict';
 
-class DevicesPageView extends lrs.LRSView.views.PageView {
+class DevicesPageView extends lrs.views.Page {
 	
 	get template() { return 'DevicesPage' }
 	
@@ -67,11 +67,11 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 			if(containsNonLightsDevices) {
 
-				this.owner.showView(new lrs.LRSView.views.DevicesReprogrammingPageView())
+				this.owner.showView(new lrs.views.DevicesReprogrammingPage())
 
 			} else {
 
-				this.owner.showView(new lrs.LRSView.views.DevicesNamingPageView())
+				this.owner.showView(new lrs.views.DevicesNamingPage())
 
 			}
 
@@ -85,4 +85,4 @@ class DevicesPageView extends lrs.LRSView.views.PageView {
 
 }
 
-window.lrs.LRSView.views.DevicesPageView = DevicesPageView
+lrs.View.register(DevicesPageView)

@@ -1,6 +1,6 @@
 'use strict';
 
-class SetupLoginView extends lrs.LRSView.views.PageView {
+class SetupLoginView extends lrs.views.Page {
 	
 	get template() { return 'SetupLogin' }
 	
@@ -22,7 +22,7 @@ class SetupLoginView extends lrs.LRSView.views.PageView {
 		
 		lights.app.particle.login({username: this.username, password: this.password}).then( function(response) {
 			
-			_this.owner.showView(new lrs.LRSView.views.DevicesPageView())
+			_this.owner.showView(new lrs.views.DevicesPage())
 			
 		}).catch( function(err) {
 			
@@ -36,4 +36,4 @@ class SetupLoginView extends lrs.LRSView.views.PageView {
 
 }
 
-window.lrs.LRSView.views.SetupLoginView = SetupLoginView
+lrs.View.register(SetupLoginView)
