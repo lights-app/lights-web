@@ -43,6 +43,12 @@ class NewRoomNamingPageView extends lrs.LRSView.views.PageView {
 
 	}
 
+	closeAction() {
+
+		this.owner.showView(this.owner.views.content[0])
+		
+	}
+
 }
 
 window.lrs.LRSView.views.NewRoomNamingPageView = NewRoomNamingPageView

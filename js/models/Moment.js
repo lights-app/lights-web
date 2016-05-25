@@ -9,8 +9,6 @@ class Moment extends lrs.LRSObject {
 		this.name = name
 
 		this.devices = devices
-
-		this.moments = []
 		
 	}
 
