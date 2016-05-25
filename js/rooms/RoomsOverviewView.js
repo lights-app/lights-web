@@ -1,6 +1,6 @@
 'use strict';
 
-class RoomsOverviewView extends lrs.LRSView.views.PageView {
+class RoomsOverviewView extends lrs.views.Page {
 	
 	get template() {
 		
@@ -20,10 +20,10 @@ class RoomsOverviewView extends lrs.LRSView.views.PageView {
 
 	newRoomAction(view, el, e) {
 
-		this.owner.showView(new lrs.LRSView.views.NewRoomDevicesPageView())
+		this.owner.showView(new lrs.views.NewRoomDevicesPage())
 
 	}
 
 }
 
-window.lrs.LRSView.views.RoomsOverviewView = RoomsOverviewView
+lrs.View.register(RoomsOverviewView)

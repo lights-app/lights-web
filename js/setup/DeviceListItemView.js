@@ -1,6 +1,6 @@
 'use strict';
 
-class DeviceListItemView extends lrs.LRSView.views.LRSListItemView {
+class DeviceListItemView extends lrs.views.ListItem {
 	
 	get template() { return 'DeviceListItem' }
 
@@ -40,4 +40,4 @@ class DeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 
 }
 
-window.lrs.LRSView.views.DeviceListItemView = DeviceListItemView
+lrs.View.register(DeviceListItemView)

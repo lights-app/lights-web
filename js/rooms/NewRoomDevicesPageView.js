@@ -1,6 +1,6 @@
 'use strict';
 
-class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
+class NewRoomDevicesPageView extends lrs.views.Page {
 	
 	get template() {
 		
@@ -38,7 +38,7 @@ class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
 
 		if (selectedDevices.length > 0) {
 
-			this.owner.showView(new lrs.LRSView.views.NewRoomNamingPageView({selectedDevices}))
+			this.owner.showView(new lrs.views.NewRoomNamingPage({selectedDevices}))
 
 		} else {
 
@@ -50,4 +50,4 @@ class NewRoomDevicesPageView extends lrs.LRSView.views.PageView {
 
 }
 
-window.lrs.LRSView.views.NewRoomDevicesPageView = NewRoomDevicesPageView
+lrs.View.register(NewRoomDevicesPageView)

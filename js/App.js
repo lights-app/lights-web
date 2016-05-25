@@ -1,6 +1,6 @@
 'use strict';
 
-class App extends lrs.LRSView {
+class App extends lrs.View {
 	
 	constructor({el, template, options = {}} = {}) {
 		
@@ -61,7 +61,7 @@ class App extends lrs.LRSView {
 			setTimeout( function() {
 				console.log(self)
 				self.views.setup.hide()
-				self.views.rooms.showView(new lrs.LRSView.views.RoomsOverviewView())
+				self.views.rooms.showView(new lrs.views.RoomsOverview())
 			}, 1)
 
 		}

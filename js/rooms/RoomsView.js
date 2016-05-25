@@ -1,7 +1,7 @@
 'use strict';
 
-class RoomsView extends lrs.LRSView.views.PagedView {
+class RoomsView extends lrs.views.Paged {
 
 }
 
-window.lrs.LRSView.views.RoomsView = RoomsView
+lrs.View.register(RoomsView)

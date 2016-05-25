@@ -7,7 +7,7 @@ mixin roomTemplates
 			h1(data-outlet='title') Lights
 			button.add-room-btn(data-action='click:newRoom()') +
 		section.page-content
-			ul(data-view='LRSList:roomList:RoomListItem')
+			ul(data-view='List:roomList:RoomListItem')
 
 	section.new-room-device-list-page(data-template='NewRoomDevicesPage')
 		header.toolbar
@@ -17,7 +17,7 @@ mixin roomTemplates
 		section.page-content
 			h1 Select the lights you want to use in this room
 			p Selected lights that are online will start to pulse
-			ul.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
+			ul.device-list(data-view='List:lightsDeviceList:DeviceListItem')
 			button(data-action='click:next()') Next
 
 	section.new-room-naming-page(data-template='NewRoomNamingPage')
@@ -27,7 +27,7 @@ mixin roomTemplates
 			button.close-new-room-btn(data-action='click:close()') X
 		section.page-content
 			h1 Give this room a name and an icon
-			ul.room-icon-list(data-view='LRSList:roomIconList:RoomIconListItem')
+			ul.room-icon-list(data-view='List:roomIconList:RoomIconListItem')
 			button(data-action='click:next()') Next
 
 	section.new-room-completion-page(data-template='NewRoomCompletionPage')
@@ -47,7 +47,7 @@ mixin roomTemplates
 			button.close-new-room-btn(data-action='click:close()') X
 		section.page-content
 			h1 Give this room a name and an icon
-			ul.room-icon-list(data-view='LRSList:roomIconList:RoomIconListItem')
+			ul.room-icon-list(data-view='List:roomIconList:RoomIconListItem')
 			button(data-action='click:next()') Next
 
 	li.room-list-item(data-template='RoomListItem')
