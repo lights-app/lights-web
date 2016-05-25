@@ -7,7 +7,7 @@ mixin roomTemplates
 			h1(data-outlet='title') Lights
 			button.add-room-btn(data-action='click:newRoom()') +
 		section.page-content
-			ul(data-view='List:roomList:RoomListItem')
+			ul(data-view='LRSList:roomList:RoomListItem')
 
 	section.new-room-device-list-page(data-template='NewRoomDevicesPage')
 		header.toolbar
@@ -17,7 +17,7 @@ mixin roomTemplates
 		section.page-content
 			h1 Select the lights you want to use in this room
 			p Selected lights that are online will start to pulse
-			ul.device-list(data-view='List:lightsDeviceList:DeviceListItem')
+			ul.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
 			button(data-action='click:next()') Next
 
 	section.new-room-naming-page(data-template='NewRoomNamingPage')
@@ -27,7 +27,7 @@ mixin roomTemplates
 			button.close-new-room-btn(data-action='click:close()') X
 		section.page-content
 			h1 Give this room a name and an icon
-			ul.room-icon-list(data-view='List:roomIconList:RoomIconListItem')
+			ul.room-icon-list(data-view='LRSList:roomIconList:RoomIconListItem')
 			button(data-action='click:next()') Next
 
 	section.new-room-completion-page(data-template='NewRoomCompletionPage')
@@ -38,32 +38,51 @@ mixin roomTemplates
 		section.page-content
 			h1 Add new moment?
 			button(data-action='click:skip()') Skip
-			button(data-action='click:skip()') New moment
+			button(data-action='click:newMoment()') New moment
 
 	section.new-moment-page(data-template='NewMomentPage')
 		header.toolbar
 			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			h1(data-outlet='title') New room
+			h1(data-outlet='title') New moment
 			button.close-new-room-btn(data-action='click:close()') X
 		section.page-content
-			h1 Give this room a name and an icon
-			ul.room-icon-list(data-view='List:roomIconList:RoomIconListItem')
+			h1 Configure your lights 
+			p Select the lights you want to use and which color they should be.
+			ul.new-moment-device-list(data-view='LRSList:momentDeviceList:MomentDeviceListItem')
 			button(data-action='click:next()') Next
 
+	section.new-moment-naming-page(data-template='NewMomentNamingPage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') New moment
+			button.close-new-room-btn(data-action='click:close()') X
+		section.page-content
+			h1 Name this moment
+			input(placeholder='My moment' type='text' data-outlet='momentName')
+			button(data-action='click:done()') Done
+
 	li.room-list-item(data-template='RoomListItem')
-		h3
-			span(data-outlet='name')
+		.horizontal-container
+			.room-data
+				span(data-outlet='name')
+				ul.moment-list(data-view='LRSList:momentList:MomentListItem')
+					li.moment-list-item.add-moment-btn(data-action='click:addMoment()')
+						span +
 			img.room-icon(data-outlet='icon')
+		.lights-config
+
+	li.moment-list-item(data-template='MomentListItem' data-action='click:select()')
+		span(data-outlet='name')
 			
 	div.room(data-template='Room')
 		h1(data-outlet='name')
 
-	li.device-list-item(data-template='DeviceListItem' data-action='click:toggle()')
-		h3
-			span(data-outlet='name')
-			span.lights-device-icon
-			span.status
-
 	li.room-icon-list-item(data-template='RoomIconListItem' data-action='click:toggle()')
 		img(data-outlet='icon')
 		input(data-outlet='name')
+
+	li.moment-device-list-item(data-template='MomentDeviceListItem' data-action='click:toggle()')
+		.toggle(data-view='Toggle:toggle')
+		span(data-outlet='name')
+		.expand-arrow
+		

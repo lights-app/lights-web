@@ -1,6 +1,6 @@
 'use strict';
 
-class RoomListItemView extends lrs.LRSView.views.LRSListItemView {
+class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 	get template() { return 'RoomListItem'}
 
@@ -16,6 +16,7 @@ class RoomListItemView extends lrs.LRSView.views.LRSListItemView {
 
 		this.name = this.object.name
 		this.icon = this.object.icon
+		console.log(this)
 		this.views.momentList.reset(this.object.moments)
 		console.log(this.object.moments)
 

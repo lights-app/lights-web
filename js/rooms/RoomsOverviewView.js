@@ -11,6 +11,8 @@ class RoomsOverviewView extends lrs.views.Page {
 	constructor(el, options) {
 	
 		super(el, options)
+
+		console.log(this)
 		
 		this.views.roomList.reset(lights.app.rooms)
 		

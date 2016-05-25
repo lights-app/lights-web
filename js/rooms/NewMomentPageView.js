@@ -1,6 +1,6 @@
 'use strict';
 
-class NewMomentPageView extends lrs.LRSView.views.PageView {
+class NewMomentPageView extends lrs.views.Page {
 	
 	get template() {
 		
