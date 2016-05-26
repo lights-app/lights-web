@@ -20,6 +20,7 @@
 
 		// background-color: rgba(@blue-1-raw, 0.2);
 		.color-rgba(@blue-1-raw, 0.2);
+		background-color: @rgba;
 
 	}
 
@@ -31,7 +32,7 @@
 	padding: 10px;
 	display: flex;
 	justify-content: space-between;
-	height: 100px;
+	// height: 100px;
 
 }
 
@@ -49,15 +50,54 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	position: relative;
+
+	max-width: ~"calc(100% - @{room-icon-width})";
+
+	span {
+
+		margin-bottom: 20px;
+	}
+
+	&::after{
+
+		display: block;
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+		width: 100px;
+
+		// .color-rgba always returns the requested value as @rgba, but also a @rgba0 and @rgba1 at 0 and 1 opacity respectively
+		.color-rgba(@blue-0-raw, 0);
+		@from: @rgba0;
+		@to: @rgba1;
+
+		background-color: @rgba;
+		// box-shadow: inset -10px 0 10px @blue-0;
+		background: linear-gradient(to right, @from 0%, @to 100%);
+
+		&:hover {
+
+			background: linear-gradient(to right, rgba(21,27,40,0) 0%,rgba(21,27,40,1) 100%);
+
+		}
+	}
+
 
 }
 
 .moment-list {
 
 	display: flex;
+	position: relative;
 	flex-wrap: no-wrap;
+	max-width: 100%;
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
 
-	max-width: ~"calc(100% - @{room-icon-width})";
 	width: 100%;
 
 	transition: all 0.2s ease;
@@ -65,12 +105,15 @@
 	.moment-list-item {
 
 		padding: 5px 15px;
-		margin: 0 10px 0 0;
+		margin: 0 10px 10px 0;
+
+		z-index: -1;
 
 		background-color: @blue-1;
 
 		font-size: @root-font-size;
 		font-weight: 400;
+		white-space: nowrap;
 
 		line-height: 14px;
 		border: 1px solid @blue-3;

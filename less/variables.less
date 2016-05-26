@@ -12,7 +12,10 @@
 
 .color-rgba(@color; @opacity) {
 
-	background-color: ~"rgba(@{color}, @{opacity})";
+	// background-color: ~"rgba(@{color}, @{opacity})";
+	@rgba: ~"rgba(@{color}, @{opacity})";
+	@rgba0: ~"rgba(@{color}, 0)";
+	@rgba1: ~"rgba(@{color}, 1)";
 
 }
 
