@@ -8,6 +8,7 @@ var concat = require('gulp-concat')
 var sourcemaps = require('gulp-sourcemaps')
 var gls = require('gulp-live-server')
 var babel = require('gulp-babel')
+var autoprefixer = require('gulp-autoprefixer')
 var server
 
 gulp.task('jade', function() {
@@ -73,6 +74,7 @@ gulp.task('less', function() {
 		}))
 		
 		.pipe(less())
+		.pipe(autoprefixer('last 10 versions', 'ie 9'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./build/static/css'))
 
