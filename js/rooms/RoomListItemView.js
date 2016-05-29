@@ -22,31 +22,10 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 	}
 
-	toggleAction() {
+	openColorWheelAction(view, el, e) {
 
-		var self = this
-
-		this.selected = !this.selected
-
-		console.log(this)
-
-		for (let icon of this.owner.views.content) {
-
-			if (icon !== self) {
-
-				icon.classList.remove('selected') 
-				icon.selected = false
-
-			} else {
-
-				icon.classList.add('selected')
-				icon.selected = true
-
-			}
-
-		}
-
-		// this.classList.add('selected')
+		console.log(this, el, e)
+		this.owner.owner.owner.showView(new lrs.views.ColorWheel({room: this.object}))
 
 	}
 

@@ -25,7 +25,7 @@ $('#log-in').on('click tap', function() {
 
 $('#on-btn').on('click tap', function() {
 
-	var payload = encodeData([16128, 13000, 8000, 16128, 13000, 8000])
+	var payload = encodeData([16128, 12537, 3087, 16128, 12537, 3087])
 
 	sendPayload(payload)
 

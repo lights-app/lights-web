@@ -61,7 +61,7 @@ mixin roomTemplates
 			input(placeholder='My moment' type='text' data-outlet='momentName')
 			button(data-action='click:done()') Done
 
-	li.room-list-item(data-template='RoomListItem')
+	li.room-list-item(data-template='RoomListItem' data-action='click:openColorWheel()')
 		.horizontal-container
 			.room-data
 				span(data-outlet='name')

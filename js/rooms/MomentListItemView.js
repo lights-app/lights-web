@@ -32,6 +32,7 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 	selectAction() {
 
 		var self = this
+		console.log(this)
 
 		this.selected = !this.selected
 
