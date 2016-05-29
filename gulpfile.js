@@ -74,7 +74,12 @@ gulp.task('less', function() {
 		}))
 		
 		.pipe(less())
-		.pipe(autoprefixer('last 10 versions', 'ie 9'))
+		.pipe(autoprefixer({
+			options: {
+				browsers: ['last 2 versions', 'chrome', 'safari', 'ios']
+			}
+			
+		}))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./build/static/css'))
 
