@@ -161,6 +161,19 @@
 
 }
 
+.color-wheel-bg-scrim {
+
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 10000px;
+	opacity: 0;
+
+}
+
 .color-wheel-arm {
 
 	position: relative;
@@ -168,7 +181,18 @@
 	width: 100%;
 	margin-top: 50%;
 
-	// background-color: black;
+	background-color: black;
+
+}
+
+.color-wheel-slide-arm {
+
+	position: relative;
+	height: 1px;
+	width: 50%;
+	margin-top: 50%;
+
+	background-color: white;
 
 }
 
@@ -177,15 +201,18 @@
 	@color-wheel-picker-diam: 60px;
 
 	position: absolute;
+	display: block;
 
 	width: @color-wheel-picker-diam;
 	height: @color-wheel-picker-diam;
-	left: ~"calc(50% - (@{color-wheel-picker-diam} / 2))";
+	left: ~"calc(100% - (@{color-wheel-picker-diam} / 2))";
 	top: -(@color-wheel-picker-diam / 2);
 	background-color: white;
 	border-radius: 1000px;
 
 	user-select: none;
+
+	z-index: 10;
 
 	&::after {
 

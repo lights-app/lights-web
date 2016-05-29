@@ -8,8 +8,6 @@ class CheckmarkView extends lrs.LRSView {
 
 		super(args)
 
-		console.log(this.el.dataset)
-
 		if (this.el.dataset.checked == "true") {
 
 			this.toggleAction()
@@ -25,8 +23,6 @@ class CheckmarkView extends lrs.LRSView {
 		var self = this
 
 		this.checked = !this.checked
-
-		console.log(this)
 
 		this.classList.toggle('checked', this.checked)
 

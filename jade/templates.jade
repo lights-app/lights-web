@@ -23,8 +23,10 @@ mixin templates
 					.brightness-slider-arm(data-view='brightnessSliderArm')
 						.brightness-slider(data-action='mousedown:brightnessTouchstart()')
 					.color-wheel-bg(data-view='colorWheelBg' data-action='mousedown:colorWheelTouchstart()')
+						.color-wheel-bg-scrim(data-view='colorWheelBgScrim')
 						.color-wheel-arm(data-view='colorWheelArm')
-							.color-wheel-picker(data-view='colorWheelPicker')
+							.color-wheel-slide-arm(data-view='colorWheelSlideArm')
+								.color-wheel-picker(data-view='colorWheelPicker')
 
 			.bottom-container
 				.favourite-colors-container
