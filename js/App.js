@@ -134,7 +134,7 @@ class App extends lrs.View {
 	        case 4: r = t, g = p, b = v; break;
 	        case 5: r = v, g = p, b = q; break;
 	    }
-	    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
+	    return [(r * 255), (g * 255), (b * 255)]
 	}
 
 	RGBtoHSV(r, g, b) {
@@ -164,13 +164,14 @@ class App extends lrs.View {
 		for (var i = 0; i < amountOfBytes; i++) {
 
 			result[i] = Math.floor(number / Math.pow(127, (amountOfBytes - 1) - i))
+
 			number -= result[i] * Math.pow(127, (amountOfBytes - 1) - i)
 
 			// Add 1 if we can't send zero
 			if(nonZero){ result[i]++ }
-				console.log(result[i])
-
 		}
+
+		return result
 
 	}
 	

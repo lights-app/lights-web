@@ -187,8 +187,11 @@ class ColorWheelView extends lrs.views.Page {
 	}
 
 	setColorWheelPickerColor() {
-
-		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['background-color'] = "rgb(" + this.rgb[0] + ", " + this.rgb[1] + ", " + this.rgb[2] + ")"
+		// console.log(this.rgb)
+		var r = Math.round(this.rgb[0])
+		var g = Math.round(this.rgb[1])
+		var b = Math.round(this.rgb[2])
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['background-color'] = "rgb(" + r + ", " + g + ", " + b + ")"
 
 	}
 
@@ -244,7 +247,23 @@ class ColorWheelView extends lrs.views.Page {
 
 	sendData() {
 
+		var self = this
+
 		console.log(this)
+
+		for (let device of this.views.roomDeviceList.views.content) {
+
+			if(device.views.checkmark.checked) {
+
+				console.log(device)
+
+				var lightsDevice = lights.Device.fromParticleDevice(device)
+
+				lightsDevice.encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
+
+			}
+
+		}
 
 	}
 

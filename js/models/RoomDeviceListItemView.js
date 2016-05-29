@@ -21,8 +21,7 @@ class RoomDeviceListItemView extends lrs.views.ListItem {
 
 	toggleAction() {
 
-		// Toggle checkmark. Causes action to be fired twice. For this element and for checkmark element
-		// this.views.checkmark.toggleAction()
+		
 
 	}
 

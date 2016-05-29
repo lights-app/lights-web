@@ -20,8 +20,6 @@ class CheckmarkView extends lrs.LRSView {
 
 	toggleAction() {
 
-		var self = this
-
 		this.checked = !this.checked
 
 		this.classList.toggle('checked', this.checked)
