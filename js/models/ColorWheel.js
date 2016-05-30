@@ -52,6 +52,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		var self = this
 
+		this.disableTransitions()
+
 		this.mouseStart = [0, 0]
 
 		// Send data right now, and every 500ms
@@ -71,13 +73,18 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
-		document.addEventListener('mouseup', function(e){
+		document.addEventListener('mouseup', self._mouseUp = function(e){
 
 			document.removeEventListener('mousemove', self._mouseMove)
 			self._mouseMove = undefined
 			clearInterval(self._dataSendInterval)
 			// Send latest value
 			self.sendData()
+
+			self.enableTransitions()
+
+			// Remove this event listener
+			document.removeEventListener('mouseup', self._mouseUp)
 
 		})
 
@@ -94,7 +101,7 @@ class ColorWheelView extends lrs.views.Page {
 		var angle = (value * this.brightnessSliderRange) + this.brightnessSliderAngleOffset
 
 		this.views.brightnessSliderArm.el.style["transform"] = "rotate3d(0, 0, 1, " + angle + "deg)"
-
+		
 		this.setColorWheelBrightness()
 
 	}
@@ -102,6 +109,8 @@ class ColorWheelView extends lrs.views.Page {
 	colorWheelTouchstartAction(view, el, e) {
 
 		var self = this
+
+		this.disableTransitions()
 
 		// Send data right now, and every 500ms
 		this.sendData()
@@ -125,7 +134,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
-		document.addEventListener('mouseup', function(e){
+		document.addEventListener('mouseup', self._mouseUp = function(e){
 
 			document.removeEventListener('mousemove', self._mouseMove)
 			self._mouseMove = undefined
@@ -134,6 +143,11 @@ class ColorWheelView extends lrs.views.Page {
 			self.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.remove('active')
 			// Send latest value
 			self.sendData()
+
+			self.enableTransitions()
+
+			// Remove this event listener
+			document.removeEventListener('mouseup', self._mouseUp)
 
 		})
 
@@ -210,6 +224,26 @@ class ColorWheelView extends lrs.views.Page {
 
 		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['opacity'] = 1 - this.hsv[2]
 		this.setColorWheelPickerColor()
+
+	}
+
+	disableTransitions() {
+
+		this.views.brightnessSliderArm.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['transition'] = 'all 0s'
+
+	}
+
+	enableTransitions() {
+
+		this.views.brightnessSliderArm.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['transition'] = ''
 
 	}
 

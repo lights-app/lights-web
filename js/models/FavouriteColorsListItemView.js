@@ -39,6 +39,14 @@ class FavouriteColorsListItemView extends lrs.views.ListItem {
 
 				color.classList.add('selected')
 				color.selected = true
+				var hsv = lights.app.RGBtoHSV(this.object[0], this.object[1], this.object[2])
+				console.log(this.object)
+				console.log(hsv)
+				this.owner.owner.setColorWheelPickerPosition(hsv[0] * 360, hsv[1])
+				this.owner.owner.setBrightnessSlider(hsv[2])
+				this.owner.owner.sendData()
+
+				console.log(this)
 
 			}
 
