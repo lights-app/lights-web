@@ -169,6 +169,13 @@ class ColorWheelView extends lrs.views.Page {
 
 		}
 
+		// Snap to center
+		if(radius <= 0.1) {
+
+			radius = 0
+
+		}
+
 		// Since CSS uses positive numbers for clockwise turns, we have to flip the angle
 		this.views.colorWheelBg.views.colorWheelArm.el.style["transform"] = "rotate3d(0, 0, 1, " + -angle + "deg)"
 
