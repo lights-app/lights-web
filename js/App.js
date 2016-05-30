@@ -12,7 +12,18 @@ class App extends lrs.View {
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 
-		this.devices = this.storage('devices') || []
+		// Load devices stored in localStorage to a temporary variable
+		this._devices = this.storage('devices') || []
+		this.devices = {}
+
+		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
+		for (let key in this._devices) {
+			
+			console.log(key)
+
+			this.devices[key] = lights.Device.fromParticleDevice(this._devices[key])
+
+		}
 
 		this.particleDevices = this.storage('particleDevices') || []
 
@@ -114,6 +125,12 @@ class App extends lrs.View {
 		
 		window.localStorage.user = user
 		
+	}
+
+	getDevice(id) {
+
+
+
 	}
 
 	HSVtoRGB(h, s, v) {

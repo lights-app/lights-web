@@ -76,6 +76,8 @@ class ColorWheelView extends lrs.views.Page {
 			document.removeEventListener('mousemove', self._mouseMove)
 			self._mouseMove = undefined
 			clearInterval(self._dataSendInterval)
+			// Send latest value
+			self.sendData()
 
 		})
 
@@ -130,6 +132,8 @@ class ColorWheelView extends lrs.views.Page {
 			clearInterval(self._dataSendInterval)
 			// Remove class when user is done using the color picker
 			self.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.remove('active')
+			// Send latest value
+			self.sendData()
 
 		})
 
@@ -264,10 +268,10 @@ class ColorWheelView extends lrs.views.Page {
 
 				console.log(device)
 
-				var lightsDevice = lights.Device.fromParticleDevice(device)
-				console.log(lightsDevice)
+				// var lightsDevice = lights.app.devices[devices.id]
+				console.log(device.object.id)
 
-				lightsDevice.encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
+				lights.app.devices[device.object.id].encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
 
 			}
 
@@ -278,6 +282,18 @@ class ColorWheelView extends lrs.views.Page {
 	onOffClickAction() {
 
 		console.log("onoff")
+
+	}
+
+	addFavouriteColorAction() {
+
+		var color = [Math.round(this.rgb[0]), Math.round(this.rgb[1]), Math.round(this.rgb[2])]
+
+		console.log(color)
+
+		lights.app.favouriteColors.push(color)
+		lights.app.storage('favouriteColors', lights.app.favouriteColors)
+		this.views.favouriteColorsList.add(color)
 
 	}
 
