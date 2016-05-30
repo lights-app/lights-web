@@ -258,6 +258,7 @@ class ColorWheelView extends lrs.views.Page {
 				console.log(device)
 
 				var lightsDevice = lights.Device.fromParticleDevice(device)
+				console.log(lightsDevice)
 
 				lightsDevice.encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
 

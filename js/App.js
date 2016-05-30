@@ -174,6 +174,33 @@ class App extends lrs.View {
 		return result
 
 	}
+
+	combineBytes(bytes) {
+
+		var result = 0
+
+		for(var i = 0; i < bytes.length; i++) {
+
+			result += bytes[i] * Math.pow(127, (bytes.length - 1) - i)
+			// console.log(result)
+
+		}
+
+		return result
+
+	}
+
+	toBitString(number) {
+
+		return("00000000" + number.toString(2)).substr(-8)
+
+	}
+
+	getBitValueAt(number, position) {
+
+		return parseInt(this.toBitString(number).substring(position, position + 1))
+
+	}
 	
 }
 
