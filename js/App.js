@@ -7,6 +7,8 @@ class App extends lrs.View {
 		options.delayDomConnectionCreation = true
 		
 		super({el, template, options})
+
+		var self = this
 		
 		window.lights.app = this
 		
@@ -68,7 +70,6 @@ class App extends lrs.View {
 
 		if (this.particle.isLoggedIn) {
 
-			var self = this
 			console.log(self)
 
 			setTimeout( function() {
@@ -78,6 +79,19 @@ class App extends lrs.View {
 			}, 1)
 
 		}
+
+		this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
+			stream.on('event', function(data) {
+				console.log("Event:", data)
+
+				if (data.name === "configChanged") {
+
+					self.devices[data.coreid].config = data.data
+					self.devices[data.coreid].parseConfig()
+
+				}
+			})
+		})
 		
 		return this
 		

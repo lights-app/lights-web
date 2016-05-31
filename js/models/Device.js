@@ -176,7 +176,21 @@ class Device extends lrs.LRSObject {
 
 		} else {
 
-			throw new Error('Config length incorrect, try refreshing device config')
+			var configArray = []
+			// Construct and print out a semi-legible lights config
+			for (var i = 0; i < this.config.length; i++) {
+
+				if (this.config.substring(i, i + 1) != 'c' && this.config.substring(i, i + 1) != 't'){
+					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
+				} else {
+					configArray.push(this.config.substring(i, i + 1))
+				}
+
+			}
+
+			console.log(configArray)
+
+			console.log('Config length incorrect, try refreshing device config')
 
 		}
 
