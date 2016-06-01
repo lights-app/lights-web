@@ -25,7 +25,8 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 	openColorWheelAction(view, el, e) {
 
 		console.log(this, el, e)
-		this.owner.owner.owner.showView(new lrs.views.ColorWheel({room: this.object, rgb: [20, 20, 20]}))
+		var id = this.object.devices[0].id
+		this.owner.owner.owner.showView(new lrs.views.ColorWheel({room: this.object, rgb: lights.app.devices[id].channels[0].rgb }))
 
 	}
 

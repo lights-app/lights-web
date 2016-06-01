@@ -37,6 +37,13 @@ class Device extends lrs.LRSObject {
 		this.version = [3]
 		this.channelCount = 2
 		this.channels = []
+
+		for (var i = 0; i < this.channelCount; i++) {
+
+			this.channels.push(new lights.Channel([0,0,0]))
+
+		}
+		
 		this.config = ""
 		this.lastUpdated = -1
 		

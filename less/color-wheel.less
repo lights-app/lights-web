@@ -1,3 +1,4 @@
+@color-wheel-transition-raw: 0.7s cubic-bezier(.37,.01,.21,.99);
 @color-wheel-transition: all 0.7s cubic-bezier(.37,.01,.21,.99);
 
 .color-wheel {
@@ -174,6 +175,7 @@
 	left: 0;
 	border-radius: 10000px;
 	opacity: 0;
+	box-shadow: 0 0 2px #000;
 
 	transition: @color-wheel-transition;
 
@@ -182,26 +184,26 @@
 .color-wheel-arm {
 
 	position: relative;
-	height: 1px;
+	height: 0;
 	width: 100%;
 	margin-top: 50%;
 
 	transition: @color-wheel-transition;
 
-	// background-color: black;
+	background-color: black;
 
 }
 
 .color-wheel-slide-arm {
 
 	position: relative;
-	height: 1px;
+	height: 0;
 	width: 50%;
 	margin-top: 50%;
 
 	transition: @color-wheel-transition;
 
-	// background-color: white;
+	background-color: white;
 
 }
 
@@ -244,7 +246,36 @@
 
 	}
 
+	.color-wheel-picker-scrim {
+
+		position: absolute;
+		// width: 100%;
+		// height: 100%;
+
+		top: 0px;
+		right: 0px;
+		bottom: 0px;
+		left: 0px;
+
+		border: 1px solid rgba(255, 255, 255, 0.3);
+
+		background-color: #000;
+		z-index: 100;
+		border-radius: 1000px;
+		// opacity: 0.55;
+
+		transition: opacity @color-wheel-transition-raw, transform .2s cubic-bezier(.16,.3,.35,1.59);
+
+	}
+
 	&.active {
+
+
+		.color-wheel-picker-scrim {
+
+			transform: scale3d(1.2, 1.2, 1.2);
+
+		}
 
 		&::after {
 
@@ -297,11 +328,11 @@
 
 	@border-radius: 5px;
 
-	width: 80px;
-	height: 80px;
+	width: 50px;
+	height: 50px;
 
-	min-width: 80px;
-	min-height: 80px;
+	min-width: 50px;
+	min-height: 50px;
 
 	display: flex;
 	align-items: center;
