@@ -37,6 +37,13 @@ class Device extends lrs.LRSObject {
 		this.version = [3]
 		this.channelCount = 2
 		this.channels = []
+
+		for (var i = 0; i < this.channelCount; i++) {
+
+			this.channels.push(new lights.Channel([0,0,0]))
+
+		}
+		
 		this.config = ""
 		this.lastUpdated = -1
 		
@@ -44,13 +51,13 @@ class Device extends lrs.LRSObject {
 
 	getConfig() {
 
-		if (this._object.connected) {
+		if (this.connected) {
 
 			var self = this
 
-			console.log(this._object)
+			console.log(this)
 
-			var call = lights.app.particle.getVariable({ deviceId: this._object.id, name: 'config', auth: lights.app.particle.auth.accessToken })
+			var call = lights.app.particle.getVariable({ deviceId: this.id, name: 'config', auth: lights.app.particle.auth.accessToken })
 
 			call.then(function(data) {
 
@@ -70,7 +77,7 @@ class Device extends lrs.LRSObject {
 
 		} else {
 
-			console.log("Device ", this._object.id, "not connected")
+			console.log("Device ", this.id, "not connected")
 		}
 
 	}
@@ -176,7 +183,21 @@ class Device extends lrs.LRSObject {
 
 		} else {
 
-			throw new Error('Config length incorrect, try refreshing device config')
+			var configArray = []
+			// Construct and print out a semi-legible lights config
+			for (var i = 0; i < this.config.length; i++) {
+
+				if (this.config.substring(i, i + 1) != 'c' && this.config.substring(i, i + 1) != 't'){
+					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
+				} else {
+					configArray.push(this.config.substring(i, i + 1))
+				}
+
+			}
+
+			console.log(configArray)
+
+			console.log('Config length incorrect, try refreshing device config')
 
 		}
 
@@ -184,7 +205,7 @@ class Device extends lrs.LRSObject {
 
 	encodeColors(rgb) {
 
-		if (this._object.connected) {
+		if (this.connected) {
 			// Function declaration for color data
 			var payload = 'c'
 			console.log(rgb)
@@ -213,7 +234,7 @@ class Device extends lrs.LRSObject {
 
 			console.log(this)
 
-			var call = lights.app.particle.callFunction({ deviceId: this._object.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
+			var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
 
 			call.then(function(data) {
 
@@ -227,7 +248,7 @@ class Device extends lrs.LRSObject {
 
 		} else {
 
-			console.log("Device ", this._object.id, "not connected")
+			console.log("Device ", this.id, "not connected")
 		}
 
 	}

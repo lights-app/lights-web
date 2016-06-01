@@ -27,10 +27,13 @@ mixin templates
 						.color-wheel-arm(data-view='colorWheelArm')
 							.color-wheel-slide-arm(data-view='colorWheelSlideArm')
 								.color-wheel-picker(data-view='colorWheelPicker')
+									.color-wheel-picker-scrim(data-view='colorWheelPickerScrim')
 
 			.bottom-container
 				.favourite-colors-container
 					ul.favourite-colors-list(data-view='LRSList:favouriteColorsList:FavouriteColorsListItem')
+						li.favourite-colors-list-item.add-favourite-color-btn(data-action='click:addFavouriteColor()')
+							span +
 
 				.room-device-list-container
 					ul.room-device-list(data-view='LRSList:roomDeviceList:RoomDeviceListItem')

@@ -28,14 +28,14 @@ class NewMomentNamingPageView extends lrs.views.Page {
 		if(this.momentName.length > 0) {
 
 			var newMoment = new Moment(this.momentName, this.selectedDevices)
-		this.room.object.moments.push(newMoment)
-		lights.app.storage('rooms', lights.app.rooms)
-		this.room.views.momentList.add(newMoment)
-		console.log(this)
-		this.owner.showView(this.owner.views.content[0])
+			this.room.object.moments.push(newMoment)
+			lights.app.storage('rooms', lights.app.rooms)
+			this.room.views.momentList.add(newMoment)
+			console.log(this)
+			this.owner.showView(this.owner.views.content[0])
 
-		console.log(this)
-		console.log(newMoment)
+			console.log(this)
+			console.log(newMoment)
 
 		} else {
 

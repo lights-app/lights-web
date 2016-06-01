@@ -52,6 +52,10 @@ class ColorWheelView extends lrs.views.Page {
 
 		var self = this
 
+		this.disableTransitions()
+
+		this.deselectFavouriteColor()
+
 		this.mouseStart = [0, 0]
 
 		// Send data right now, and every 500ms
@@ -71,11 +75,18 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
-		document.addEventListener('mouseup', function(e){
+		document.addEventListener('mouseup', self._mouseUp = function(e){
 
 			document.removeEventListener('mousemove', self._mouseMove)
 			self._mouseMove = undefined
 			clearInterval(self._dataSendInterval)
+			// Send latest value
+			self.sendData()
+
+			self.enableTransitions()
+
+			// Remove this event listener
+			document.removeEventListener('mouseup', self._mouseUp)
 
 		})
 
@@ -92,7 +103,7 @@ class ColorWheelView extends lrs.views.Page {
 		var angle = (value * this.brightnessSliderRange) + this.brightnessSliderAngleOffset
 
 		this.views.brightnessSliderArm.el.style["transform"] = "rotate3d(0, 0, 1, " + angle + "deg)"
-
+		
 		this.setColorWheelBrightness()
 
 	}
@@ -100,6 +111,10 @@ class ColorWheelView extends lrs.views.Page {
 	colorWheelTouchstartAction(view, el, e) {
 
 		var self = this
+
+		this.disableTransitions()
+
+		this.deselectFavouriteColor()
 
 		// Send data right now, and every 500ms
 		this.sendData()
@@ -123,13 +138,20 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
-		document.addEventListener('mouseup', function(e){
+		document.addEventListener('mouseup', self._mouseUp = function(e){
 
 			document.removeEventListener('mousemove', self._mouseMove)
 			self._mouseMove = undefined
 			clearInterval(self._dataSendInterval)
 			// Remove class when user is done using the color picker
 			self.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.remove('active')
+			// Send latest value
+			self.sendData()
+
+			self.enableTransitions()
+
+			// Remove this event listener
+			document.removeEventListener('mouseup', self._mouseUp)
 
 		})
 
@@ -194,10 +216,13 @@ class ColorWheelView extends lrs.views.Page {
 	}
 
 	setColorWheelPickerColor() {
-		// console.log(this.rgb)
-		var r = Math.round(this.rgb[0])
-		var g = Math.round(this.rgb[1])
-		var b = Math.round(this.rgb[2])
+		
+		// The color wheel picker only has to show the hue and saturation. Brightness is handled by the color wheel picker scrim
+		var rgb = lights.app.HSVtoRGB(this.hsv[0], this.hsv[1], 1)
+		var r = Math.round(rgb[0])
+		var g = Math.round(rgb[1])
+		var b = Math.round(rgb[2])
+		// console.log(rgb, this.hsv)
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['background-color'] = "rgb(" + r + ", " + g + ", " + b + ")"
 
 	}
@@ -205,7 +230,42 @@ class ColorWheelView extends lrs.views.Page {
 	setColorWheelBrightness() {
 
 		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['opacity'] = 1 - this.hsv[2]
-		this.setColorWheelPickerColor()
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.views.colorWheelPickerScrim.el.style['opacity'] = 1 - this.hsv[2]
+		// this.setColorWheelPickerColor()
+
+	}
+
+	disableTransitions() {
+
+		this.views.brightnessSliderArm.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['transition'] = 'all 0s'
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.views.colorWheelPickerScrim.el.style['transition'] = 'all 0s'
+
+	}
+
+	enableTransitions() {
+
+		this.views.brightnessSliderArm.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['transition'] = ''
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.views.colorWheelPickerScrim.el.style['transition'] = ''
+
+	}
+
+	deselectFavouriteColor() {
+
+		for (let color of this.views.favouriteColorsList.views.content) {
+
+			console.log(color)
+			color.classList.remove('selected') 
+			color.selected = false
+
+		}
 
 	}
 
@@ -264,10 +324,10 @@ class ColorWheelView extends lrs.views.Page {
 
 				console.log(device)
 
-				var lightsDevice = lights.Device.fromParticleDevice(device)
-				console.log(lightsDevice)
+				// var lightsDevice = lights.app.devices[devices.id]
+				console.log(device.object.id)
 
-				lightsDevice.encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
+				lights.app.devices[device.object.id].encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
 
 			}
 
@@ -278,6 +338,18 @@ class ColorWheelView extends lrs.views.Page {
 	onOffClickAction() {
 
 		console.log("onoff")
+
+	}
+
+	addFavouriteColorAction() {
+
+		var color = [Math.round(this.rgb[0]), Math.round(this.rgb[1]), Math.round(this.rgb[2])]
+
+		console.log(color)
+
+		lights.app.favouriteColors.push(color)
+		lights.app.storage('favouriteColors', lights.app.favouriteColors)
+		this.views.favouriteColorsList.add(color)
 
 	}
 
