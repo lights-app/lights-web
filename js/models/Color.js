@@ -7,21 +7,24 @@ class Color extends lrs.LRSObject {
 		super()
 
 		this.rgb = []
+		this.rgbFloat = []
 		this.hsv = []
 		this.hex = ""
 
 		if (type === 'rgb') {
 
-			this.rgb = color
+			this.rgbFloat = color
+			this.rgb = [Math.round(color[0]), Math.round(color[1]), Math.round(color[1])]
 			this.hsv = lights.app.RGBtoHSV(color[0], color[1], color[2])
-			this.hex = lights.app.RGBtoHEX(color[0], color[1], color[2])
+			this.hex = lights.app.RGBtoHEX(this.rgb[0], this.rgb[1], this.rgb[2])
 
 		}
 
 		if (type === 'hsv') {
 
 			this.hsv = color
-			this.rgb = lights.app.HSVtoRGB(this.hsv[0], this.hsv[1], this.hsv[2])
+			this.rgbFloat = lights.app.HSVtoRGB(this.hsv[0], this.hsv[1], this.hsv[2])
+			this.rgb = [Math.round(this.rgbFloat[0]), Math.round(this.rgbFloat[1]), Math.round(this.rgbFloat[1])]
 			this.hex = lights.app.RGBtoHEX(this.rgb[0], this.rgb[1], this.rgb[2])
 
 		}
