@@ -48,6 +48,8 @@ class Device extends lrs.LRSObject {
 		
 		this.config = ""
 		this.lastUpdated = -1
+
+		
 		
 	}
 

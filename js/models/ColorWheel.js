@@ -12,13 +12,18 @@ class ColorWheelView extends lrs.views.Page {
 
 		super(args)
 
+		var self = this
+
 		console.log(this)
 		console.log(args)
 
 		// Variable for the start values of a mouseclick/tap
 		this.mouseStart = [0, 0]
+		this.dragging = false
 		
+		this.room = args.room
 		this.name = args.room.name
+		this.devices = args.room. devices
 
 		// The current color of the lights
 		this.rgb = args.rgb
@@ -42,6 +47,12 @@ class ColorWheelView extends lrs.views.Page {
 		this.views.favouriteColorsList.reset(lights.app.favouriteColors)
 		this.views.roomDeviceList.reset(args.room.devices)
 
+		document.addEventListener('deviceConfigChanged', function(e){
+
+			return self.deviceConfigChangeHandler(e)
+
+		})
+
 		return this
 
 	}
@@ -57,6 +68,8 @@ class ColorWheelView extends lrs.views.Page {
 		var self = this
 
 		this.disableTransitions()
+
+		this.dragging = true
 
 		this.deselectFavouriteColor()
 
@@ -92,6 +105,8 @@ class ColorWheelView extends lrs.views.Page {
 			// Remove this event listener
 			document.removeEventListener('mouseup', self._mouseUp)
 
+			self.dragging = false
+
 		})
 
 	}
@@ -101,13 +116,13 @@ class ColorWheelView extends lrs.views.Page {
 		if (value > 1) { value = 1 }
 		if (value < 0) { value = 0 }
 
-		this.hsv[2] = value
+			this.hsv[2] = value
 		this.rgb = lights.app.HSVtoRGB(this.hsv[0], this.hsv[1], this.hsv[2])
 
 		var angle = (value * this.brightnessSliderRange) + this.brightnessSliderAngleOffset
 
 		this.views.brightnessSliderArm.el.style["transform"] = "rotate3d(0, 0, 1, " + angle + "deg)"
-		
+
 		this.setColorWheelBrightness()
 
 	}
@@ -117,6 +132,8 @@ class ColorWheelView extends lrs.views.Page {
 		var self = this
 
 		this.disableTransitions()
+
+		this.dragging = true
 
 		this.deselectFavouriteColor()
 
@@ -156,6 +173,8 @@ class ColorWheelView extends lrs.views.Page {
 
 			// Remove this event listener
 			document.removeEventListener('mouseup', self._mouseUp)
+
+			self.dragging = false
 
 		})
 
@@ -275,6 +294,29 @@ class ColorWheelView extends lrs.views.Page {
 			console.log(color)
 			color.classList.remove('selected') 
 			color.selected = false
+
+		}
+
+	}
+
+	deviceConfigChangeHandler(e) {
+
+		console.log(e.detail.id)
+		console.log("OMGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
+		console.log(this)
+
+		if (!this.dragging) {
+
+			for (let device of this.devices) {
+
+				if(device.id === e.detail.id) {
+
+					this.setColorWheelPickerPosition(lights.app.devices[device.id].channels[0].hsv[0] * 360, lights.app.devices[device.id].channels[0].hsv[1])
+					this.setBrightnessSlider(lights.app.devices[device.id].channels[0].hsv[2])
+
+				}
+
+			}
 
 		}
 
@@ -447,7 +489,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		// 	if(!allSameColors) {
 
-				
+
 
 		// 	}
 

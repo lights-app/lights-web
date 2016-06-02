@@ -82,14 +82,23 @@ class App extends lrs.View {
 
 		}
 
+		// Subscribe to device event stream to watch for changes
 		this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
 			stream.on('event', function(data) {
 				console.log("Event:", data)
 
 				if (data.name === "configChanged") {
 
+					var event = new CustomEvent('deviceConfigChanged', {
+						detail: {
+							id: data.coreid
+						}
+					})
+
 					self.devices[data.coreid].config = data.data
 					self.devices[data.coreid].parseConfig()
+
+					document.dispatchEvent(event)
 
 				}
 			})
