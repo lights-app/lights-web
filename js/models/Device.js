@@ -92,9 +92,14 @@ class Device extends lrs.LRSObject {
 			console.log("Data length checked, parsing config")
 
 			var configArray = []
+			var tempConfig = ""
 
-			// Construct and print out a semi-legible lights config
+			// Subtract 1 from all values and construct and print out a semi-legible lights config
+			// JavaScript can handle multiple null characters in a string
 			for (var i = 0; i < this.config.length; i++) {
+
+				// Subtract 1 from received value
+				tempConfig += String.fromCharCode(this.config.substring(i, i + 1).charCodeAt(0) - 1)
 
 				if (this.config.substring(i, i + 1) != 'c' && this.config.substring(i, i + 1) != 't'){
 					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
@@ -104,18 +109,20 @@ class Device extends lrs.LRSObject {
 
 			}
 
-			console.log(configArray)
+			console.log(configArray, tempConfig, tempConfig.length)
 
-			// Get device software version, always subtract 1 to get actual value since we can't send 0
-			this.version[0] = parseInt(this.config.charCodeAt(0)) - 1
+			this.config = tempConfig
+
+			// Get device software version
+			this.version[0] = parseInt(this.config.charCodeAt(0))
 			console.log('versionMajor', this.version[0])
-			this.version[1] = parseInt(this.config.charCodeAt(1)) - 1
+			this.version[1] = parseInt(this.config.charCodeAt(1))
 			console.log('versionMinor', this.version[1])
-			this.version[2] = parseInt(this.config.charCodeAt(2)) - 1
+			this.version[2] = parseInt(this.config.charCodeAt(2))
 			console.log('versionPatch', this.version[2])
 
 			// Get channelCount
-			this.channelCount = parseInt(this.config.charCodeAt(3)) - 1
+			this.channelCount = parseInt(this.config.charCodeAt(3))
 			console.log('channelCount', this.channelCount)
 
 			if (this.channels.length != this.channelCount) {
@@ -141,10 +148,12 @@ class Device extends lrs.LRSObject {
 
 				configPos++
 
-				// Check which channels are on/off and create Channel object
+				// Check which channels are on/off
+				// Channel states begin at bit 2 (2nd from the right) up to bit 7
+				// That is why we look at bit position i+1
 				for (var i = 0; i < this.channelCount; i++) {
 
-					if (lights.app.getBitValueAt(this.config.charCodeAt(configPos), 7 - i) === 1) {
+					if (lights.app.getBitValueAt(this.config.charCodeAt(configPos), 7 - (i + 1)) === 1) {
 
 						console.log("Channel", i, "is on")
 						this.channels[i].isOn = true
@@ -166,12 +175,22 @@ class Device extends lrs.LRSObject {
 				// The next bytes hold the color data in pairs of two bytes
 				for (var i = 0; i < this.channelCount; i++) {
 
+					var colorArray = []
+
 					for (var j = 0; j < 3; j++) {
 
-						this.channels[i].rgb[j] = lights.app.combineBytes([this.config.charCodeAt(configPos) - 1, this.config.charCodeAt(configPos + 1) - 1])
+						var val = 255 * lights.app.combineBytes([this.config.charCodeAt(configPos), this.config.charCodeAt(configPos + 1)]) / (Math.pow(127, 2) - 1)
+						colorArray.push(val)
 						configPos += 2
 
 					}
+
+					var color = new lights.Color(colorArray, 'rgb')
+					console.log(color)
+
+					this.channels[i] = color
+
+					console.log(this.channels[i].rgb)
 
 				}
 
@@ -179,7 +198,7 @@ class Device extends lrs.LRSObject {
 
 			} else {
 
-				throw new Error('Color function specifier not in correct position in config')
+				console.log('Color function specifier not in correct position in config')
 
 			}
 
