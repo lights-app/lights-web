@@ -33,6 +33,8 @@ class App extends lrs.View {
 
 		this.favouriteColors = this.storage('favouriteColors') || []
 
+		this.interpolationTime = this.storage('interpolationTime') || 7
+
 		this.roomIconList = [
 			{name: "Living Room",
 			icon: "static/img/icons/couch.svg"
@@ -186,6 +188,23 @@ class App extends lrs.View {
 	    }
 
 	    return [h, s, v];
+	}
+
+	RGBtoHEX(r, g, b) {
+
+		return (this.numberToHex(r) + this.numberToHex(g) + this.numberToHex(b))
+	}
+
+	HEXtoRGB(hex) {
+	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+	    return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]: null
+	}
+
+	numberToHex(number) {
+
+		var hex = number.toString(16)
+    	return hex.length == 1 ? "0" + hex : hex
+
 	}
 
 	splitBytes(number, amountOfBytes, nonZero) {

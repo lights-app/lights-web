@@ -22,7 +22,11 @@ class ColorWheelView extends lrs.views.Page {
 
 		// The current color of the lights
 		this.rgb = args.rgb
+		console.log(this.rgb)
 		this.hsv = lights.app.RGBtoHSV(this.rgb[0], this.rgb[1], this.rgb[2])
+
+		this.prevRgb = []
+		this.prevHsv = []
 
 		// The range (in degrees) visible around the color wheel in degrees
 		this.brightnessSliderRange = 330
@@ -225,12 +229,15 @@ class ColorWheelView extends lrs.views.Page {
 		// console.log(rgb, this.hsv)
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['background-color'] = "rgb(" + r + ", " + g + ", " + b + ")"
 
+		this.views.favouriteColorsList.views.addFavouriteColorBtn.el.style['background-color'] = "rgb(" + r + ", " + g + ", " + b + ")"
+
 	}
 
 	setColorWheelBrightness() {
 
-		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['opacity'] = 1 - this.hsv[2]
+		this.views.colorWheelBg.views.colorWheelBgScrim.el.style['opacity'] = 0.9 - this.hsv[2]
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.views.colorWheelPickerScrim.el.style['opacity'] = 1 - this.hsv[2]
+		this.views.favouriteColorsList.views.addFavouriteColorBtn.views.addFavouriteColorBtnScrim.el.style['opacity'] = 1 - this.hsv[2]
 		// this.setColorWheelPickerColor()
 
 	}
@@ -243,6 +250,8 @@ class ColorWheelView extends lrs.views.Page {
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.el.style['transition'] = 'all 0s'
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['transition'] = 'all 0s'
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.views.colorWheelPickerScrim.el.style['transition'] = 'all 0s'
+		this.views.favouriteColorsList.views.addFavouriteColorBtn.el.style['transition'] = 'all 0s'
+		this.views.favouriteColorsList.views.addFavouriteColorBtn.views.addFavouriteColorBtnScrim.el.style['transition'] = 'all 0s'
 
 	}
 
@@ -254,6 +263,8 @@ class ColorWheelView extends lrs.views.Page {
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.el.style['transition'] = ''
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.el.style['transition'] = ''
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.views.colorWheelPickerScrim.el.style['transition'] = ''
+		this.views.favouriteColorsList.views.addFavouriteColorBtn.el.style['transition'] = ''
+		this.views.favouriteColorsList.views.addFavouriteColorBtn.views.addFavouriteColorBtnScrim.el.style['transition'] = ''
 
 	}
 
@@ -327,7 +338,15 @@ class ColorWheelView extends lrs.views.Page {
 				// var lightsDevice = lights.app.devices[devices.id]
 				console.log(device.object.id)
 
-				lights.app.devices[device.object.id].encodeColors([self.rgb[0], self.rgb[1], self.rgb[2], self.rgb[0], self.rgb[1], self.rgb[2]])
+				var data = []
+
+				for (var i = 0; i < lights.app.devices[device.object.id].channelCount; i++) {
+
+					data.push(this.rgb)
+
+				}
+
+				lights.app.devices[device.object.id].sendColorData(data)
 
 			}
 
@@ -337,19 +356,102 @@ class ColorWheelView extends lrs.views.Page {
 
 	onOffClickAction() {
 
-		console.log("onoff")
+		var self = this
+
+		console.log(this)
+
+		if (this.views.onOffBtn.el.dataset.ison === 'true') {
+
+			this.views.onOffBtn.el.dataset.ison = 'false'
+			this.views.onOffBtn.el.classList.remove('is-on')
+
+		} else {
+
+			this.views.onOffBtn.el.dataset.ison = 'true'
+			this.views.onOffBtn.el.classList.add('is-on')
+
+		}
+
+		// for (let device of this.views.roomDeviceList.views.content) {
+
+		// 	if(device.views.checkmark.checked) {
+
+		// 		console.log(device)
+
+		// 		// var lightsDevice = lights.app.devices[devices.id]
+		// 		console.log(device.object.id)
+
+		// 		lights.app.devices[device.object.id].turnOff()
+
+		// 	}
+
+		// }
 
 	}
 
 	addFavouriteColorAction() {
 
-		var color = [Math.round(this.rgb[0]), Math.round(this.rgb[1]), Math.round(this.rgb[2])]
+		var color = new lights.Color([Math.round(this.rgb[0]), Math.round(this.rgb[1]), Math.round(this.rgb[2])], 'rgb')
 
-		console.log(color)
+		console.log(color, this.rgb)
 
-		lights.app.favouriteColors.push(color)
-		lights.app.storage('favouriteColors', lights.app.favouriteColors)
-		this.views.favouriteColorsList.add(color)
+		var addColor = true
+
+		for (let favouriteColor of this.views.favouriteColorsList.content) {
+
+			console.log(favouriteColor)
+
+			if (color.hex === favouriteColor.object.hex){
+
+				favouriteColor.view.classList.add('shake')
+
+				setTimeout(function() {
+
+					favouriteColor.view.classList.remove('shake')
+
+				}, 900)
+
+				addColor = false
+
+			}
+
+		}
+
+		if (addColor) {
+
+			lights.app.favouriteColors.push(color)
+			lights.app.storage('favouriteColors', lights.app.favouriteColors)
+			this.views.favouriteColorsList.add(color)
+
+		} else {
+
+			console.log("Color already present in favouriteColors")
+
+		}
+
+		// Check if color is not already present in list
+		// for (let favouriteColor of this.views.favouriteColorsList.content) {
+
+		// 	console.log(favouriteColor.object)
+		// 	var allSameChannels = true
+
+		// 	for (var i = 0; i < favouriteColor.object.length; i++) {
+
+		// 		if (favouriteColor.object[i] !== color[i]) {
+
+		// 			allSameChannels = false
+
+		// 		}
+
+		// 	}
+
+		// 	if(!allSameColors) {
+
+				
+
+		// 	}
+
+		// }
 
 	}
 

@@ -203,29 +203,56 @@ class Device extends lrs.LRSObject {
 
 	}
 
-	encodeColors(rgb) {
+	sendColorData(rgb) {
 
 		if (this.connected) {
 			// Function declaration for color data
 			var payload = 'c'
 			console.log(rgb)
 
-			// All channels on, for now
-			payload += String.fromCharCode(127)
+			// The byte indicating which channels should be on/off has to be at least 1 to avoid null termination issues
+			// We construct a 6-channel bit string indicating which channels are on/off
+			// A max of 6 channels, because we can't send 0, or values over 127 (7-Bit)
+			// Channel 0-6, from right to left
+			// e.g.: turning on only channel 3 would give the following bit string: 00010001
+			// turning on all channels: 01111111
+			var channelByte = 1
+
+			for (i = 0; i < this.channelCount; i++){
+
+				// Every bit further to the left is a power of 2 higher than the last.
+				// If that channel should be on, we add the accompanying power of 2 value
+				// e.g.: turning on channel 3 would mean adding 2^4 = 16 to channelByte
+				if (this.channels[i].isOn) {
+
+					channelByte += Math.pow(2, i + 1)
+
+				}
+
+			}
+
+			console.log("channelByte", channelByte, lights.app.toBitString(channelByte))
+
+			// Convert that number to 
+			payload += String.fromCharCode(channelByte)
 
 			// Split interpolation time into 3 bytes
-			var interpolationTime = lights.app.splitBytes(7, 3, true)
+			var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, true)
 
 			payload += String.fromCharCode(interpolationTime[0])
 			payload += String.fromCharCode(interpolationTime[1])
 			payload += String.fromCharCode(interpolationTime[2])
 
-			for (var i = 0; i < this.channelCount * 3; i++) {
+			for (var i = 0; i < this.channelCount; i++) {
 
-				var colorBytes = lights.app.splitBytes(rgb[i] * ((Math.pow(127, 2) - 1 ) / 255), 2, true)
+				for (var j = 0; j < 3; j++) {
 
-				payload += String.fromCharCode(colorBytes[0])
-				payload += String.fromCharCode(colorBytes[1])
+					var colorBytes = lights.app.splitBytes(rgb[i][j] * ((Math.pow(127, 2) - 1 ) / 255), 2, true)
+
+					payload += String.fromCharCode(colorBytes[0])
+					payload += String.fromCharCode(colorBytes[1])
+
+				}
 
 			}
 
@@ -249,6 +276,26 @@ class Device extends lrs.LRSObject {
 		} else {
 
 			console.log("Device ", this.id, "not connected")
+		}
+
+	}
+
+	turnOff(channelNumber) {
+
+		console.log(channelNumber)
+
+		if (channelNumber !== undefined) {
+			
+			this.channels[channelNumber].isOn = false
+
+		} else {
+
+			for (let channel of this.channels) {
+
+				channel.isOn = false
+
+			}
+
 		}
 
 	}
