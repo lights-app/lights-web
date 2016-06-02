@@ -43,6 +43,8 @@ class Device extends lrs.LRSObject {
 			this.channels.push(new lights.Channel([0,0,0]))
 
 		}
+
+		this.timers = []
 		
 		this.config = ""
 		this.lastUpdated = -1
@@ -216,7 +218,8 @@ class Device extends lrs.LRSObject {
 			// Channel 0-6, from right to left
 			// e.g.: turning on only channel 3 would give the following bit string: 00010001
 			// turning on all channels: 01111111
-			var channelByte = 1
+			// Note that the first bit (rightmost) is set to 0 now, but will become a 1 once we send the data
+			var channelByte = 0
 
 			for (i = 0; i < this.channelCount; i++){
 
@@ -231,13 +234,18 @@ class Device extends lrs.LRSObject {
 
 			}
 
+			// Let's set the chanelByte to 126 (all channels) for now
+			channelByte = 126
+
 			console.log("channelByte", channelByte, lights.app.toBitString(channelByte))
 
-			// Convert that number to 
+			// Convert that number to a char
 			payload += String.fromCharCode(channelByte)
 
 			// Split interpolation time into 3 bytes
-			var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, true)
+			var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, false)
+
+			console.log("interpolationTime", interpolationTime)
 
 			payload += String.fromCharCode(interpolationTime[0])
 			payload += String.fromCharCode(interpolationTime[1])
@@ -247,7 +255,7 @@ class Device extends lrs.LRSObject {
 
 				for (var j = 0; j < 3; j++) {
 
-					var colorBytes = lights.app.splitBytes(rgb[i][j] * ((Math.pow(127, 2) - 1 ) / 255), 2, true)
+					var colorBytes = lights.app.splitBytes(rgb[i][j] * ((Math.pow(127, 2) - 1 ) / 255), 2, false)
 
 					payload += String.fromCharCode(colorBytes[0])
 					payload += String.fromCharCode(colorBytes[1])
@@ -256,8 +264,21 @@ class Device extends lrs.LRSObject {
 
 			}
 
-			console.log("Payload length", payload.length)
-			console.log("Payload ", payload)
+			console.log("Payload", payload, "Payload length", payload.length)
+			var tempPayload = ""
+			var tempArray = []
+
+			// Increase every number by 1 to prevent null termination issues
+			for(var i = 0; i < payload.length; i++) {
+
+				tempPayload += String.fromCharCode(payload.charCodeAt(i) + 1)
+				tempArray.push(payload.charCodeAt(i) + 1)
+
+			}
+
+			payload = tempPayload
+			console.log("Payload", payload, "Payload length", payload.length)
+			console.log(tempArray)
 
 			console.log(this)
 
