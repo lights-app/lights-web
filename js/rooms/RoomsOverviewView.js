@@ -15,13 +15,6 @@ class RoomsOverviewView extends lrs.views.Page {
 		console.log(this)
 		
 		this.views.roomList.reset(lights.app.rooms)
-
-		// Get initial device configs
-		for (let key in lights.app.devices) {
-
-			lights.app.devices[key].getConfig()
-
-		}
 		
 		return this
 	

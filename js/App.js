@@ -13,9 +13,10 @@ class App extends lrs.View {
 		window.lights.app = this
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
+		this.requiresParticleVersion = [0, 0, 0]
 
 		// Load devices stored in localStorage to a temporary variable
-		this._devices = this.storage('devices') || []
+		this._devices = this.storage('devices') || {}
 		this.devices = {}
 
 		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
@@ -79,6 +80,17 @@ class App extends lrs.View {
 				self.views.setup.hide()
 				self.views.rooms.showView(new lrs.views.RoomsOverview())
 			}, 1)
+
+		}
+
+		// After particle wrapper has been loaded, get the config of all devices
+		for (let key in this.devices) {
+
+			console.log("Getting device config for", key)
+			
+			console.log(key)
+
+			this.devices[key].getConfig()
 
 		}
 
