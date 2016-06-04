@@ -15,9 +15,25 @@ class App extends lrs.View {
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.requiresParticleVersion = [0, 0, 0]
 
+		navigator.geolocation.getCurrentPosition(function(e) {
+
+			console.log(e)
+			self.geolocation = e
+
+			// Calculate sunrise and sunset times and convert it into seconds from 0:00
+			self.suncalc = SunCalc.getTimes(new Date(), self.geolocation.coords.latitude, self.geolocation.coords.longitude)
+			self.sunriseSeconds = (self.suncalc.sunrise.getHours() * 3600) + (self.suncalc.sunrise.getMinutes() * 60) + self.suncalc.sunrise.getSeconds()
+			self.sunsetSeconds = (self.suncalc.sunset.getHours() * 3600) + (self.suncalc.sunset.getMinutes() * 60) + self.suncalc.sunset.getSeconds()
+			console.log(self.sunrise)
+
+		})
+
 		// Load devices stored in localStorage to a temporary variable
 		this._devices = this.storage('devices') || {}
 		this.devices = {}
+
+		// Create a devicesArray variable to store the devices in an array. Handy for view creation
+		this.devicesArray = []
 
 		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
 		for (let key in this._devices) {
@@ -25,6 +41,7 @@ class App extends lrs.View {
 			console.log(key)
 
 			this.devices[key] = lights.Device.fromParticleDevice(this._devices[key])
+			this.devicesArray.push(this.devices[key])
 
 		}
 

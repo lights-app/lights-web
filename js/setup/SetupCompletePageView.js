@@ -9,6 +9,12 @@ class SetupCompletePageView extends lrs.views.Page {
 		super(args)
 
 		var self = this
+
+		for (let device of lights.app.devicesArray) {
+
+			device.getConfig()
+			
+		}
 		
 		setTimeout( function() {
 			self.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())

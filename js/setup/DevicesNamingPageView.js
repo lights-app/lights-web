@@ -8,7 +8,7 @@ class DevicesNamingPageView extends lrs.views.Page {
 		
 		super(args)
 
-		this.views.lightsDeviceList.reset(lights.app.devices)
+		this.views.lightsDeviceList.reset(lights.app.devicesArray)
 		
 		return this
 	}

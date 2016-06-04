@@ -54,14 +54,15 @@ class DevicesPageView extends lrs.views.Page {
 
 				}
 
-				lights.app.devices.push(deviceView.object)
+				lights.app.devicesArray.push(deviceView.object)
+				lights.app.devices[deviceView.object.id] = deviceView.object
 				console.log(lights.app.devices)
 
 			}
 
 		}
 
-		if (lights.app.devices.length > 0) {
+		if (lights.app.devicesArray.length > 0) {
 
 			lights.app.storage('devices', lights.app.devices)
 

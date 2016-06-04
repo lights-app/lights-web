@@ -14,8 +14,8 @@ class NewRoomDevicesPageView extends lrs.views.Page {
 
 		console.log(this)
 
-		this.views.lightsDeviceList.reset(lights.app.devices)
-		
+		this.views.lightsDeviceList.reset(lights.app.devicesArray)
+
 		return this
 
 	}
