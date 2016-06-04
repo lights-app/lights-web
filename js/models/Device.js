@@ -44,6 +44,7 @@ class Device extends lrs.LRSObject {
 
 		}
 
+		this.timerCount = 8
 		this.timers = []
 		
 		this.config = ""
@@ -201,6 +202,22 @@ class Device extends lrs.LRSObject {
 			} else {
 
 				console.log('Color function specifier not in correct position in config')
+
+			}
+
+			// The next byte indicates the content length of the first timer
+			console.log(this.config.charCodeAt(configPos), configPos)
+
+			for (var i = 0; i < this.timerCount; i++) {
+
+				var contentLength = this.config.charCodeAt(configPos)
+
+				configPos++
+
+				var timer = new lights.DeviceTimer(this.config.substring(configPos, configPos + contentLength), this.channelCount)
+				console.log(timer, timer.config.length)
+
+				configPos += contentLength
 
 			}
 
