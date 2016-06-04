@@ -24,6 +24,7 @@ class ColorWheelView extends lrs.views.Page {
 		this.room = args.room
 		this.name = args.room.name
 		this.devices = args.room. devices
+		this.lastDataTransmission = Date.now()
 
 		// The current color of the lights
 		this.rgb = args.rgb
@@ -302,10 +303,11 @@ class ColorWheelView extends lrs.views.Page {
 	deviceConfigChangeHandler(e) {
 
 		console.log(e.detail.id)
-		console.log("OMGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
 		console.log(this)
 
-		if (!this.dragging) {
+		// While dragging, do nothing. And only 2 seconds after lastDataTransmission 
+		// This prevents the color wheel from picking up 'echos' of our own data and resetting the picker
+		if (!this.dragging && Date.now() - this.lastDataTransmission > 2000) {
 
 			for (let device of this.devices) {
 
@@ -393,6 +395,8 @@ class ColorWheelView extends lrs.views.Page {
 			}
 
 		}
+
+		this.lastDataTransmission = Date.now()
 
 	}
 

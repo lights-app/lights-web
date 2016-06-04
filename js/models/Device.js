@@ -103,7 +103,7 @@ class Device extends lrs.LRSObject {
 				// Subtract 1 from received value
 				tempConfig += String.fromCharCode(this.config.substring(i, i + 1).charCodeAt(0) - 1)
 
-				if (this.config.substring(i, i + 1) != 'c' && this.config.substring(i, i + 1) != 't'){
+				if (this.config.substring(i, i + 1) != 'd' && this.config.substring(i, i + 1) != 'u'){
 					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
 				} else {
 					configArray.push(this.config.substring(i, i + 1))
@@ -210,7 +210,7 @@ class Device extends lrs.LRSObject {
 			// Construct and print out a semi-legible lights config
 			for (var i = 0; i < this.config.length; i++) {
 
-				if (this.config.substring(i, i + 1) != 'c' && this.config.substring(i, i + 1) != 't'){
+				if (this.config.substring(i, i + 1) != 'd' && this.config.substring(i, i + 1) != 'u'){
 					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
 				} else {
 					configArray.push(this.config.substring(i, i + 1))
@@ -229,91 +229,126 @@ class Device extends lrs.LRSObject {
 	sendColorData(rgb) {
 
 		if (this.connected) {
-			// Function declaration for color data
-			var payload = 'c'
-			console.log(rgb)
 
-			// The byte indicating which channels should be on/off has to be at least 1 to avoid null termination issues
-			// We construct a 6-channel bit string indicating which channels are on/off
-			// A max of 6 channels, because we can't send 0, or values over 127 (7-Bit)
-			// Channel 0-6, from right to left
-			// e.g.: turning on only channel 3 would give the following bit string: 00010001
-			// turning on all channels: 01111111
-			// Note that the first bit (rightmost) is set to 0 now, but will become a 1 once we send the data
-			var channelByte = 0
-
-			for (i = 0; i < this.channelCount; i++){
-
-				// Every bit further to the left is a power of 2 higher than the last.
-				// If that channel should be on, we add the accompanying power of 2 value
-				// e.g.: turning on channel 3 would mean adding 2^4 = 16 to channelByte
-				if (this.channels[i].isOn) {
-
-					channelByte += Math.pow(2, i + 1)
-
-				}
-
-			}
-
-			// Let's set the chanelByte to 126 (all channels) for now
-			channelByte = 126
-
-			console.log("channelByte", channelByte, lights.app.toBitString(channelByte))
-
-			// Convert that number to a char
-			payload += String.fromCharCode(channelByte)
-
-			// Split interpolation time into 3 bytes
-			var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, false)
-
-			console.log("interpolationTime", interpolationTime)
-
-			payload += String.fromCharCode(interpolationTime[0])
-			payload += String.fromCharCode(interpolationTime[1])
-			payload += String.fromCharCode(interpolationTime[2])
+			// Assume that the rgb values are equal to the current state
+			// As soon as a difference is found we can send the data
+			var isEqual = true
 
 			for (var i = 0; i < this.channelCount; i++) {
 
-				for (var j = 0; j < 3; j++) {
+				for (var j = 0; j < this.channels[i].rgb.length; j++) {
 
-					var colorBytes = lights.app.splitBytes(rgb[i][j] * ((Math.pow(127, 2) - 1 ) / 255), 2, false)
+					console.log(this.channels[i].rgbFloat[j].toFixed(3), rgb[i][j].toFixed(3))
 
-					payload += String.fromCharCode(colorBytes[0])
-					payload += String.fromCharCode(colorBytes[1])
+					if (this.channels[i].rgbFloat[j].toFixed(3) !== rgb[i][j].toFixed(3)) {
 
+						console.log("Different color!")
+						isEqual = false
+
+					}
+
+				}
+
+				if (!isEqual) {
+
+					var color = new lights.Color(rgb[i], 'rgb')
+
+					// Set the light's current color to the new color
+					this.channels[i] = color
 				}
 
 			}
 
-			console.log("Payload", payload, "Payload length", payload.length)
-			var tempPayload = ""
-			var tempArray = []
+			// If the color that we want to send is different from the current color of the light, send it
+			if (!isEqual) {
 
-			// Increase every number by 1 to prevent null termination issues
-			for(var i = 0; i < payload.length; i++) {
+				// Function declaration for color data
+				var payload = 'c'
+				console.log(rgb)
 
-				tempPayload += String.fromCharCode(payload.charCodeAt(i) + 1)
-				tempArray.push(payload.charCodeAt(i) + 1)
+				// The byte indicating which channels should be on/off has to be at least 1 to avoid null termination issues
+				// We construct a 6-channel bit string indicating which channels are on/off
+				// A max of 6 channels, because we can't send 0, or values over 127 (7-Bit)
+				// Channel 0-6, from right to left
+				// e.g.: turning on only channel 3 would give the following bit string: 00010001
+				// turning on all channels: 01111111
+				// Note that the first bit (rightmost) is set to 0 now, but will become a 1 once we send the data
+				var channelByte = 0
+
+				for (i = 0; i < this.channelCount; i++){
+
+					// Every bit further to the left is a power of 2 higher than the last.
+					// If that channel should be on, we add the accompanying power of 2 value
+					// e.g.: turning on channel 3 would mean adding 2^4 = 16 to channelByte
+					if (this.channels[i].isOn) {
+
+						channelByte += Math.pow(2, i + 1)
+
+					}
+
+				}
+
+				// Let's set the chanelByte to 126 (all channels) for now
+				channelByte = 126
+
+				console.log("channelByte", channelByte, lights.app.toBitString(channelByte))
+
+				// Convert that number to a char
+				payload += String.fromCharCode(channelByte)
+
+				// Split interpolation time into 3 bytes
+				var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, false)
+
+				console.log("interpolationTime", interpolationTime)
+
+				payload += String.fromCharCode(interpolationTime[0])
+				payload += String.fromCharCode(interpolationTime[1])
+				payload += String.fromCharCode(interpolationTime[2])
+
+				for (var i = 0; i < this.channelCount; i++) {
+
+					for (var j = 0; j < 3; j++) {
+
+						var colorBytes = lights.app.splitBytes(rgb[i][j] * ((Math.pow(127, 2) - 1 ) / 255), 2, false)
+
+						payload += String.fromCharCode(colorBytes[0])
+						payload += String.fromCharCode(colorBytes[1])
+
+					}
+
+				}
+
+				console.log("Payload", payload, "Payload length", payload.length)
+				var tempPayload = ""
+				var tempArray = []
+
+				// Increase every number by 1 to prevent null termination issues
+				for(var i = 0; i < payload.length; i++) {
+
+					tempPayload += String.fromCharCode(payload.charCodeAt(i) + 1)
+					tempArray.push(payload.charCodeAt(i) + 1)
+
+				}
+
+				payload = tempPayload
+				console.log("Payload", payload, "Payload length", payload.length)
+				console.log(tempArray)
+
+				console.log(this)
+
+				var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
+
+				call.then(function(data) {
+
+						console.log('Function called succesfully:', data)
+
+					}, function(err) {
+
+						console.log('An error occurred:', err)
+
+					})
 
 			}
-
-			payload = tempPayload
-			console.log("Payload", payload, "Payload length", payload.length)
-			console.log(tempArray)
-
-			console.log(this)
-
-			var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
-
-			call.then(function(data) {
-
-					console.log('Function called succesfully:', data)
-
-				}, function(err) {
-
-					console.log('An error occurred:', err)
-
-				})
 
 		} else {
 
