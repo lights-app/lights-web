@@ -15,6 +15,8 @@ class RoomsOverviewView extends lrs.views.Page {
 		console.log(this)
 		
 		this.views.roomList.reset(lights.app.rooms)
+
+		this.rooms = lights.app.rooms
 		
 		return this
 	

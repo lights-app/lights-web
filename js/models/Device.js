@@ -74,6 +74,15 @@ class Device extends lrs.LRSObject {
 
 				self.parseConfig()
 
+				// Each time we get a new config we also trigger the deviceConfigChanged event
+				var event = new CustomEvent('deviceConfigChanged', {
+					detail: {
+						id: self.id
+					}
+				})
+
+				document.dispatchEvent(event)
+
 			}, function(err) {
 
 				console.log('An error occurred while getting attrs:', err)
@@ -357,13 +366,13 @@ class Device extends lrs.LRSObject {
 
 				call.then(function(data) {
 
-						console.log('Function called succesfully:', data)
+					console.log('Function called succesfully:', data)
 
-					}, function(err) {
+				}, function(err) {
 
-						console.log('An error occurred:', err)
+					console.log('An error occurred:', err)
 
-					})
+				})
 
 			}
 

@@ -11,6 +11,7 @@ class Color extends lrs.LRSObject {
 		this.rgb14 = []
 		this.hsv = []
 		this.hex = ""
+		this.hexPrefixed = ""
 		this.rgbToRgb14Factor = (Math.pow(127, 2) - 1) / 255
 		this.rgb14ToRgbFactor = 1 / this.rgbToRgb14Factor
 
@@ -21,6 +22,7 @@ class Color extends lrs.LRSObject {
 			this.rgb = [Math.round(color[0]), Math.round(color[1]), Math.round(color[2])]
 			this.hsv = lights.app.RGBtoHSV(color[0], color[1], color[2])
 			this.hex = lights.app.RGBtoHEX(this.rgb[0], this.rgb[1], this.rgb[2])
+			this.hexPrefixed = "#" + this.hex
 
 		}
 
@@ -31,6 +33,7 @@ class Color extends lrs.LRSObject {
 			this.rgb = [Math.round(this.rgbFloat[0]), Math.round(this.rgbFloat[1]), Math.round(this.rgbFloat[2])]
 			this.hsv = lights.app.RGBtoHSV(this.rgbFloat[0], this.rgbFloat[1], this.rgbFloat[2])
 			this.hex = lights.app.RGBtoHEX(this.rgb[0], this.rgb[1], this.rgb[2])
+			this.hexPrefixed = "#" + this.hex
 
 		}
 
@@ -41,6 +44,7 @@ class Color extends lrs.LRSObject {
 			this.rgb14 = [Math.round(this.rgbFloat[0] * this.rgbToRgb14Factor), Math.round(this.rgbFloat[1] * this.rgbToRgb14Factor), Math.round(this.rgbFloat[2] * this.rgbToRgb14Factor)]
 			this.rgb = [Math.round(this.rgbFloat[0]), Math.round(this.rgbFloat[1]), Math.round(this.rgbFloat[2])]
 			this.hex = lights.app.RGBtoHEX(this.rgb[0], this.rgb[1], this.rgb[2])
+			this.hexPrefixed = "#" + this.hex
 
 		}
 
@@ -51,6 +55,7 @@ class Color extends lrs.LRSObject {
 			this.rgbFloat = this.rgb
 			this.rgb14 = [this.rgb[0] * this.rgbToRgb14Factor, this.rgb[1] * this.rgbToRgb14Factor, this.rgb[2] * this.rgbToRgb14Factor]
 			this.hsv = lights.app.RGBtoHSV(this.rgb[0], this.rgb[1], this.rgb[2])
+			this.hexPrefixed = "#" + this.hex
 
 		}
 		

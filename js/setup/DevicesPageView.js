@@ -38,7 +38,7 @@ class DevicesPageView extends lrs.views.Page {
 		console.log(view, el, e)
 
 		// Clear the device list to prevent duplicate devices when user navigates back and forth
-		lights.app.devices = []
+		lights.app.devices = {}
 		
 		var containsNonLightsDevices = false
 
@@ -55,6 +55,7 @@ class DevicesPageView extends lrs.views.Page {
 				}
 
 				lights.app.devicesArray.push(deviceView.object)
+				console.log(deviceView.object)
 				lights.app.devices[deviceView.object.id] = deviceView.object
 				console.log(lights.app.devices)
 

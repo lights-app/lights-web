@@ -69,7 +69,8 @@ mixin roomTemplates
 					li.moment-list-item.add-moment-btn(data-action='click:addMoment()')
 						span +
 			img.room-icon(data-outlet='icon')
-		.lights-config
+		.lights-config(data-view='lightsConfig1')
+			.lights-config.front.active(data-view='lightsConfig2')
 
 	li.moment-list-item(data-template='MomentListItem' data-action='click:select()')
 		span(data-outlet='name')

@@ -30,24 +30,10 @@ class App extends lrs.View {
 
 		// Load devices stored in localStorage to a temporary variable
 		this._devices = this.storage('devices') || {}
+		// Create an object to hold the actual devices
 		this.devices = {}
-
 		// Create a devicesArray variable to store the devices in an array. Handy for view creation
 		this.devicesArray = []
-
-		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
-		for (let key in this._devices) {
-			
-			console.log(key)
-
-			this.devices[key] = lights.Device.fromParticleDevice(this._devices[key])
-			this.devicesArray.push(this.devices[key])
-
-		}
-
-		this.particleDevices = this.storage('particleDevices') || []
-
-		this.rooms = this.storage('rooms') || []
 
 		this.favouriteColors = this.storage('favouriteColors') || []
 
@@ -90,25 +76,38 @@ class App extends lrs.View {
 
 		if (this.particle.isLoggedIn) {
 
-			console.log(self)
+			// Create an object to temporarily hold Particle devices
+			this.particleDevices = {}
 
-			setTimeout( function() {
+			lights.app.particle.listDevices().then( function(response) {
+
+				for (let device of response.body) {
+
+					console.log(self)
+					
+					self.particleDevices[device.id] = lights.Device.fromParticleDevice(device)
+
+				}
+
+				console.log(self.particleDevices)
+
+				self.setDevices()
+
+				self.setRooms()
+
 				console.log(self)
-				self.views.setup.hide()
-				self.views.rooms.showView(new lrs.views.RoomsOverview())
-			}, 1)
 
-		}
+				setTimeout( function() {
+					console.log(self)
+					self.views.setup.hide()
+					self.views.rooms.showView(new lrs.views.RoomsOverview())
+				}, 1)
 
-		// After particle wrapper has been loaded, get the config of all devices
-		for (let key in this.devices) {
+			}).catch( function(err) {
 
-			console.log("Getting device config for", key)
-			
-			console.log(key)
+				console.error(err.stack)
 
-			this.devices[key].getConfig()
-
+			})
 		}
 
 		// Subscribe to device event stream to watch for changes
@@ -135,6 +134,47 @@ class App extends lrs.View {
 		
 		return this
 		
+	}
+
+	setDevices() {
+
+		console.log(this._devices)
+
+		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
+		for (let key in this._devices) {
+			
+			console.log(key)
+
+			this.devices[key] = lights.Device.fromParticleDevice(this.particleDevices[key])
+			this.devicesArray.push(this.devices[key])
+
+		}
+
+		// After particle wrapper has been loaded, get the config of all devices
+		for (let key in this.devices) {
+
+			console.log("Getting device config for", key)
+			
+			console.log(key)
+
+			this.devices[key].getConfig()
+
+		}
+
+	}
+
+	setRooms() {
+
+		// Take the same approach for the rooms as we did for lights.app.devices
+		this._rooms = this.storage('rooms') || []
+		this.rooms = []
+
+		for (let room of this._rooms) {
+
+			this.rooms.push(new lights.Room(room.name, room.icon, room.devices))
+
+		}
+
 	}
 	
 	didLoginToParticle(auth) {

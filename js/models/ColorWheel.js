@@ -50,7 +50,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		document.addEventListener('deviceConfigChanged', function(e){
 
-			return self.deviceConfigChangeHandler(e)
+			return self.deviceConfigChangedHandler(e)
 
 		})
 
@@ -300,7 +300,7 @@ class ColorWheelView extends lrs.views.Page {
 
 	}
 
-	deviceConfigChangeHandler(e) {
+	deviceConfigChangedHandler(e) {
 
 		console.log(e.detail.id)
 		console.log(this)
