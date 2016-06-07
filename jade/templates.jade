@@ -1,17 +1,55 @@
 mixin templates
+
+	button.add-btn(data-template='AddBtn' data-action='click:add()')
+		svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17 17" style="enable-background:new 0 0 17 17;" xml:space="preserve")
+			line(class="add-btn-line" x1="8.5" y1="0" x2="8.5" y2="17")
+			line(class="add-btn-line" x1="0" y1="8.5" x2="17" y2="8.5")
+
+	button.close-btn(data-template='CloseBtn' data-action='click:close()')
+		svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17 17" style="enable-background:new 0 0 17 17;" xml:space="preserve")
+			line(class="close-btn-line" x1="2.5" y1="2.5" x2="14.5" y2="14.5")
+			line(class="close-btn-line" x1="2.5" y1="14.5" x2="14.5" y2="2.5")
+
 	.toggle(data-template='Toggle' data-action='click:toggle()')
 		.toggle-fill
 		.toggle-state
 
 	.checkmark-container(data-template='Checkmark' data-action='click:toggle()' data-checked='false')
-		svg.checkmark(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 10 10" style="enable-background:new 0 0 10 10;" xml:space="preserve")
+		svg.checkmark(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 10 10" style="enable-background:new 0 0 10 10;" xml:space="preserve")
 			polyline(class="line" points="0,4.3 3.9,8.3 10,2.2 ")
+
+	li.device-list-item(data-template='DeviceListItem' data-action='click:toggle()')
+		.device-info-container
+			.checkmark(data-view='Checkmark:checkmark')
+			span(data-outlet='name')
+		.status-container
+			.lights-device-icon
+			.status
+
+	li.device-naming-list-item(data-template='DeviceNamingListItem')
+		input(type='text' data-outlet='name')
+
+	li.device-list-item.device-reprogramming-list-item(data-template='DeviceReprogrammingListItem')
+		.device-info-container
+			.checkmark(data-view='Checkmark:checkmark')
+			.processing
+				svg(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 25 25" style="enable-background:new 0 0 10 10;" xml:space="preserve")
+					circle(cx='12.5' cy='12.5' r='12.5' class='circle')
+			span.name(data-outlet='name')
+			span.message.flash-successful Device reprogrammed, reconnecting...
+			span.message.flash-failed Device reprograming failed, retrying...
+		.status-container
+			.lights-device-icon
+			.status
 
 	section.color-wheel(data-template='ColorWheel' data-action='click:toggle()')
 		header.toolbar
-			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			h1(data-outlet='name') 
-			button.close-new-room-btn(data-action='click:close()') X
+			.left
+				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			.title
+				h1(data-outlet='name')
+			.right
+				.close-btn(data-view='CloseBtn:closeBtn()')
 		section.page-content
 			.color-wheel-container
 				.brightness-slider-track

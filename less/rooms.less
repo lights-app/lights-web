@@ -1,6 +1,27 @@
 @room-icon-width: 100px;
 @room-icon-height: 75px;
 
+.room-list {
+
+	display: flex;
+	flex-direction: column;
+
+}
+
+.no-rooms {
+
+	max-width: 400px;
+	align-self: center;
+	margin-top: 40px;
+
+	h2 {
+
+		text-align: center;
+
+	}
+
+}
+
 .room-list-item {
 
 	display: flex; 
@@ -193,7 +214,7 @@
 
 	display: flex;
 	flex-direction: row;
-	overflow-x: scroll;
+	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 	width: 100%;
 
@@ -223,8 +244,9 @@
 
 	&.selected {
 
-		background-color: rgba(39, 50, 74, 0.3);
-		border: 1px solid @blue-1;
+		.color-rgba(@cool-gray-2-raw, 0.3);
+		background-color: @rgba;
+		border: 1px solid @cool-gray-2;
 		border-radius: 10px;
 
 		input {
@@ -234,5 +256,20 @@
 		}
 
 	}
+
+}
+
+.moment-naming-input {
+
+	.color-rgba(@cool-gray-2-raw, 0.2);
+
+	padding: 15px;
+
+	background-color: @rgba;
+
+	border: 1px solid @cool-gray-2;
+	border-radius: @btn-border-radius;
+	width: 300px;
+	text-align: center;
 
 }

@@ -41,6 +41,7 @@ class DevicesPageView extends lrs.views.Page {
 		lights.app.devices = {}
 		
 		var containsNonLightsDevices = false
+		var nonLightsDevices = []
 
 		for (let deviceView of this.views.lightsDeviceList.views.content) {
 
@@ -51,6 +52,9 @@ class DevicesPageView extends lrs.views.Page {
 					containsNonLightsDevices = true
 
 					deviceView.object.reprogram = true
+					deviceView.object.reprogrammed = false
+
+					nonLightsDevices.push(deviceView.object)
 
 				}
 
@@ -69,7 +73,7 @@ class DevicesPageView extends lrs.views.Page {
 
 			if(containsNonLightsDevices) {
 
-				this.owner.showView(new lrs.views.DevicesReprogrammingPage())
+				this.owner.showView(new lrs.views.DevicesReprogrammingPage({devices: nonLightsDevices}))
 
 			} else {
 

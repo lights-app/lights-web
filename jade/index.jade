@@ -12,10 +12,16 @@ body
 		.setup(data-view='Setup:setup')
 			section.welcome-page(data-view='Page:preloaded')
 				header.toolbar
-					button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-					h1(data-outlet='title') Welcome
+					.left
+						button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+					.title
+						h1(data-outlet='title') Lights
 				section.page-content
-					button(data-action='click:start()') Start
+					.image.self-center.lights-icon
+						h1.lights-icon-text Hello!
+
+					p.self-center.text-center Let's walk through setting up your first Lights
+					button.box-btn(data-action='click:start()') Start
 
 		.settings
 		.rooms(data-view='Rooms:rooms')

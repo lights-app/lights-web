@@ -33,12 +33,23 @@ class NewRoomCompletionPageView extends lrs.views.Page {
 		// Add the new room to the view
 		view.owner.views.content[0].views.roomList.add(view.room)
 
+		// Just to be sure, try to remove the "no rooms" message from the rooms views
+		try {
+
+			view.owner.views.content[0].views.roomList.views.noRooms.remove()
+
+		} catch (err) {
+
+			console.log(err)
+
+		}
+
 		// Return to rooms overview
 		view.owner.showView(view.owner.views.content[0])
 
 	}
 
-	newMomentAction() {
+	newMomentAction(view, el, e) {
 
 		console.log(this)
 
@@ -50,6 +61,17 @@ class NewRoomCompletionPageView extends lrs.views.Page {
 
 		// Add the new room to the view
 		this.owner.views.content[0].views.roomList.add(this.room)
+		
+		// Just to be sure, try to remove the "no rooms" message from the rooms views
+		try {
+
+			view.owner.views.content[0].views.roomList.views.noRooms.remove()
+
+		} catch (err) {
+
+			console.log(err)
+
+		}
 
 		// Get the RoomListItemView object from the roomList (needed for the creation of a new moment)
 		var roomView = this.owner.views.content[0].views.roomList.content[this.owner.views.content[0].views.roomList.content.length - 1].view

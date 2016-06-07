@@ -6,10 +6,13 @@ class Device extends lrs.LRSObject {
 
 		var attributes = device
 
-		let parsedName = device.name.split("||")
+		let parsedName = device.name.split("__")
 
 		if (parsedName[0] === "Lights") {
 
+			// Replace all remaining underscores with spaces.
+			// Underscores are added by Particle as replacements for spaces when renaming a device
+			parsedName[1] = parsedName[1].replace(new RegExp('_', 'g'), " ")
 			attributes.roomName = parsedName[1]
 			attributes.isLightsDevice = true
 

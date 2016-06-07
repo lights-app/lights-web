@@ -14,6 +14,10 @@ class DeviceListItemView extends lrs.views.ListItem {
 
 		this._object = object
 
+		var self = this
+
+		console.log(this)
+
 		this.name = this.object.roomName || this.object.name
 
 		if (this.object.connected) {
@@ -28,13 +32,54 @@ class DeviceListItemView extends lrs.views.ListItem {
 
 		}
 
+		document.addEventListener('deviceCameOnline', function(e){
+
+			return self.deviceCameOnlineHandler(e)
+
+		})
+
+		document.addEventListener('deviceWentOffline', function(e){
+
+			return self.deviceWentOfflineHandler(e)
+
+		})
+
 	}
 
 	toggleAction() {
 
+		console.log(this)
+
 		this.selected = !this.selected
 
 		this.classList.toggle('selected', this.selected)
+
+		this.views.checkmark.toggleAction()
+
+
+	}
+
+	deviceCameOnlineHandler(e) {
+
+		if (e.detail.id === this.object.id) {
+
+			console.log(e, this)
+
+			this.classList.add('connected')
+
+		}
+
+	}
+
+	deviceWentOfflineHandler(e) {
+
+		if (e.detail.id === this.object.id) {
+
+			console.log(e, this)
+
+			this.classList.remove('connected')
+
+		}
 
 	}
 

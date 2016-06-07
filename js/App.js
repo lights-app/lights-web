@@ -13,7 +13,7 @@ class App extends lrs.View {
 		window.lights.app = this
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
-		this.requiresParticleVersion = [0, 0, 0]
+		this.requiresParticleVersion = [0, 1, 0]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
 
@@ -95,12 +95,15 @@ class App extends lrs.View {
 
 				self.setRooms()
 
+				self.subscribeToEventStream()
+
 				console.log(self)
 
 				setTimeout( function() {
 					console.log(self)
 					self.views.setup.hide()
 					self.views.rooms.showView(new lrs.views.RoomsOverview())
+					// self.views.rooms.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
 				}, 1)
 
 			}).catch( function(err) {
@@ -109,28 +112,6 @@ class App extends lrs.View {
 
 			})
 		}
-
-		// Subscribe to device event stream to watch for changes
-		this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
-			stream.on('event', function(data) {
-				console.log("Event:", data)
-
-				if (data.name === "configChanged") {
-
-					var event = new CustomEvent('deviceConfigChanged', {
-						detail: {
-							id: data.coreid
-						}
-					})
-
-					self.devices[data.coreid].config = data.data
-					self.devices[data.coreid].parseConfig()
-
-					document.dispatchEvent(event)
-
-				}
-			})
-		})
 		
 		return this
 		
@@ -174,6 +155,104 @@ class App extends lrs.View {
 			this.rooms.push(new lights.Room(room.name, room.icon, room.devices))
 
 		}
+
+	}
+
+	subscribeToEventStream() {
+
+		// Subscribe to device event stream to watch for changes
+		this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
+			stream.on('event', function(data) {
+				console.log("Event:", data)
+
+				if (data.name === "configChanged") {
+
+					var event = new CustomEvent('deviceConfigChanged', {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					self.devices[data.coreid].config = data.data
+					self.devices[data.coreid].parseConfig()
+
+					document.dispatchEvent(event)
+
+				}
+
+				// If a device came online, change its connected property to true
+				if (data.name === "spark/status" && data.data === "online") {
+
+					var event = new CustomEvent('deviceCameOnline', {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+					console.log("Device", data.coreid, "came online")
+
+					lights.app.devices[data.coreid].connected = true
+
+					for (let device of lights.app.devicesArray) {
+
+						if (device.id === data.coreid) {
+
+							device.connected = true
+
+						}
+
+					}
+
+				}
+
+				// If a device went offline, change its connected property to false
+				if (data.name === "spark/status" && data.data === "offline") {
+
+					var event = new CustomEvent('deviceWentOffline', {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+					console.log("Device", data.coreid, "went offline")
+
+					lights.app.devices[data.coreid].connected = false
+
+					for (let device of lights.app.devicesArray) {
+
+						if (device.id === data.coreid) {
+
+							device.connected = false
+
+						}
+
+					}
+
+				}
+
+				// If firmware has been flashed successfully
+				// For some reason, the data.data has to have a space at the end
+				if (data.name === "spark/flash/status" && data.data === "success ") {
+
+					console.log("Device flash successful!")
+
+					var event = new CustomEvent('flashSuccessful', {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+				}
+
+			})
+
+		})
 
 	}
 	

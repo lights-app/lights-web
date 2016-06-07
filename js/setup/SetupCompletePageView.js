@@ -16,10 +16,10 @@ class SetupCompletePageView extends lrs.views.Page {
 			
 		}
 		
-		setTimeout( function() {
-			self.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
-			self.owner.owner.views.setup.hide()
-		}, 2000)
+		// setTimeout( function() {
+		// 	self.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
+		// 	self.owner.owner.views.setup.hide()
+		// }, 2000)
 
 		return this
 		
@@ -30,7 +30,7 @@ class SetupCompletePageView extends lrs.views.Page {
 		console.log(this)
 
 		this.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
-		this.owner.showView(new lrs.views.Rooms())
+		// this.owner.showView(new lrs.views.Rooms())
 		this.owner.owner.views.setup.hide()
 
 	}

@@ -9,7 +9,8 @@
 
 	.page-content {
 
-		height: ~"calc(100% - @{toolbar-height})";
+		max-height: ~"calc(768px - @{toolbar-height})";
+		max-width: 1024px;
 
 		display: flex;
 		flex-direction: column;
@@ -22,8 +23,8 @@
 
 .color-wheel-container {
 
-	max-width: 600px;
-	max-height: 600px;
+	max-width: 470px;
+	max-height: 470px;
 	margin-top: 40px;
 	// background-color: red;
 
@@ -65,7 +66,7 @@
 	background-color: @blue-0;
 	width: @on-off-btn-width;
 	height: @on-off-btn-height;
-		left: ~"calc(50% - (@{on-off-btn-width} / 2))";
+	left: ~"calc(50% - (@{on-off-btn-width} / 2))";
 	bottom: -(@on-off-btn-height / 2);
 
 	.on-off-btn {
@@ -301,6 +302,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	padding: 0 80px;
 
 }
 
@@ -318,16 +320,20 @@
 
 	border-bottom: 1px solid @blue-1;
 
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+
 }
 
 .favourite-colors-list {
 
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
 
 	width: 100%;
-	overflow-x: auto;
-	-webkit-overflow-scrolling: touch;
+	overflow: visible;
 
 }
 
@@ -346,8 +352,8 @@
 	justify-content: center;
 
 	position: relative;
-	margin: 10px;
-	margin-top: 13px;
+	// margin: 10px;
+	margin: 13px 10px 10px 0;
 
 	border: 1px solid @blue-3;
 	border-radius: @border-radius;

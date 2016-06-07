@@ -1,3 +1,266 @@
+.device-list {
+
+	max-width: 300px;
+
+	border: 1px solid @cool-gray-2;
+	margin: 10px;
+	// max-width: 320px;
+	border-radius: @btn-border-radius;
+	overflow: hidden;
+
+}
+
+.device-list-item {
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	min-width: 300px;
+	padding: 15px;
+
+	border-bottom: 1px solid @cool-gray-2;
+
+	cursor: pointer;
+
+	&:last-child {
+
+		border-bottom: none;
+
+	}
+
+	.device-info-container {
+
+		display: flex;
+		align-items: center;
+		position: relative;
+
+	}
+
+	.checkmark {
+
+		// Disable pointer events so toggleAction won't be triggered twice
+		pointer-events: none;
+
+	}
+
+	span {
+
+		margin-left: 15px;
+
+	}
+
+	.status-container {
+
+		align-self: flex-end;
+
+		.lights-device-icon {
+
+			width: @status-symbol-size;
+			height: @status-symbol-size;
+
+			margin-right: @status-symbol-size / 2;
+
+			background-image: url('/static/img/Lights icon-10px.svg');
+			background-size: contain;
+
+			display: inline-block;
+
+			transform: scale3d(0, 0, 0);
+
+			transition: all 0.3s ease;
+		}
+
+		.status {
+
+			width: @status-symbol-size;
+			height: @status-symbol-size;
+			background-color: @red;
+
+			border-radius: 1000px;
+
+			display: inline-block;
+
+			transition: all 0.3s ease;
+
+		}
+
+	}
+
+	&.selected {
+	
+		background-color: rgba(255, 255, 255, 0.08);
+		
+	}
+
+	&.lights-device{
+
+		.lights-device-icon {
+
+			transform: scale3d(1, 1, 1);
+			
+		}
+
+	}
+
+	&.connected {
+
+		.status {
+
+			background-color: @green;
+
+		}
+
+	}
+
+}
+
+.device-naming-list {
+
+	min-width: 300px;
+	position: relative;
+
+	border-radius: @btn-border-radius;
+	border: 1px solid @cool-gray-2;
+
+	.device-naming-list-item {
+
+		width: 100%;
+		border-bottom: 1px solid @cool-gray-2;
+
+		&:last-child {
+
+			border-bottom: none;
+
+		}
+
+		input {
+
+			width: 100%;
+			background-color: transparent;
+			border: none;
+			color: @text-color;
+			padding: 15px;
+
+		}
+
+	}
+
+}
+
+.device-reprogramming-list-item {
+
+	cursor: initial;
+
+	transition: all 0.3s ease;
+
+	.message {
+
+		display: block;
+		position: absolute;
+
+		left: 25px;
+		top: -8px;
+
+		width: 190px;
+
+		opacity: 0;
+
+	}
+
+	.processing {
+
+		width: 25px;
+		height: 25px;
+		overflow: visible;
+
+		position: absolute;
+
+		left: 0;
+		top: 0;
+
+		svg {
+
+			overflow: visible;
+
+		}
+
+		.circle {
+
+			stroke: @text-color;
+			stroke-width: 2px;
+			stroke-dasharray: 20px;
+
+			fill: none;
+
+			transform-origin: 50% 50%;
+
+			animation: rotate 1s infinite;
+			transition: all 0.3s ease;
+
+		}
+
+	}
+
+	&.lights-device {
+
+		.color-rgba(@green-raw, 0.1);
+
+		.flash-successful {
+
+			animation: show-short 3s;
+
+		}
+
+		.name {
+
+			animation: hide-short 3s;
+
+		}
+
+		.circle {
+
+			stroke-dasharray: 60px;
+
+		}
+
+		&.connected{
+
+			background-color: @rgba;
+
+			.circle {
+
+				stroke-width: 0px;
+
+			}
+
+		}
+
+	}
+
+	&.flash-failed {
+
+		.color-rgba(@red-raw, 0.1);
+
+		background-color: @rgba;
+
+		.flash-failed.message {
+
+			animation: show-short 3s;
+
+		}
+
+		.name {
+
+			animation: hide-short 3s;
+			
+		}
+
+	}
+
+}
+
 .toggle {
 
 	@toggle-height: 25px;
@@ -84,7 +347,7 @@
 
 	border-radius: 1000px;
 
-	border: 1px solid @blue-2;
+	border: 1px solid @cool-gray-2;
 
 	display: flex;
 	align-items: center;
@@ -97,14 +360,14 @@
 	&::after {
 
 		content: '';
-		background-color: @blue-2;
+		background-color: @cool-gray-2;
 		position: absolute;
 		top: -1px;
 		right: -1px;
 		bottom: -1px;
 		left: -1px;
 		border-radius: 1000px;
-		z-index: -1;
+		// z-index: -1;
 
 		transform: scale3d(0, 0, 0);
 
@@ -117,6 +380,7 @@
 		width: 100%;
 
 		overflow: visible;
+		z-index: 1;
 
 		.line {
 
@@ -174,3 +438,62 @@
 
 }
 
+@keyframes rotate {
+
+	0% {
+
+		transform: rotate3d(0, 0, 1, 0deg)
+
+	}
+
+	100% {
+
+		transform: rotate3d(0, 0, 1, 360deg)
+
+	}
+
+}
+
+@keyframes show-short {
+
+	0% {
+
+		opacity: 0;
+
+	}
+
+	10% {
+
+		opacity: 1;
+
+	}
+
+	90% {
+
+		opacity: 1;
+		
+	}
+
+}
+
+@keyframes hide-short {
+
+	0% {
+
+		opacity: 1;
+
+	}
+
+	10% {
+
+		opacity: 0;
+
+	}
+
+	90% {
+
+		opacity: 0;
+		
+	}
+
+}
