@@ -13,6 +13,7 @@ class App extends lrs.View {
 		window.lights.app = this
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
+		this.eventStreamsConfigured = false
 		this.requiresParticleVersion = [0, 1, 0]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
@@ -95,15 +96,15 @@ class App extends lrs.View {
 
 				self.setRooms()
 
-				self.subscribeToEventStream()
+				self.subscribeToEventStreams()
 
 				console.log(self)
 
 				setTimeout( function() {
 					console.log(self)
 					self.views.setup.hide()
-					self.views.rooms.showView(new lrs.views.RoomsOverview())
-					// self.views.rooms.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
+					// self.views.rooms.showView(new lrs.views.RoomsOverview())
+					self.views.rooms.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
 				}, 1)
 
 			}).catch( function(err) {
@@ -158,14 +159,62 @@ class App extends lrs.View {
 
 	}
 
-	subscribeToEventStream() {
+	subscribeToEventStreams() {
 
-		// Subscribe to device event stream to watch for changes
-		this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
-			stream.on('event', function(data) {
-				console.log("Event:", data)
+		console.log(this.eventStreamsConfigured)
 
-				if (data.name === "configChanged") {
+		if (!this.eventStreamsConfigured){
+
+			this.deviceStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+				stream.on('event', function(data) {
+
+					console.log(data)
+
+					var eventType = ""
+					var deviceOnline
+
+					if (data.data.indexOf('online') > -1) { 
+
+						eventType = 'deviceCameOnline'
+						deviceOnline = true
+
+					}
+
+					if (data.data.indexOf('offline') > -1) { 
+
+						eventType = 'deviceWentOffline'
+						deviceOnline = false
+
+					}
+
+					var event = new CustomEvent(eventType, {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+					console.log("Device", data.coreid, data.data)
+
+					lights.app.devices[data.coreid].connected = true
+
+					for (let device of lights.app.devicesArray) {
+
+						if (device.id === data.coreid) {
+
+							device.connected = deviceOnline
+
+						}
+
+					}
+
+				})
+
+			})
+
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', name: 'configChanged', auth: this.particle.auth.accessToken}).then(function(stream) {
+				stream.on('event', function(data) {
 
 					var event = new CustomEvent('deviceConfigChanged', {
 						detail: {
@@ -178,81 +227,52 @@ class App extends lrs.View {
 
 					document.dispatchEvent(event)
 
-				}
-
-				// If a device came online, change its connected property to true
-				if (data.name === "spark/status" && data.data === "online") {
-
-					var event = new CustomEvent('deviceCameOnline', {
-						detail: {
-							id: data.coreid
-						}
-					})
-
-					document.dispatchEvent(event)
-
-					console.log("Device", data.coreid, "came online")
-
-					lights.app.devices[data.coreid].connected = true
-
-					for (let device of lights.app.devicesArray) {
-
-						if (device.id === data.coreid) {
-
-							device.connected = true
-
-						}
-
-					}
-
-				}
-
-				// If a device went offline, change its connected property to false
-				if (data.name === "spark/status" && data.data === "offline") {
-
-					var event = new CustomEvent('deviceWentOffline', {
-						detail: {
-							id: data.coreid
-						}
-					})
-
-					document.dispatchEvent(event)
-
-					console.log("Device", data.coreid, "went offline")
-
-					lights.app.devices[data.coreid].connected = false
-
-					for (let device of lights.app.devicesArray) {
-
-						if (device.id === data.coreid) {
-
-							device.connected = false
-
-						}
-
-					}
-
-				}
-
-				// If firmware has been flashed successfully
-				// For some reason, the data.data has to have a space at the end
-				if (data.name === "spark/flash/status" && data.data === "success ") {
-
-					console.log("Device flash successful!")
-
-					var event = new CustomEvent('flashSuccessful', {
-						detail: {
-							id: data.coreid
-						}
-					})
-
-					document.dispatchEvent(event)
-
-				}
+				})
 
 			})
 
-		})
+			this.flashStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/flash/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+				stream.on('event', function(data) {
+
+					console.log(data)
+
+					var eventType = ""
+
+					if (data.data.indexOf('started') > -1) { 
+
+						eventType = 'flashStarted'
+
+					}
+
+					if (data.data.indexOf('success') > -1) { 
+
+						eventType = 'flashSuccessful'
+
+					}
+
+					if (data.data.indexOf('failed') > -1) { 
+
+						eventType = 'flashFailed'
+
+					}
+
+					var event = new CustomEvent(eventType, {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+					console.log("Flashing", data.coreid, data.data)
+
+				})
+
+			})
+
+			this.eventStreamsConfigured = true
+
+		}
 
 	}
 	

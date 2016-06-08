@@ -35,6 +35,7 @@
 		display: flex;
 		align-items: center;
 		position: relative;
+		overflow: visible;
 
 	}
 
@@ -155,30 +156,47 @@
 
 	transition: all 0.3s ease;
 
+	.name {
+
+		transition: all 0.3s ease;
+
+	}
+
 	.message {
 
 		display: block;
 		position: absolute;
 
 		left: 25px;
-		top: -8px;
+		bottom: -8px;
 
 		width: 190px;
 
+		font-size: 10px;
+
+		color: @cool-gray-3;
+
 		opacity: 0;
 
+		transition: all 0.3s ease;
+
 	}
+
+	@stroke-length: 90px;
+	@stroke-length-reprogramming: 20px;
+	@stroke-length-connecting: 40px;
 
 	.processing {
 
 		width: 25px;
 		height: 25px;
-		overflow: visible;
 
 		position: absolute;
 
-		left: 0;
 		top: 0;
+		left: 0;
+
+		overflow: visible;
 
 		svg {
 
@@ -189,15 +207,95 @@
 		.circle {
 
 			stroke: @text-color;
-			stroke-width: 2px;
-			stroke-dasharray: 20px;
+			stroke-width: 1px;
+			stroke-dasharray: @stroke-length;
+			stroke-dashoffset: @stroke-length;
+
+			overflow: visible;
 
 			fill: none;
 
 			transform-origin: 50% 50%;
 
-			animation: rotate 1s infinite;
+			// animation: rotate 1s linear infinite;
 			transition: all 0.3s ease;
+
+		}
+
+	}
+
+	&.reprogramming{
+
+		.processing {
+
+			overflow: visible;
+
+			.circle {
+
+				// stroke-width: 2px;
+				stroke-dashoffset: @stroke-length - @stroke-length-reprogramming;
+				animation: rotate 1s linear infinite;
+
+			}
+
+		}
+
+		.name {
+
+			transform: translate3d(0, -8px, 0);
+
+		}
+
+		.flashing {
+
+			opacity: 1;
+
+		}
+
+	}
+
+	&.connecting {
+
+		.processing {
+
+			overflow: visible;
+
+			.circle {
+
+				// stroke-width: 2px;
+				stroke: @bright-blue-2;
+				stroke-dashoffset: @stroke-length - @stroke-length-connecting;
+				animation: rotate .5s linear infinite;
+
+			}
+
+		}
+
+		.name {
+
+			transform: translate3d(0, -8px, 0);
+
+		}
+
+		.flashing {
+
+			opacity: 0;
+			
+		}
+
+		.flash-successful {
+
+			opacity: 1;
+
+		}
+
+	}
+
+	.connected {
+
+		.flash-successful {
+
+			opacity: 0;
 
 		}
 
@@ -206,24 +304,6 @@
 	&.lights-device {
 
 		.color-rgba(@green-raw, 0.1);
-
-		.flash-successful {
-
-			animation: show-short 3s;
-
-		}
-
-		.name {
-
-			animation: hide-short 3s;
-
-		}
-
-		.circle {
-
-			stroke-dasharray: 60px;
-
-		}
 
 		&.connected{
 
@@ -245,16 +325,16 @@
 
 		background-color: @rgba;
 
-		.flash-failed.message {
+		.name {
 
-			animation: show-short 3s;
+			transform: translate3d(0, -8px, 0);
 
 		}
 
-		.name {
+		.flash-failed.message {
 
-			animation: hide-short 3s;
-			
+			opacity: 1;
+
 		}
 
 	}

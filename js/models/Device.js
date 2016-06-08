@@ -18,7 +18,9 @@ class Device extends lrs.LRSObject {
 
 		} else {
 
-			attributes.roomName = device.name
+			// Replace all remaining underscores with spaces.
+			// Underscores are added by Particle as replacements for spaces when renaming a device
+			attributes.roomName = device.name.replace(new RegExp('_', 'g'), " ")
 			attributes.isLightsDevice = false
 
 		}
@@ -75,26 +77,35 @@ class Device extends lrs.LRSObject {
 
 				self.lastUpdated = Date.now()
 
-				self.parseConfig()
+				if(self.parseConfig()) { 
 
-				// Each time we get a new config we also trigger the deviceConfigChanged event
-				var event = new CustomEvent('deviceConfigChanged', {
-					detail: {
-						id: self.id
-					}
-				})
+					console.log("Config fetched and parsed successfully!")
 
-				document.dispatchEvent(event)
+					return true 
+
+				}
+
+				// // Each time we get a new config we also trigger the deviceConfigChanged event
+				// var event = new CustomEvent('deviceConfigChanged', {
+				// 	detail: {
+				// 		id: self.id
+				// 	}
+				// })
+
+				// document.dispatchEvent(event)
 
 			}, function(err) {
 
 				console.log('An error occurred while getting attrs:', err)
+
+				return false
 
 			})
 
 		} else {
 
 			console.log("Device ", this.id, "not connected")
+			return false
 		}
 
 	}
@@ -233,6 +244,8 @@ class Device extends lrs.LRSObject {
 
 			}
 
+			return true
+
 		} else {
 
 			var configArray = []
@@ -251,6 +264,8 @@ class Device extends lrs.LRSObject {
 
 			console.log('Config length incorrect, try refreshing device config')
 
+			return false
+
 		}
 
 	}
@@ -263,28 +278,35 @@ class Device extends lrs.LRSObject {
 			// As soon as a difference is found we can send the data
 			var isEqual = true
 
-			for (var i = 0; i < this.channelCount; i++) {
+			try {
 
-				for (var j = 0; j < this.channels[i].rgb.length; j++) {
+				for (var i = 0; i < this.channelCount; i++) {
 
-					console.log(this.channels[i].rgbFloat[j].toFixed(3), rgb[i][j].toFixed(3))
+					for (var j = 0; j < this.channels[i].rgb.length; j++) {
 
-					if (this.channels[i].rgbFloat[j].toFixed(3) !== rgb[i][j].toFixed(3)) {
+						console.log(this.channels[i].rgbFloat[j].toFixed(3), rgb[i][j].toFixed(3))
 
-						console.log("Different color!")
-						isEqual = false
+						if (this.channels[i].rgbFloat[j].toFixed(3) !== rgb[i][j].toFixed(3)) {
+
+							console.log("Different color!")
+							isEqual = false
+
+						}
 
 					}
 
+					if (!isEqual) {
+
+						var color = new lights.Color(rgb[i], 'rgb')
+
+						// Set the light's current color to the new color
+						this.channels[i] = color
+					}
+
 				}
+			} catch (err) {
 
-				if (!isEqual) {
-
-					var color = new lights.Color(rgb[i], 'rgb')
-
-					// Set the light's current color to the new color
-					this.channels[i] = color
-				}
+				isEqual = false
 
 			}
 
@@ -403,6 +425,26 @@ class Device extends lrs.LRSObject {
 			}
 
 		}
+
+	}
+
+	resetConfig() {
+
+		var argument = String.fromCharCode('z'.charCodeAt(0) + 1)
+
+		console.warn("Resetting", this.id, "config")
+
+		var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: argument, auth: lights.app.particle.auth.accessToken })
+
+		call.then(function(data) {
+
+			console.log('Function called succesfully:', data)
+
+		}, function(err) {
+
+			console.log('An error occurred:', err)
+
+		})
 
 	}
 

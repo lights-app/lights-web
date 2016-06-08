@@ -72,7 +72,7 @@ class DevicesPageView extends lrs.views.Page {
 			lights.app.storage('devices', lights.app.devices)
 
 			if(containsNonLightsDevices) {
-
+				console.log(nonLightsDevices)
 				this.owner.showView(new lrs.views.DevicesReprogrammingPage({devices: nonLightsDevices}))
 
 			} else {

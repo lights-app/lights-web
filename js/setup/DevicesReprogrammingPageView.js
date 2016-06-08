@@ -14,11 +14,19 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 		this.url = "/static/bin/lights.bin"
 
-		this.views.lightsDeviceList.reset(lights.app.devicesArray)
+		this.devices = args.devices
+
+		this.views.lightsDeviceList.reset(this.devices)
 
 		document.addEventListener('flashSuccessful', function(e){
 
 			return self.flashSuccessfulHandler(e)
+
+		})
+
+		document.addEventListener('flashFailed', function(e){
+
+			return self.flashFailedHandler(e)
 
 		})
 
@@ -28,55 +36,87 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 		})
 
-		for (let device of args.devices) {
-
-			this.flashFirmware(device, this.url)
-
-		}
-
 		return this
 
 	}
 
-	flashFirmware(device, url) {
+	reprogramAction() {
 
-		console.log(device, url)
+		var self = this
 
-		// Create a new XMLHttpRequest.
-		// Just giving a url to the binary file does not work when flashing firmware. We first have to GET the file
-		var xhr = new XMLHttpRequest()
+		for (let device of this.views.lightsDeviceList.content) {
 
-		// Set the event handler for when the request is completed
-		xhr.onload = function(e) {
+			console.log(device)
 
-			// Create a new file from the response
-			var file = new File([xhr.response], 'lights.bin')
-
-			// Flash the binary firmware to the specified device
-			var flash = lights.app.particle.flashDevice({deviceId: device.id, files: { file1: file}, auth: lights.app.particle.auth.accessToken })
-
-			flash.then (
-
-				function(data) {
-					console.log('Device flashing started successfully', data)
-				}, function(err) {
-					console.log('An error occured while flashing the device', err)
-				}
-
-				)
+			self.flashFirmware(device.object, self.url, device)
 
 		}
 
-		// Get the file
-		xhr.open("GET", url)
-		// Specify the filetype
-		xhr.responseType = "arraybuffer"
-		// Make the request
-		xhr.send()
+	}
+
+	flashFirmware(device, url, deviceView) {
+
+		var self = this
+
+		if(device.connected) {
+
+			device.connectedAfterFlash = false
+
+			deviceView.view.classList.add('reprogramming')
+			deviceView.view.classList.remove('connected')
+
+			console.log("Flashing Lights firmware to", device)
+
+			// Create a new XMLHttpRequest.
+			// Just giving a url to the binary file does not work when flashing firmware. We first have to GET the file
+			var xhr = new XMLHttpRequest()
+
+			// Set the event handler for when the request is completed
+			xhr.onload = function(e) {
+
+				// Create a new file from the response
+				var file = new File([xhr.response], 'lights.bin')
+
+				// Flash the binary firmware to the specified device
+				var flash = lights.app.particle.flashDevice({deviceId: device.id, files: { file1: file}, auth: lights.app.particle.auth.accessToken })
+
+				flash.then (
+
+					function(data) {
+						console.log('Device flashing started successfully', data)
+					}, function(err) {
+						console.log('An error occured while flashing the device, trying again', err)
+						console.log(device, self.url)
+
+						// setTimeout(function(){
+
+						// 	self.flashFirmware(device, self.url)
+
+						// }, 5000)
+						
+					}
+
+					)
+
+			}
+
+			// Get the file
+			xhr.open("GET", url)
+			// Specify the filetype
+			xhr.responseType = "arraybuffer"
+			// Make the request
+			xhr.send()
+
+		} else {
+
+			console.warn(device.id, "not connected")
+		}
 
 	}
 
 	flashSuccessfulHandler(e) {
+
+		var self = this
 
 		console.log(e)
 
@@ -85,39 +125,66 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 		lights.app.devices[e.detail.id].reprogram = false
 		lights.app.devices[e.detail.id].reprogrammed = true
 
-		var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName, auth: lights.app.particle.auth.accessToken})
+		// var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName, auth: lights.app.particle.auth.accessToken})
 
-		rename.then(
+		// rename.then(
 
-			function(data) {
+		// 	function(data) {
 
-				console.log('Device renamed successfully to ' + newName, data)
+		// 		console.log('Device renamed successfully to ' + newName, data)
 
-			}, function(err) {
+		// 	}, function(err) {
 
-				console.log('An error occured while renaming device to' + newName, err)
+		// 		console.log('An error occured while renaming device to' + newName, err)
 
-			}
+		// 	}
 
-			)
+		// 	)
+
+	}
+
+	flashFailedHandler(e) {
+
+		console.log("Flashing", e.detail.id, "failed, retrying...")
+		lights.app.devices[e.detail.id].reprogram = true
+		lights.app.devices[e.detail.id].reprogrammed = false
 
 	}
 
 	deviceCameOnlineHandler(e) {
 
 		var allDevicesReprogrammed = true
+		var allDevicesOnline = false
 
-		for (let device of lights.app.devicesArray) {
+		for (let device of this.devices) {
 
 			if (device.reprogram && !device.reprogrammed) {
 
 				allDevicesReprogrammed = false
+				this.flashFirmware(device, this.url)
+
+			} else {
+
+				if (device.id === e.detail.id) {
+
+					device.connectedAfterFlash = true
+
+					// Immediately reset the config of the device
+					device.resetConfig()
+
+				}
+
+				if (!device.connectedAfterFlash) {
+
+					allDevicesOnline = false
+
+				}
 
 			}
 
 		}
 
-		if (allDevicesReprogrammed) {
+		if (allDevicesReprogrammed && allDevicesOnline) {
 
 			console.log("All devices have been reprogrammed")
 
