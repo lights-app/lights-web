@@ -13,21 +13,24 @@ class RoomsOverviewView extends lrs.views.Page {
 		super(el, options)
 
 		console.log(this)
+
+		lights.app.setRooms()
+
+		if(lights.app.rooms.length > 0) {
+
+			this.views.roomList.views.noRooms.remove()
+
+		}
 		
 		this.views.roomList.reset(lights.app.rooms)
 
-		// Get initial device configs
-		for (let key in lights.app.devices) {
-
-			lights.app.devices[key].getConfig()
-
-		}
+		this.rooms = lights.app.rooms
 		
 		return this
 	
 	}
 
-	newRoomAction(view, el, e) {
+	addAction(view, el, e) {
 
 		this.owner.showView(new lrs.views.NewRoomDevicesPage())
 

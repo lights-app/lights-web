@@ -1,22 +1,61 @@
 mixin templates
+
+	button.add-btn(data-template='AddBtn' data-action='click:add()')
+		svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17 17" style="enable-background:new 0 0 17 17;" xml:space="preserve")
+			line(class="add-btn-line" x1="8.5" y1="0" x2="8.5" y2="17")
+			line(class="add-btn-line" x1="0" y1="8.5" x2="17" y2="8.5")
+
+	button.close-btn(data-template='CloseBtn' data-action='click:close()')
+		svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17 17" style="enable-background:new 0 0 17 17;" xml:space="preserve")
+			line(class="close-btn-line" x1="2.5" y1="2.5" x2="14.5" y2="14.5")
+			line(class="close-btn-line" x1="2.5" y1="14.5" x2="14.5" y2="2.5")
+
 	.toggle(data-template='Toggle' data-action='click:toggle()')
 		.toggle-fill
 		.toggle-state
 
 	.checkmark-container(data-template='Checkmark' data-action='click:toggle()' data-checked='false')
-		svg.checkmark(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 10 10" style="enable-background:new 0 0 10 10;" xml:space="preserve")
+		svg.checkmark(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 10 10" style="enable-background:new 0 0 10 10;" xml:space="preserve")
 			polyline(class="line" points="0,4.3 3.9,8.3 10,2.2 ")
+
+	li.device-list-item(data-template='DeviceListItem' data-action='click:toggle()')
+		.device-info-container
+			.checkmark(data-view='Checkmark:checkmark')
+			span(data-outlet='name')
+		.status-container
+			.lights-device-icon
+			.status
+
+	li.device-naming-list-item(data-template='DeviceNamingListItem')
+		input(type='text' data-outlet='name')
+
+	li.device-list-item.device-reprogramming-list-item(data-template='DeviceReprogrammingListItem')
+		.device-info-container
+			.checkmark(data-view='Checkmark:checkmark')
+			.processing
+				svg(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 25 25" style="enable-background:new 0 0 10 10;" xml:space="preserve")
+					circle(cx='12.5' cy='12.5' r='12' class='circle')
+			span.name(data-outlet='name')
+			span.message.flashing Reprogramming device
+			span.message.flash-successful Device reprogrammed, reconnecting...
+			span.message.flash-failed Device reprograming failed, retrying...
+		.status-container
+			.lights-device-icon
+			.status
 
 	section.color-wheel(data-template='ColorWheel' data-action='click:toggle()')
 		header.toolbar
-			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			h1(data-outlet='name') 
-			button.close-new-room-btn(data-action='click:close()') X
+			.left
+				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			.title
+				h1(data-outlet='name')
+			.right
+				.close-btn(data-view='CloseBtn:closeBtn()')
 		section.page-content
 			.color-wheel-container
 				.brightness-slider-track
 					.on-off-btn-container
-						button.on-off-btn(data-view='onOffBtn' data-action='click:onOffClick()')
+						button.on-off-btn.is-on(data-view='onOffBtn' data-action='click:onOffClick()' data-isOn='true')
 							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve")
 								path(id="XMLID_1_" class="line" d="M15.5,6.3C9.8,8.2,5.6,13.6,5.6,20c0,7.9,6.4,14.4,14.4,14.4S34.4,27.9,34.4,20 c0-6.4-4.1-11.8-9.9-13.7")
 								line(id="XMLID_5_" class="line" x1="20" y1="16" x2="20" y2="3.4")
@@ -32,13 +71,15 @@ mixin templates
 			.bottom-container
 				.favourite-colors-container
 					ul.favourite-colors-list(data-view='LRSList:favouriteColorsList:FavouriteColorsListItem')
-						li.favourite-colors-list-item.add-favourite-color-btn(data-action='click:addFavouriteColor()')
+						li.favourite-colors-list-item.add-favourite-color-btn(data-action='click:addFavouriteColor()' data-view='addFavouriteColorBtn')
+							.add-favourite-color-btn-scrim(data-view='addFavouriteColorBtnScrim')
 							span +
 
 				.room-device-list-container
 					ul.room-device-list(data-view='LRSList:roomDeviceList:RoomDeviceListItem')
 
-	li.favourite-colors-list-item(data-template='FavouriteColorsListItem' data-action='click:select()')
+	li.favourite-colors-list-item(data-template='FavouriteColorsListItem' data-action='click:select()' data-view='favouriteColorsListItem')
+		span.delete(data-action='click:deleteFavouriteColor()' data-view='deleteFavouriteColorBtn') +
 		
 
 	li.room-device-list-item(data-template='RoomDeviceListItem' data-action='click:toggle()')

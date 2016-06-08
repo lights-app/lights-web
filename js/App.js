@@ -13,25 +13,32 @@ class App extends lrs.View {
 		window.lights.app = this
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
+		this.eventStreamsConfigured = false
+		this.requiresParticleVersion = [0, 1, 0]
+
+		navigator.geolocation.getCurrentPosition(function(e) {
+
+			console.log(e)
+			self.geolocation = e
+
+			// Calculate sunrise and sunset times and convert it into seconds from 0:00
+			self.suncalc = SunCalc.getTimes(new Date(), self.geolocation.coords.latitude, self.geolocation.coords.longitude)
+			self.sunriseSeconds = (self.suncalc.sunrise.getHours() * 3600) + (self.suncalc.sunrise.getMinutes() * 60) + self.suncalc.sunrise.getSeconds()
+			self.sunsetSeconds = (self.suncalc.sunset.getHours() * 3600) + (self.suncalc.sunset.getMinutes() * 60) + self.suncalc.sunset.getSeconds()
+			console.log(self.sunrise)
+
+		})
 
 		// Load devices stored in localStorage to a temporary variable
-		this._devices = this.storage('devices') || []
+		this._devices = this.storage('devices') || {}
+		// Create an object to hold the actual devices
 		this.devices = {}
-
-		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
-		for (let key in this._devices) {
-			
-			console.log(key)
-
-			this.devices[key] = lights.Device.fromParticleDevice(this._devices[key])
-
-		}
-
-		this.particleDevices = this.storage('particleDevices') || []
-
-		this.rooms = this.storage('rooms') || []
+		// Create a devicesArray variable to store the devices in an array. Handy for view creation
+		this.devicesArray = []
 
 		this.favouriteColors = this.storage('favouriteColors') || []
+
+		this.interpolationTime = this.storage('interpolationTime') || 7
 
 		this.roomIconList = [
 			{name: "Living Room",
@@ -70,31 +77,203 @@ class App extends lrs.View {
 
 		if (this.particle.isLoggedIn) {
 
-			console.log(self)
+			// Create an object to temporarily hold Particle devices
+			this.particleDevices = {}
 
-			setTimeout( function() {
+			lights.app.particle.listDevices().then( function(response) {
+
+				for (let device of response.body) {
+
+					console.log(self)
+					
+					self.particleDevices[device.id] = lights.Device.fromParticleDevice(device)
+
+				}
+
+				console.log(self.particleDevices)
+
+				self.setDevices()
+
+				self.setRooms()
+
+				self.subscribeToEventStreams()
+
 				console.log(self)
-				self.views.setup.hide()
-				self.views.rooms.showView(new lrs.views.RoomsOverview())
-			}, 1)
+
+				setTimeout( function() {
+					console.log(self)
+					self.views.setup.hide()
+					// self.views.rooms.showView(new lrs.views.RoomsOverview())
+					self.views.rooms.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
+				}, 1)
+
+			}).catch( function(err) {
+
+				console.error(err.stack)
+
+			})
+		}
+		
+		return this
+		
+	}
+
+	setDevices() {
+
+		console.log(this._devices)
+
+		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
+		for (let key in this._devices) {
+			
+			console.log(key)
+
+			this.devices[key] = lights.Device.fromParticleDevice(this.particleDevices[key])
+			this.devicesArray.push(this.devices[key])
 
 		}
 
-		this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
-			stream.on('event', function(data) {
-				console.log("Event:", data)
+		// After particle wrapper has been loaded, get the config of all devices
+		for (let key in this.devices) {
 
-				if (data.name === "configChanged") {
+			console.log("Getting device config for", key)
+			
+			console.log(key)
+
+			this.devices[key].getConfig()
+
+		}
+
+	}
+
+	setRooms() {
+
+		// Take the same approach for the rooms as we did for lights.app.devices
+		this._rooms = this.storage('rooms') || []
+		this.rooms = []
+
+		for (let room of this._rooms) {
+
+			this.rooms.push(new lights.Room(room.name, room.icon, room.devices))
+
+		}
+
+	}
+
+	subscribeToEventStreams() {
+
+		console.log(this.eventStreamsConfigured)
+
+		if (!this.eventStreamsConfigured){
+
+			this.deviceStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+				stream.on('event', function(data) {
+
+					console.log(data)
+
+					var eventType = ""
+					var deviceOnline
+
+					if (data.data.indexOf('online') > -1) { 
+
+						eventType = 'deviceCameOnline'
+						deviceOnline = true
+
+					}
+
+					if (data.data.indexOf('offline') > -1) { 
+
+						eventType = 'deviceWentOffline'
+						deviceOnline = false
+
+					}
+
+					var event = new CustomEvent(eventType, {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+					console.log("Device", data.coreid, data.data)
+
+					lights.app.devices[data.coreid].connected = true
+
+					for (let device of lights.app.devicesArray) {
+
+						if (device.id === data.coreid) {
+
+							device.connected = deviceOnline
+
+						}
+
+					}
+
+				})
+
+			})
+
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', name: 'configChanged', auth: this.particle.auth.accessToken}).then(function(stream) {
+				stream.on('event', function(data) {
+
+					var event = new CustomEvent('deviceConfigChanged', {
+						detail: {
+							id: data.coreid
+						}
+					})
 
 					self.devices[data.coreid].config = data.data
 					self.devices[data.coreid].parseConfig()
 
-				}
+					document.dispatchEvent(event)
+
+				})
+
 			})
-		})
-		
-		return this
-		
+
+			this.flashStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/flash/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+				stream.on('event', function(data) {
+
+					console.log(data)
+
+					var eventType = ""
+
+					if (data.data.indexOf('started') > -1) { 
+
+						eventType = 'flashStarted'
+
+					}
+
+					if (data.data.indexOf('success') > -1) { 
+
+						eventType = 'flashSuccessful'
+
+					}
+
+					if (data.data.indexOf('failed') > -1) { 
+
+						eventType = 'flashFailed'
+
+					}
+
+					var event = new CustomEvent(eventType, {
+						detail: {
+							id: data.coreid
+						}
+					})
+
+					document.dispatchEvent(event)
+
+					console.log("Flashing", data.coreid, data.data)
+
+				})
+
+			})
+
+			this.eventStreamsConfigured = true
+
+		}
+
 	}
 	
 	didLoginToParticle(auth) {
@@ -186,6 +365,23 @@ class App extends lrs.View {
 	    }
 
 	    return [h, s, v];
+	}
+
+	RGBtoHEX(r, g, b) {
+
+		return (this.numberToHex(r) + this.numberToHex(g) + this.numberToHex(b))
+	}
+
+	HEXtoRGB(hex) {
+	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+	    return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]: null
+	}
+
+	numberToHex(number) {
+
+		var hex = number.toString(16)
+    	return hex.length == 1 ? "0" + hex : hex
+
 	}
 
 	splitBytes(number, amountOfBytes, nonZero) {

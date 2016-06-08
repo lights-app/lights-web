@@ -38,9 +38,10 @@ class DevicesPageView extends lrs.views.Page {
 		console.log(view, el, e)
 
 		// Clear the device list to prevent duplicate devices when user navigates back and forth
-		lights.app.devices = []
+		lights.app.devices = {}
 		
 		var containsNonLightsDevices = false
+		var nonLightsDevices = []
 
 		for (let deviceView of this.views.lightsDeviceList.views.content) {
 
@@ -51,23 +52,28 @@ class DevicesPageView extends lrs.views.Page {
 					containsNonLightsDevices = true
 
 					deviceView.object.reprogram = true
+					deviceView.object.reprogrammed = false
+
+					nonLightsDevices.push(deviceView.object)
 
 				}
 
-				lights.app.devices.push(deviceView.object)
+				lights.app.devicesArray.push(deviceView.object)
+				console.log(deviceView.object)
+				lights.app.devices[deviceView.object.id] = deviceView.object
 				console.log(lights.app.devices)
 
 			}
 
 		}
 
-		if (lights.app.devices.length > 0) {
+		if (lights.app.devicesArray.length > 0) {
 
 			lights.app.storage('devices', lights.app.devices)
 
 			if(containsNonLightsDevices) {
-
-				this.owner.showView(new lrs.views.DevicesReprogrammingPage())
+				console.log(nonLightsDevices)
+				this.owner.showView(new lrs.views.DevicesReprogrammingPage({devices: nonLightsDevices}))
 
 			} else {
 

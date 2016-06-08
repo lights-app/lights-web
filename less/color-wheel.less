@@ -9,7 +9,8 @@
 
 	.page-content {
 
-		height: ~"calc(100% - @{toolbar-height})";
+		max-height: ~"calc(768px - @{toolbar-height})";
+		max-width: 1024px;
 
 		display: flex;
 		flex-direction: column;
@@ -22,8 +23,8 @@
 
 .color-wheel-container {
 
-	max-width: 600px;
-	max-height: 600px;
+	max-width: 470px;
+	max-height: 470px;
 	margin-top: 40px;
 	// background-color: red;
 
@@ -65,7 +66,7 @@
 	background-color: @blue-0;
 	width: @on-off-btn-width;
 	height: @on-off-btn-height;
-		left: ~"calc(50% - (@{on-off-btn-width} / 2))";
+	left: ~"calc(50% - (@{on-off-btn-width} / 2))";
 	bottom: -(@on-off-btn-height / 2);
 
 	.on-off-btn {
@@ -79,6 +80,7 @@
 
 		.color-rgba(@blue-1-raw, 0.5);
 		background-color: @rgba;
+		background-color: rgba(0, 255, 0, 0.15);
 
 		outline: none;
 
@@ -96,6 +98,12 @@
 		&:active {
 
 			background-color: transparent;
+		}
+
+		&.is-on {
+
+			background-color: rgba(255, 0, 0, 0.15);
+
 		}
 
 		.line {
@@ -294,6 +302,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	padding: 0 80px;
 
 }
 
@@ -311,16 +320,20 @@
 
 	border-bottom: 1px solid @blue-1;
 
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+
 }
 
 .favourite-colors-list {
 
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
 
 	width: 100%;
-	overflow-x: auto;
-	-webkit-overflow-scrolling: touch;
+	overflow: visible;
 
 }
 
@@ -339,8 +352,8 @@
 	justify-content: center;
 
 	position: relative;
-	margin: @border-radius;
-	margin-right: 20px;
+	// margin: 10px;
+	margin: 13px 10px 10px 0;
 
 	border: 1px solid @blue-3;
 	border-radius: @border-radius;
@@ -378,12 +391,152 @@
 		border: 1px solid white;
 		border-radius: unit(@border-radius + @border-offset, px);
 	}
-}
 
-.add-favourite-color-btn {
+	span {
 
-	order: 99999;
-	
+		z-index: 100;
+
+		// pointer-events: none;
+
+	}
+
+	&.disappear {
+
+		transform: scale3d(0, 0, 0);
+		transition: all 0.3s ease;
+
+	}
+
+	.delete {
+
+		@diameter: 20px;
+
+		position: absolute;
+		top: -@diameter / 2;
+		left: -@diameter / 2;
+
+		width: @diameter;
+		height: @diameter;
+		background-color: @blue-1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 10px;
+
+		transform: scale3d(0, 0, 0) rotate3d(0, 0, 1, 45deg);
+
+		border: 1px solid @blue-3;
+		border-radius: 1000px;
+
+		z-index: 1000;
+
+		transition: all 0.2s ease;
+
+		&:hover {
+
+			background-color: @blue-2;
+			transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 45deg);
+
+		}
+
+	}
+
+	&:hover {
+
+		.delete {
+
+			transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 45deg);
+
+			transition: all 0.2s ease, transform .2s cubic-bezier(.16,.3,.35,1.59);
+
+		}
+
+	}
+
+	&.add-favourite-color-btn {
+
+		@quick-transition: all 0.1s ease;
+
+		order: 99999;
+
+		transition: @color-wheel-transition;
+
+		&:active {
+
+			background-color: @blue-3 !important;
+
+			transition: @quick-transition;
+
+			.add-favourite-color-btn-scrim {
+
+				opacity: 0 !important;
+
+				transition: @quick-transition;
+
+			}
+
+		}
+
+		span {
+
+			width: 20px; 
+			height: 20px;
+			background-color: rgba(0, 0, 0, 0.5);
+			border: 1px solid @blue-3;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			line-height: 10px;
+			text-align: center;
+			border-radius: 1000px;
+			z-index: 101;
+
+		}
+
+		&::after {
+
+			content: '';
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-radius: @border-radius - 1px;
+			background-color: rgb(255, 255, 255);
+			opacity: 0;
+			transition: @quick-transition;
+			z-index: 100;
+
+		}
+
+		&:hover {
+
+			&::after{
+
+				opacity: 0.2;
+
+			}
+
+		}
+		
+	}
+
+	.add-favourite-color-btn-scrim {
+
+		width: 100%;
+		height: 100%;
+		background-color: #000;
+		position: absolute;
+		top: 0;
+		left: 0;
+		border-radius: @border-radius - 1px;
+
+		z-index: 100;
+
+		transition: @color-wheel-transition;
+
+	}
+
 }
 
 .room-device-list-container{
@@ -422,6 +575,33 @@
 
 		margin-bottom: 10px;
 		color: @blue-3;
+	}
+
+}
+
+.shake {
+
+	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+	transform: rotate3d(0, 0, 0, 0);
+
+}
+
+@keyframes shake {
+
+	10%, 90% {
+		transform: rotate3d(0, 0, 1, -5deg);
+	}
+
+	20%, 80% {
+		transform: rotate3d(0, 0, 1, 10deg);
+	}
+
+	30%, 50%, 70% {
+		transform: rotate3d(0, 0, 1, -20deg);
+	}
+
+	40%, 60% {
+		transform: rotate3d(0, 0, 1, 20deg);
 	}
 
 }

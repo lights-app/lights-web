@@ -204,7 +204,7 @@ function getColorValues(){
 
 function encodeData(colors) {
 
-	var payload = 'c'
+	var payload = 'd'
 
 	payload += String.fromCharCode(127)
 
@@ -273,7 +273,7 @@ $('#send-timer-data').on('click tap', function() {
 
 function encodeTimerData() {
 
-	var payload = 't'
+	var payload = 'u'
 
 	payload += String.fromCharCode(parseInt($('#timer-selector').val())  + 1)
 	payload += String.fromCharCode(parseInt($('#zero-point-selector').val()) + 1)

@@ -1,43 +1,92 @@
 @status-symbol-size: 12px;
 
-.selected {
-	
-	background-color: rgba(255, 255, 255, 0.2);
-	
-}
+.setup {
 
-.status {
+	.page-content {
 
-	width: @status-symbol-size;
-	height: @status-symbol-size;
-	background-color: @red;
+		display: flex;
+		align-items: center;
 
-	border-radius: 1000px;
-
-	display: inline-block;
-
-}
-
-.lights-device {
-
-	.lights-device-icon {
-
-		width: @status-symbol-size;
-		height: @status-symbol-size;
-		// background-color: orange;
-		background-image: url('/static/img/Lights icon-10px.svg');
-		background-size: contain;
-
-		display: inline-block;
 	}
 
 }
 
-.connected {
+p {
 
-	.status {
+	max-width: 300px;
 
-		background-color: @green;
+}
+
+.particle-icon {
+
+	width: 100px;
+	margin-top: 40px;
+
+}
+
+.setup-login-input-container {
+
+	position: relative;
+	display: block;
+
+	margin: 10px 0;
+
+	.color-rgba(@cool-gray-2-raw, 0.2);
+	background-color: @rgba;
+	border: 1px solid @cool-gray-2;
+	border-radius: @btn-border-radius;
+	min-width: 300px;
+
+	label {
+
+		display: block;
+		position: absolute;
+		left: 15px;
+
+		font-size: 17px;
+		font-weight: 300;
+
+		color: @blue-3;
+
+		opacity: 0.6;
+
+		transform: translate3d(0, 20px, 0);
+		transform-origin: 0 0;
+
+		transition: all 0.3s ease;
+
+		&.minimize {
+
+			@scale: 0.8;
+
+			transform: translate3d(0, 10px, 0) scale3d(@scale, @scale, @scale);
+
+		}
+
+	}
+
+	.setup-login-input {
+
+		width: 100%;
+		display: block;
+
+		// height: 40px;
+		padding: 30px 15px 10px 15px;
+		background-color: transparent;
+		border: none;
+		// margin-top: 17px;
+		font-size: 17px;
+		font-weight: 300;
+		color: @text-color;
+
+	}
+
+	&#setup-login-username {
+
+		&::before {
+
+			content: 'username';
+		}
 
 	}
 

@@ -26,6 +26,20 @@ class CheckmarkView extends lrs.LRSView {
 
 	}
 
+	check() {
+
+		this.checked = true
+		this.classList.add('checked')
+
+	}
+
+	uncheck() {
+
+		this.checked = false
+		this.classList.remove('checked')
+
+	}
+
 }
 
 window.lrs.LRSView.views.CheckmarkView = CheckmarkView

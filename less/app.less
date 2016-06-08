@@ -5,19 +5,62 @@
 
 @import "type";
 
+@import "welcome";
 @import "layout";
 @import "setup";
 @import "color-wheel";
 @import "templates";
 @import "rooms";
 
+html {
+
+	width: 100%;
+	height: 100%;
+
+}
+
 body {
+
+	width: 100%;
+	height: 100%;
 
 	background-color: @blue-0;
 
 	-webkit-tap-highlight-color: transparent;
 
+	user-select: none;
+
 	font-family: 'Roboto';
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.app {
+
+	position: relative;
+
+	width: 100%;
+	height: 100%;
+
+	margin: 0;
+	padding: 0;
+
+	overflow: hidden;
+
+	// border-radius: @btn-border-radius;
+	// border: 1px solid @cool-gray-2;
+
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+}
+
+.no-pointer-events {
+
+	pointer-events: none;
 
 }
 
@@ -32,6 +75,12 @@ h1 {
 
 	font-size: 17px;
 	font-weight: 400;
+
+}
+
+.text-center {
+
+	text-align: center;
 
 }
 
@@ -51,8 +100,74 @@ ul {
 
 input {
 
-	color: #444;
+	color: @text-color;
+	outline: none;
+
+	&::-webkit-input-placeholder {
+
+		color: @cool-gray-3;
+
+	}
 	
+}
+
+button {
+
+	border: none;
+	background-color: transparent;
+	color: @text-color;
+	padding: 0 20px;
+	outline: none;
+
+	&:active {
+
+		opacity: 0.3;
+
+	}
+	
+}
+
+.image {
+
+	position: relative;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+
+}
+
+.box-btn {
+
+	width: 100%;
+	max-width: 300px;
+
+	margin: 10px 0;
+	padding: 10px;
+
+	align-self: center;
+
+	border-radius: @btn-border-radius;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+
+	background-color: @bright-blue-1;
+
+	transition: all 0.2s ease;
+
+	&:hover {
+
+		background-color: @bright-blue-2;
+		opacity: 1;
+
+	}
+
+	&:active {
+
+		background-color: @bright-blue-0;
+		opacity: 1;
+		transition: all 0.1s ease;
+
+	}
+
 }
 
 .toolbar {
@@ -60,16 +175,116 @@ input {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	position: relative;
 
 	height: @toolbar-height;
 
 	background-color: @blue-1;
 
+	.left, .right {
+
+		position: absolute;
+		height: 100%;
+
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+
+		font-size: 17px;
+		font-weight: 300;
+
+	}
+
+	.left {
+
+		left: 0;
+		top: 0;
+
+	}
+
+	.right {
+
+		right: 0;
+		top: 0;
+
+	}
+
+}
+
+.back-btn {
+
+	height: 100%;
+	position: relative;
+
+	&::before {
+
+		content: '';
+		width: 17px;
+		height: 17px;
+		margin: 0 5px 0 0;
+		// position: absolute;
+		position: relative;
+		display: inline-block;
+		left: 0;
+		top: 0;
+		background-image: url('/static/img/icons/back.svg');
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+
+		transform: translate3d(0, 2px, 0);
+
+	}
+
+}
+
+.add-btn, .close-btn{
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	svg{
+
+		width: 17px;
+		height: 17px;
+
+	}
+
+	.add-btn-line, .close-btn-line {
+
+		stroke: @text-color;
+		stroke-width: 1px;
+
+	}
+
 }
 
 .page-content {
 
+	width: 100%;
 	max-width: 1024px;
+	position: relative;
 	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
 
+}
+
+.self-start {
+
+	align-self: flex-start;
+	
+}
+
+.self-center {
+
+	align-self: center;
+
+}
+
+.self-end {
+
+	align-self: flex-end;
+	
 }

@@ -17,6 +17,7 @@
   "dependencies": {
     "normalize-css": "normalize.css#~3.0.3",
     "lars": "#es6",
-    "particle-api-js": "~5.2.6"
+    "particle-api-js": "~5.2.6",
+    "suncalc": "^1.7.0"
   }
 }
