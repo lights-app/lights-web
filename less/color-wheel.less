@@ -9,7 +9,7 @@
 
 	.page-content {
 
-		max-height: ~"calc(768px - @{toolbar-height})";
+		// max-height: ~"calc(768px - @{toolbar-height})";
 		max-width: 1024px;
 
 		display: flex;
@@ -49,7 +49,30 @@
 	position: relative;
 	// background-color: orange;
 	border-radius: 10000px;
-	border: 1px solid @blue-3;
+	// border: 1px solid transparent;
+	background-image: linear-gradient(to right, #000 0%, #FFF 100%);
+	background-image: url("/static/img/brightness-wheel.jpg");
+	background-size: cover;
+	background-position: 50% 50%;
+	
+
+	&::before {
+
+		content: '';
+
+		display: block;
+		position: absolute;
+
+		top: 1px;
+		right: 1px;
+		bottom: 1px;
+		left: 1px;
+
+		border-radius: 10000px;
+
+		background-color: @blue-0;
+
+	}
 
 }
 
@@ -569,12 +592,29 @@
 	flex-direction: column;
 	align-items: center;
 
+	border-radius: @btn-border-radius;
+	border: 1px solid @cool-gray-2;
+
+	padding: 10px;
+
 	cursor: pointer;
+
+	&.selected {
+
+		background-color: rgba(255, 255, 255, 0.05);
+		
+	}
 
 	span {
 
 		margin-bottom: 10px;
 		color: @blue-3;
+	}
+
+	.checkmark-container {
+
+		pointer-events: none;
+
 	}
 
 }
