@@ -21,7 +21,11 @@ class RoomDeviceListItemView extends lrs.views.ListItem {
 
 	toggleAction() {
 
-		
+		this.views.checkmark.toggleAction()
+
+		this.selected = !this.selected
+
+		this.classList.toggle('selected', this.selected)
 
 	}
 

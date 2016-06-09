@@ -55,7 +55,7 @@ class FavouriteColorsListItemView extends lrs.views.ListItem {
 
 	}
 
-	deleteFavouriteColorAction(view, el, e) {
+	deleteFavouriteColorAction(object, view, el, e) {
 
 		console.log(this)
 
@@ -77,8 +77,7 @@ class FavouriteColorsListItemView extends lrs.views.ListItem {
 					// Save array
 					lights.app.storage('favouriteColors', lights.app.favouriteColors)
 					// Remove from view
-					self.remove()
-					self.deconstruct()
+					self.owner.remove(self.object)
 
 				}, 300)
 

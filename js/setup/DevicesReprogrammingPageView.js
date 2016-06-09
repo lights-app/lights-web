@@ -125,21 +125,26 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 		lights.app.devices[e.detail.id].reprogram = false
 		lights.app.devices[e.detail.id].reprogrammed = true
 
-		// var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName, auth: lights.app.particle.auth.accessToken})
+		// Check if we should rename the device
+		if(lights.app.devices[e.detail.id].name.split('__')[0] !== 'Lights') {
 
-		// rename.then(
+			var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName, auth: lights.app.particle.auth.accessToken})
 
-		// 	function(data) {
+			rename.then(
 
-		// 		console.log('Device renamed successfully to ' + newName, data)
+				function(data) {
 
-		// 	}, function(err) {
+					console.log('Device renamed successfully to ' + newName, data)
 
-		// 		console.log('An error occured while renaming device to' + newName, err)
+				}, function(err) {
 
-		// 	}
+					console.log('An error occured while renaming device to' + newName, err)
 
-		// 	)
+				}
+
+				)
+
+		}
 
 	}
 
@@ -149,32 +154,44 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 		lights.app.devices[e.detail.id].reprogram = true
 		lights.app.devices[e.detail.id].reprogrammed = false
 
+		// this.flashFirmware(lights.app.devices[e.detail.id], this.url)
+
 	}
 
 	deviceCameOnlineHandler(e) {
 
 		var allDevicesReprogrammed = true
-		var allDevicesOnline = false
+		var allDevicesOnline = true
 
-		for (let device of this.devices) {
+		for (let deviceView of this.views.lightsDeviceList.content) {
 
-			if (device.reprogram && !device.reprogrammed) {
+			// Check if all devices have been reprogrammed
+			if (deviceView.object.reprogram && !deviceView.object.reprogrammed) {
 
 				allDevicesReprogrammed = false
-				this.flashFirmware(device, this.url)
 
-			} else {
+				// If it has not been reprogrammed and the device id matches that of the deviceCameOnline event details
+				// re-flash the firmware
+				if (e.detail.id === deviceView.object.id) {
 
-				if (device.id === e.detail.id) {
+					console.log(e.detail.id, "came online, but was not reprogrammed correctly, re-flashing firmware")
 
-					device.connectedAfterFlash = true
-
-					// Immediately reset the config of the device
-					device.resetConfig()
+					this.flashFirmware(deviceView.object, this.url, deviceView)
 
 				}
 
-				if (!device.connectedAfterFlash) {
+			} else {
+
+				if (deviceView.object.id === e.detail.id) {
+
+					deviceView.object.connectedAfterFlash = true
+
+					// Immediately reset the config of the device
+					deviceView.object.resetConfig()
+
+				}
+
+				if (!deviceView.object.connectedAfterFlash) {
 
 					allDevicesOnline = false
 

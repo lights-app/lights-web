@@ -28,4 +28,4 @@ class ToggleView extends lrs.LRSView {
 
 }
 
-window.lrs.LRSView.views.ToggleView = ToggleView
+lrs.View.register(ToggleView)

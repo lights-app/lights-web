@@ -42,4 +42,4 @@ class CheckmarkView extends lrs.LRSView {
 
 }
 
-window.lrs.LRSView.views.CheckmarkView = CheckmarkView
+lrs.View.register(CheckmarkView)

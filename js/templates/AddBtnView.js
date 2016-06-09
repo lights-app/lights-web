@@ -1,6 +1,6 @@
 'use strict';
 
-class AddBtn extends lrs.LRSView {
+class AddBtnView extends lrs.LRSView {
 	
 	get template() { return 'AddBtn' }
 
@@ -14,4 +14,4 @@ class AddBtn extends lrs.LRSView {
 
 }
 
-window.lrs.LRSView.views.AddBtn = AddBtn
+lrs.View.register(AddBtnView)

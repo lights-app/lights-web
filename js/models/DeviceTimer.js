@@ -74,6 +74,9 @@ class DeviceTimer extends lrs.LRSObject {
 
 		}
 
+		this.hours = this.getHours()
+		this.minutes = this.getMinutes()
+		this.seconds = this.getSeconds()
 		
 	}
 

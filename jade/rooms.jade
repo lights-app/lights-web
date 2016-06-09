@@ -83,7 +83,8 @@ mixin roomTemplates
 			input.moment-naming-input.self-center(placeholder='My moment' type='text' data-outlet='momentName')
 			button.box-btn(data-action='click:done()') Done
 
-	li.room-list-item(data-template='RoomListItem' data-action='click:openColorWheel()')
+	li.room-list-item(data-template='RoomListItem')
+		button(data-action='click:openColorWheel()')
 		.horizontal-container
 			.room-data
 				span(data-outlet='name')

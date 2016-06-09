@@ -61,7 +61,7 @@ mixin templates
 								line(id="XMLID_5_" class="line" x1="20" y1="16" x2="20" y2="3.4")
 					.brightness-slider-arm(data-view='brightnessSliderArm')
 						.brightness-slider(data-action='mousedown:brightnessTouchstart()')
-					.color-wheel-bg(data-view='colorWheelBg' data-action='mousedown:colorWheelTouchstart()')
+					.color-wheel-bg(data-view='colorWheelBg' data-action='mousedown:colorWheelTouchstart();touchstart:colorWheelTouchstart()')
 						.color-wheel-bg-scrim(data-view='colorWheelBgScrim')
 						.color-wheel-arm(data-view='colorWheelArm')
 							.color-wheel-slide-arm(data-view='colorWheelSlideArm')
@@ -79,7 +79,7 @@ mixin templates
 					ul.room-device-list(data-view='LRSList:roomDeviceList:RoomDeviceListItem')
 
 	li.favourite-colors-list-item(data-template='FavouriteColorsListItem' data-action='click:select()' data-view='favouriteColorsListItem')
-		span.delete(data-action='click:deleteFavouriteColor()' data-view='deleteFavouriteColorBtn') +
+		span.delete(data-action='click:deleteFavouriteColor(object)' data-view='deleteFavouriteColorBtn') +
 		
 
 	li.room-device-list-item(data-template='RoomDeviceListItem' data-action='click:toggle()')

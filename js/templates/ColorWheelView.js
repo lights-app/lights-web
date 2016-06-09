@@ -14,8 +14,11 @@ class ColorWheelView extends lrs.views.Page {
 
 		var self = this
 
-		console.log(this)
-		console.log(args)
+		// console.log(this)
+		// console.log(args)
+
+		this._colorWheelTouchMove = this._colorWheelTouchMove.bind(this)
+		this._brightnessTouchMove = this._brightnessTouchMove.bind(this)
 
 		// Variable for the start values of a mouseclick/tap
 		this.mouseStart = [0, 0]
@@ -28,7 +31,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		// The current color of the lights
 		this.rgb = args.rgb
-		console.log(this.rgb)
+		// console.log(this.rgb)
 		this.hsv = lights.app.RGBtoHSV(this.rgb[0], this.rgb[1], this.rgb[2])
 
 		this.prevRgb = []
@@ -43,7 +46,7 @@ class ColorWheelView extends lrs.views.Page {
 		this.setColorWheelPickerPosition(this.hsv[0] * 360, this.hsv[1])
 		this.setBrightnessSlider(this.hsv[2])
 
-		console.log(this.rgb, this.hsv)
+		// console.log(this.rgb, this.hsv)
 
 		this.views.favouriteColorsList.reset(lights.app.favouriteColors)
 		this.views.roomDeviceList.reset(args.room.devices)
@@ -74,6 +77,12 @@ class ColorWheelView extends lrs.views.Page {
 
 		this.deselectFavouriteColor()
 
+		this.touch = {}
+		// we calculate elPos each time to ensure that the centerPoint is always correct, even after resizing
+		this.touch.elPos = this.views.colorWheelBg.el.getBoundingClientRect()
+		// console.log(elPos)
+		this.touch.midPoint = [(this.touch.elPos.left + (this.touch.elPos.width / 2)), (this.touch.elPos.top + (this.touch.elPos.height / 2))]
+		this.touch.topLeft = [this.touch.elPos.left, this.touch.elPos.top]
 		this.mouseStart = [0, 0]
 
 		// Send data right now, and every 500ms
@@ -85,17 +94,13 @@ class ColorWheelView extends lrs.views.Page {
 
 		}, 500)
 
-		document.addEventListener('mousemove', self._mouseMove = function(e) {
-
-			var value = (self.getAngle(e)[0] - self.brightnessSliderAngleOffset) / self.brightnessSliderRange
-
-			self.setBrightnessSlider(value)
-
-		})
+		document.addEventListener('mousemove', this._brightnessTouchMove)
+		document.addEventListener('touchmove', this._brightnessTouchMove)
 
 		document.addEventListener('mouseup', self._mouseUp = function(e){
 
-			document.removeEventListener('mousemove', self._mouseMove)
+			document.removeEventListener('mousemove', self._brightnessTouchMove)
+			document.removeEventListener('touchmove', self._brightnessTouchMove)
 			self._mouseMove = undefined
 			clearInterval(self._dataSendInterval)
 			// Send latest value
@@ -109,6 +114,27 @@ class ColorWheelView extends lrs.views.Page {
 			self.dragging = false
 
 		})
+
+	}
+
+	_brightnessTouchMove(e) {
+
+		// console.log(this)
+
+		if (e.touches) {
+
+			e.preventDefault()
+			this.touch.coordinates = [e.touches[0].clientX - this.touch.midPoint[0], e.touches[0].clientY - this.touch.midPoint[1]]
+
+		} else {
+
+			this.touch.coordinates = [e.clientX - this.touch.midPoint[0], e.clientY - this.touch.midPoint[1]]
+
+		}
+
+		this.touch.value = (this.getAngle(this.touch)[0] - this.brightnessSliderAngleOffset) / this.brightnessSliderRange
+
+		this.setBrightnessSlider(this.touch.value)
 
 	}
 
@@ -147,22 +173,46 @@ class ColorWheelView extends lrs.views.Page {
 
 		}, 500)
 
-		document.addEventListener('mousemove', self._mouseMove = function(e) {
+		// Add class while user is using the color wheel picker
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.add('active')
 
-			coordinates = [e.clientX - midPoint[0], e.clientY - midPoint[1]]
+		this.touch = {}
+		// we calculate elPos each time to ensure that the centerPoint is always correct, even after resizing
+		this.touch.elPos = this.views.colorWheelBg.el.getBoundingClientRect()
+		// console.log(elPos)
+		this.touch.midPoint = [(this.touch.elPos.left + (this.touch.elPos.width / 2)), (this.touch.elPos.top + (this.touch.elPos.height / 2))]
+		this.touch.topLeft = [this.touch.elPos.left, this.touch.elPos.top]
 
-			angle = self.getAngle(e)
+		// Set the mouseStart to the midpoint of the color wheel
+		// The user can click anywhere on the color wheel to start dragging, therefore this is an absolute 
+		// angle/distance from the centerpoint.
+		this.mouseStart = [this.touch.midPoint[0], this.touch.midPoint[1]]
 
-			radius = Math.sqrt( Math.pow(coordinates[0], 2) + Math.pow(coordinates[1], 2))
-			radius = radius / maxRadius
+		if (e.touches) {
 
-			self.setColorWheelPickerPosition(angle[2], radius)
+			this.touch.coordinates = [e.touches[0].clientX - this.touch.midPoint[0], e.touches[0].clientY - this.touch.midPoint[1]]
 
-		})
+		} else {
+
+			this.touch.coordinates = [e.clientX - this.touch.midPoint[0], e.clientY - this.touch.midPoint[1]]
+
+		}
+
+		this.touch.angle = self.getAngle(this.touch)
+
+		this.touch.radius = Math.sqrt( Math.pow(this.touch.coordinates[0], 2) + Math.pow(this.touch.coordinates[1], 2))
+		this.touch.maxRadius = this.views.colorWheelBg.el.getBoundingClientRect().width / 2
+		this.touch.radius = this.touch.radius / this.touch.maxRadius
+
+		self.setColorWheelPickerPosition(this.touch.angle[2], this.touch.radius)
+
+		document.addEventListener('mousemove', this._colorWheelTouchMove)
+		document.addEventListener('touchmove', this._colorWheelTouchMove)
 
 		document.addEventListener('mouseup', self._mouseUp = function(e){
 
-			document.removeEventListener('mousemove', self._mouseMove)
+			document.removeEventListener('mousemove', self._colorWheelTouchMove)
+			document.removeEventListener('touchmove', self._colorWheelTouchMove)
 			self._mouseMove = undefined
 			clearInterval(self._dataSendInterval)
 			// Remove class when user is done using the color picker
@@ -179,28 +229,27 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
-		// Add class while user is using the color wheel picker
-		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.add('active')
+	}
 
-		// we calculate elPos each time to ensure that the centerPoint is always correct, even after resizing
-		var elPos = this.views.colorWheelBg.el.getBoundingClientRect()
-		// console.log(elPos)
-		var midPoint = [(elPos.left + (elPos.width / 2)), (elPos.top + (elPos.height / 2))]
-		var topLeft = [elPos.left, elPos.top]
+	_colorWheelTouchMove(e) {
 
-		// Set the mouseStart to the midpoint of the color wheel
-		// The user can click anywhere on the color wheel to start dragging, therefore this is an absolute 
-		// angle/distance from the centerpoint.
-		this.mouseStart = [midPoint[0], midPoint[1]]
-		var coordinates = [e.clientX - midPoint[0], e.clientY - midPoint[1]]
+		if (e.touches) {
 
-		var angle = self.getAngle(e)
+			e.preventDefault()
+			this.touch.coordinates = [e.touches[0].clientX - this.touch.midPoint[0], e.touches[0].clientY - this.touch.midPoint[1]]
 
-		var radius = Math.sqrt( Math.pow(coordinates[0], 2) + Math.pow(coordinates[1], 2))
-		var maxRadius = this.views.colorWheelBg.el.getBoundingClientRect().width / 2
-		radius = radius / maxRadius
+		} else {
 
-		self.setColorWheelPickerPosition(angle[2], radius)
+			this.touch.coordinates = [e.clientX - this.touch.midPoint[0], e.clientY - this.touch.midPoint[1]]
+
+		}
+
+		this.touch.angle = this.getAngle(this.touch)
+
+		this.touch.radius = Math.sqrt( Math.pow(this.touch.coordinates[0], 2) + Math.pow(this.touch.coordinates[1], 2))
+		this.touch.radius = this.touch.radius / this.touch.maxRadius
+
+		this.setColorWheelPickerPosition(this.touch.angle[2], this.touch.radius)
 
 	}
 
@@ -292,7 +341,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		for (let color of this.views.favouriteColorsList.views.content) {
 
-			console.log(color)
+			// console.log(color)
 			color.classList.remove('selected') 
 			color.selected = false
 
@@ -302,8 +351,8 @@ class ColorWheelView extends lrs.views.Page {
 
 	deviceConfigChangedHandler(e) {
 
-		console.log(e.detail.id)
-		console.log(this)
+		// console.log(e.detail.id)
+		// console.log(this)
 
 		// While dragging, do nothing. And only 2 seconds after lastDataTransmission 
 		// This prevents the color wheel from picking up 'echos' of our own data and resetting the picker
@@ -324,7 +373,7 @@ class ColorWheelView extends lrs.views.Page {
 
 	}
 
-	getAngle(e) {
+	getAngle(touch) {
 
 		var radToDeg = 180 / Math.PI
 
@@ -346,7 +395,7 @@ class ColorWheelView extends lrs.views.Page {
 		
 
 		// Calculate the coordinates (X and Y) of the current cursor position
-		var currentCoordinates = [e.clientX - midPoint[0], e.clientY - midPoint[1]]
+		var currentCoordinates = touch.coordinates
 		// console.log("currentCoordinates", currentCoordinates)
 
 		// Calculate the angle between the cursor coordinates and the negative Y-axis
@@ -371,16 +420,16 @@ class ColorWheelView extends lrs.views.Page {
 
 		var self = this
 
-		console.log(this)
+		// console.log(this)
 
 		for (let device of this.views.roomDeviceList.views.content) {
 
 			if(device.views.checkmark.checked) {
 
-				console.log(device)
+				// console.log(device)
 
 				// var lightsDevice = lights.app.devices[devices.id]
-				console.log(device.object.id)
+				// console.log(device.object.id)
 
 				var data = []
 
@@ -404,7 +453,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		var self = this
 
-		console.log(this)
+		// console.log(this)
 
 		if (this.views.onOffBtn.el.dataset.ison === 'true') {
 
@@ -439,13 +488,13 @@ class ColorWheelView extends lrs.views.Page {
 
 		var color = new lights.Color([Math.round(this.rgb[0]), Math.round(this.rgb[1]), Math.round(this.rgb[2])], 'rgb')
 
-		console.log(color, this.rgb)
+		// console.log(color, this.rgb)
 
 		var addColor = true
 
 		for (let favouriteColor of this.views.favouriteColorsList.content) {
 
-			console.log(favouriteColor)
+			// console.log(favouriteColor)
 
 			if (color.hex === favouriteColor.object.hex){
 
@@ -471,7 +520,7 @@ class ColorWheelView extends lrs.views.Page {
 
 		} else {
 
-			console.log("Color already present in favouriteColors")
+			// console.log("Color already present in favouriteColors")
 
 		}
 

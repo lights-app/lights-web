@@ -1,6 +1,6 @@
 'use strict';
 
-class CloseBtn extends lrs.LRSView {
+class CloseBtnView extends lrs.LRSView {
 	
 	get template() { return 'CloseBtn' }
 
@@ -14,4 +14,4 @@ class CloseBtn extends lrs.LRSView {
 
 }
 
-window.lrs.LRSView.views.CloseBtn = CloseBtn
+lrs.View.register(CloseBtnView)

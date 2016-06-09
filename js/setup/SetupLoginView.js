@@ -50,7 +50,7 @@ class SetupLoginView extends lrs.views.Page {
 			
 			self.owner.showView(new lrs.views.DevicesPage())
 
-			lights.app.subscribeToEventStream()
+			lights.app.subscribeToEventStreams()
 			
 		}).catch( function(err) {
 			

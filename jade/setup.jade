@@ -43,12 +43,12 @@ mixin setupTemplates
 			h1(data-outlet='title') Reprogramming
 
 		section.page-content
-			h2.self-center.text-center Reprogramming needed
 			p.self-center.text-center Some of the devices you selected are not running the Lights software yet. Do you want to reprogram these?
 
 			ul.self-center.device-list(data-view='List:lightsDeviceList:DeviceReprogrammingListItem')
 
-			button.box-btn(data-view='reprogramBtn' data-action='click:reprogram()') Reprogram
+			button.box-btn.green(data-view='reprogramBtn' data-action='click:reprogram()') Reprogram
+			button.box-btn(data-view='skipBtn' data-action='click:skip()') Skip
 	
 	section.devices-naming-page(data-template='DevicesNamingPage')
 		header.toolbar

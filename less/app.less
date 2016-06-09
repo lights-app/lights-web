@@ -149,6 +149,8 @@ button {
 	border-radius: @btn-border-radius;
 	border: 1px solid rgba(255, 255, 255, 0.2);
 
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+
 	background-color: @bright-blue-1;
 
 	transition: all 0.2s ease;
@@ -165,6 +167,40 @@ button {
 		background-color: @bright-blue-0;
 		opacity: 1;
 		transition: all 0.1s ease;
+
+	}
+
+	&.green {
+
+		background-color: @green-1;
+		color: #FFF;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+
+		&:hover {
+
+			background-color: @green;
+
+		}
+
+		&:active {
+
+			background-color: @green-0;
+
+		}
+
+	}
+
+	&.red {
+
+		background-color: @red;
+
+	}
+
+	&.disabled {
+
+		pointer-events: none;
+		background-color: @cool-gray-0;
+		color: @cool-gray-3;
 
 	}
 

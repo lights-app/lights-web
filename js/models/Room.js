@@ -2,7 +2,7 @@
 
 class Room extends lrs.LRSObject {
 	
-	constructor(name, icon, devices) {
+	constructor(name, icon, devices, moments) {
 
 		super()
 
@@ -12,7 +12,7 @@ class Room extends lrs.LRSObject {
 
 		this.devices = devices
 
-		this.moments = []
+		this.moments = moments || []
 
 		this.channelCount = this.getChannelCount()
 		

@@ -80,13 +80,13 @@ class App extends lrs.View {
 			// Create an object to temporarily hold Particle devices
 			this.particleDevices = {}
 
-			lights.app.particle.listDevices().then( function(response) {
+			lights.app.particle.listDevices().then( (response) => {
 
 				for (let device of response.body) {
 
-					console.log(self)
+					console.log(this)
 					
-					self.particleDevices[device.id] = lights.Device.fromParticleDevice(device)
+					this.particleDevices[device.id] = lights.Device.fromParticleDevice(device)
 
 				}
 
@@ -100,11 +100,11 @@ class App extends lrs.View {
 
 				console.log(self)
 
-				setTimeout( function() {
-					console.log(self)
+				setTimeout( () => {
+					console.log(this, 'f')
 					self.views.setup.hide()
-					// self.views.rooms.showView(new lrs.views.RoomsOverview())
-					self.views.rooms.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
+					self.views.rooms.showView(new lrs.views.RoomsOverview())
+					// self.views.setup.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
 				}, 1)
 
 			}).catch( function(err) {
@@ -153,9 +153,11 @@ class App extends lrs.View {
 
 		for (let room of this._rooms) {
 
-			this.rooms.push(new lights.Room(room.name, room.icon, room.devices))
+			this.rooms.push(new lights.Room(room.name, room.icon, room.devices, room.moments))
 
 		}
+
+		console.log("Rooms loaded", lights.app.rooms)
 
 	}
 
@@ -213,7 +215,7 @@ class App extends lrs.View {
 
 			})
 
-			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', name: 'configChanged', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
 				stream.on('event', function(data) {
 
 					var event = new CustomEvent('deviceConfigChanged', {

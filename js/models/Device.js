@@ -65,21 +65,15 @@ class Device extends lrs.LRSObject {
 
 			var self = this
 
-			console.log(this)
-
 			var call = lights.app.particle.getVariable({ deviceId: this.id, name: 'config', auth: lights.app.particle.auth.accessToken })
 
 			call.then(function(data) {
 
-				console.log('Device variable retrieved successfully:', data)
 				self.config = data.body.result
-				console.log(self.config, self.config.length)
 
 				self.lastUpdated = Date.now()
 
 				if(self.parseConfig()) { 
-
-					console.log("Config fetched and parsed successfully!")
 
 					return true 
 
@@ -115,8 +109,6 @@ class Device extends lrs.LRSObject {
 		// Check data length
 		if (this.config.length == 158) {
 
-			console.log("Data length checked, parsing config")
-
 			var configArray = []
 			var tempConfig = ""
 
@@ -135,21 +127,16 @@ class Device extends lrs.LRSObject {
 
 			}
 
-			console.log(configArray, tempConfig, tempConfig.length)
 
 			this.config = tempConfig
 
 			// Get device software version
 			this.version[0] = parseInt(this.config.charCodeAt(0))
-			console.log('versionMajor', this.version[0])
 			this.version[1] = parseInt(this.config.charCodeAt(1))
-			console.log('versionMinor', this.version[1])
 			this.version[2] = parseInt(this.config.charCodeAt(2))
-			console.log('versionPatch', this.version[2])
 
 			// Get channelCount
 			this.channelCount = parseInt(this.config.charCodeAt(3))
-			console.log('channelCount', this.channelCount)
 
 			if (this.channels.length != this.channelCount) {
 
@@ -181,12 +168,10 @@ class Device extends lrs.LRSObject {
 
 					if (lights.app.getBitValueAt(this.config.charCodeAt(configPos), 7 - (i + 1)) === 1) {
 
-						console.log("Channel", i, "is on")
 						this.channels[i].isOn = true
 
 					} else {
 
-						console.log("Channel", i, "is off")
 						this.channels[i].isOn = false
 
 					}
@@ -212,15 +197,10 @@ class Device extends lrs.LRSObject {
 					}
 
 					var color = new lights.Color(colorArray, 'rgb')
-					console.log(color)
 
 					this.channels[i] = color
 
-					console.log(this.channels[i].rgb)
-
 				}
-
-				console.log(this)
 
 			} else {
 
@@ -229,8 +209,6 @@ class Device extends lrs.LRSObject {
 			}
 
 			// The next byte indicates the content length of the first timer
-			console.log(this.config.charCodeAt(configPos), configPos)
-
 			for (var i = 0; i < this.timerCount; i++) {
 
 				var contentLength = this.config.charCodeAt(configPos)
@@ -239,6 +217,8 @@ class Device extends lrs.LRSObject {
 
 				var timer = new lights.DeviceTimer(this.config.substring(configPos, configPos + contentLength), this.channelCount)
 				console.log(timer, timer.config.length)
+
+				this.timers.push(timer)
 
 				configPos += contentLength
 
@@ -284,11 +264,8 @@ class Device extends lrs.LRSObject {
 
 					for (var j = 0; j < this.channels[i].rgb.length; j++) {
 
-						console.log(this.channels[i].rgbFloat[j].toFixed(3), rgb[i][j].toFixed(3))
-
 						if (this.channels[i].rgbFloat[j].toFixed(3) !== rgb[i][j].toFixed(3)) {
 
-							console.log("Different color!")
 							isEqual = false
 
 						}
@@ -315,7 +292,6 @@ class Device extends lrs.LRSObject {
 
 				// Function declaration for color data
 				var payload = 'c'
-				console.log(rgb)
 
 				// The byte indicating which channels should be on/off has to be at least 1 to avoid null termination issues
 				// We construct a 6-channel bit string indicating which channels are on/off
@@ -342,15 +318,11 @@ class Device extends lrs.LRSObject {
 				// Let's set the chanelByte to 126 (all channels) for now
 				channelByte = 126
 
-				console.log("channelByte", channelByte, lights.app.toBitString(channelByte))
-
 				// Convert that number to a char
 				payload += String.fromCharCode(channelByte)
 
 				// Split interpolation time into 3 bytes
 				var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, false)
-
-				console.log("interpolationTime", interpolationTime)
 
 				payload += String.fromCharCode(interpolationTime[0])
 				payload += String.fromCharCode(interpolationTime[1])
@@ -369,7 +341,6 @@ class Device extends lrs.LRSObject {
 
 				}
 
-				console.log("Payload", payload, "Payload length", payload.length)
 				var tempPayload = ""
 				var tempArray = []
 
@@ -382,22 +353,23 @@ class Device extends lrs.LRSObject {
 				}
 
 				payload = tempPayload
-				console.log("Payload", payload, "Payload length", payload.length)
-				console.log(tempArray)
 
-				console.log(this)
+				setTimeout(() => {
 
-				var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
+					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
 
-				call.then(function(data) {
+					call.then(function(data) {
 
-					console.log('Function called succesfully:', data)
+						console.log('Function called succesfully:', data)
 
-				}, function(err) {
+					}, function(err) {
 
-					console.log('An error occurred:', err)
+						console.log('An error occurred:', err)
 
-				})
+					})
+
+				}, 0)
+				
 
 			}
 
@@ -409,8 +381,6 @@ class Device extends lrs.LRSObject {
 	}
 
 	turnOff(channelNumber) {
-
-		console.log(channelNumber)
 
 		if (channelNumber !== undefined) {
 			
