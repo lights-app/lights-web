@@ -40,9 +40,9 @@ gulp.task('js', function() {
 		}))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
-		/*.pipe(babel({
+		.pipe(babel({
 			presets: ['es2015']
-		}))*/
+		}))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./build/static/js'))
 		
