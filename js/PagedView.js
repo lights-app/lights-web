@@ -108,6 +108,8 @@ class PageView extends lrs.View {
 	
 	updateBackButton(title) {
 		
+		if (!this.views.backBtn) return
+		
 		if (title === false) {
 			
 			this.views.backBtn.title = ''
