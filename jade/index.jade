@@ -9,13 +9,11 @@ html
 
 body
 	.app
-		.setup(data-view='Setup:setup')
+		.page-container.setup(data-view='Setup:setup')
 			section.welcome-page(data-view='Page:content')
 				header.toolbar
-					.left
-						button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-					.title
-						h1(data-outlet='title') Lights
+					button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+					h1(data-outlet='title') Lights
 				section.page-content
 					.image.self-center.lights-icon
 						h1.lights-icon-text Hello!
@@ -24,7 +22,7 @@ body
 					button.box-btn(data-action='click:start()') Start
 
 		.settings
-		.rooms(data-view='Rooms:rooms')
+		.page-container.rooms(data-view='Rooms:rooms')
 
 	
 	script.templates(type='text/html')

@@ -2,13 +2,9 @@ mixin roomTemplates
 
 	section.rooms-overview-page(data-template='RoomsOverview')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-				button.settings-btn(data-action='click:settings()') Settings
-			.title
-				h1(data-outlet='title') Lights
-			.right
-				.add-btn(data-view='AddBtn:addBtn')
+			button.settings-btn(data-action='click:settings()') Settings
+			h1(data-outlet='title') Rooms
+			.add-btn(data-view='AddBtn:addBtn')
 		section.page-content
 			ul.room-list(data-view='LRSList:roomList:RoomListItem')
 				li.no-rooms(data-view="noRooms")
@@ -17,12 +13,9 @@ mixin roomTemplates
 
 	section.new-room-device-list-page(data-template='NewRoomDevicesPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') New room
-			.right
-				.close-btn(data-view='CloseBtn:closeBtn')
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') New room
+			.close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
 			h1.self-center.text-center Select the lights you want to use in this room
 			p.self-center.text-center Selected lights that are online will start to pulse
@@ -31,12 +24,9 @@ mixin roomTemplates
 
 	section.new-room-naming-page(data-template='NewRoomNamingPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') New room
-			.right
-				.close-btn(data-view='CloseBtn:closeBtn')
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') New room
+			.close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
 			h1.self-center.text-center Give this room a name and an icon
 			ul.room-icon-list(data-view='LRSList:roomIconList:RoomIconListItem')
@@ -44,12 +34,9 @@ mixin roomTemplates
 
 	section.new-room-completion-page(data-template='NewRoomCompletionPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') New room
-			.right
-				.close-btn(data-view='CloseBtn:closeBtn')
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') New room
+			.close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
 			h1.self-center.text-center Add new moment?
 			p.self-center.text-center Moments allow you to quickly set your Lights to a configuration that you specify. 
@@ -58,12 +45,9 @@ mixin roomTemplates
 
 	section.new-moment-page(data-template='NewMomentPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') New moment
-			.right
-				.close-btn(data-view='CloseBtn:closeBtn')
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') New moment
+			.close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
 			h1.self-center.text-center Configure your lights 
 			p.self-center.text-center Select the lights you want to use and which color they should be.
@@ -72,12 +56,9 @@ mixin roomTemplates
 
 	section.new-moment-naming-page(data-template='NewMomentNamingPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') New moment
-			.right
-				.close-btn(data-view='CloseBtn:closeBtn')
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') New moment
+			.close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
 			h1.self-center.text-center Name this moment
 			input.moment-naming-input.self-center(placeholder='My moment' type='text' data-outlet='momentName')
