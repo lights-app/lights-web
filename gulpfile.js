@@ -7,6 +7,7 @@ var argv = require('yargs').argv
 var concat = require('gulp-concat')
 var sourcemaps = require('gulp-sourcemaps')
 var gls = require('gulp-live-server')
+var iife = require('gulp-iife')
 var babel = require('gulp-babel')
 var autoprefixer = require('gulp-autoprefixer')
 var server
@@ -40,6 +41,7 @@ gulp.task('js', function() {
 		}))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
+		.pipe(iife())
 		
 	if (argv.es5) {
 		stream = stream.pipe(babel({

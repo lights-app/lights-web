@@ -1,5 +1,3 @@
-'use strict';
-
 class FavouriteColorsListItemView extends lrs.views.ListItem {
 
 	get template() { return 'FavouriteColorsListItem'}

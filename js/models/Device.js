@@ -1,5 +1,3 @@
-'use strict';
-
 class Device extends lrs.LRSObject {
 
 	static fromParticleDevice(device) {

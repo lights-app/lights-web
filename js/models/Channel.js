@@ -1,5 +1,3 @@
-'use strict';
-
 class Channel extends lrs.LRSObject {
 	
 	constructor(rgb) {

@@ -1,5 +1,3 @@
-'use strict';
-
 class DeviceNamingListItemView extends lrs.views.ListItem {
 
 	get template() { return 'DeviceNamingListItem'}

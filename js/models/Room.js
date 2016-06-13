@@ -1,5 +1,3 @@
-'use strict';
-
 class Room extends lrs.LRSObject {
 	
 	constructor(name, icon, devices, moments) {

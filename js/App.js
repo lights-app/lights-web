@@ -1,5 +1,3 @@
-'use strict';
-
 class App extends lrs.View {
 	
 	constructor({el, template, options = {}} = {}) {

@@ -1,5 +1,3 @@
-'use strict';
-
 class Color extends lrs.LRSObject {
 	
 	constructor(color, type) {

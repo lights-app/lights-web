@@ -1,5 +1,3 @@
-'use strict';
-
 class PagedView extends lrs.View {
 	
 	constructor(args) {

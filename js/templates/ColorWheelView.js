@@ -1,5 +1,3 @@
-'use strict';
-
 class ColorWheelView extends lrs.views.Page {
 	
 	get template() {

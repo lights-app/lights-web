@@ -1,5 +1,3 @@
-'use strict';
-
 class AddBtnView extends lrs.LRSView {
 	
 	get template() { return 'AddBtn' }

@@ -1,5 +1,3 @@
-'use strict';
-
 class RoomIconListItemView extends lrs.views.ListItem {
 	
 	// constructor({el, options}) {

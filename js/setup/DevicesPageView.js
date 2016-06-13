@@ -1,5 +1,3 @@
-'use strict';
-
 class DevicesPageView extends lrs.views.Page {
 	
 	get template() { return 'DevicesPage' }

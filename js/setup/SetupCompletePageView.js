@@ -1,5 +1,3 @@
-'use strict';
-
 class SetupCompletePageView extends lrs.views.Page {
 	
 	get template() { return 'SetupCompletePage' }

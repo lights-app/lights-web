@@ -1,5 +1,3 @@
-'use strict';
-
 class RoomsOverviewView extends lrs.views.Page {
 	
 	get template() {

@@ -1,5 +1,3 @@
-'use strict';
-
 class NewMomentPageView extends lrs.views.Page {
 	
 	get template() {
