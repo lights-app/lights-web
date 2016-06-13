@@ -40,10 +40,14 @@ gulp.task('js', function() {
 		}))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
-		.pipe(babel({
+		
+	if (argv.es5) {
+		stream = stream.pipe(babel({
 			presets: ['es2015']
 		}))
-		.pipe(sourcemaps.write())
+	}
+	
+	stream = stream.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./build/static/js'))
 		
 	if (argv.publish) {
