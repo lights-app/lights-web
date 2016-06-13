@@ -7,14 +7,14 @@ class PagedView extends lrs.View {
 		this.overlayEl = document.createElement('div')
 		this.overlayEl.classList.add('page-shadow-overlay')
 		
-		if (this.views.preloaded) {
-			
-			this.views.content = Array.isArray(this.views.preloaded) ? this.views.preloaded : [this.views.preloaded]
-			delete this.views.preloaded
-			
-		} else {
+		if (!this.views.content) {
 			
 			this.views.content = []
+			
+		} else if (!Array.isArray(this.views.content)) {
+			
+			this.views.content = [this.views.content]
+			
 		}
 		
 		if (this.views.content.length > 0) {
