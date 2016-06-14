@@ -431,5 +431,5 @@ class App extends lrs.View {
 	
 }
 
-let lights = window.lights = {}
+const lights = window.lights = {}
 window.lights.App = App
