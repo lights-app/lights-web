@@ -24,6 +24,8 @@ class PagedView extends lrs.View {
 			
 		}
 		
+		return this
+		
 	}
 	
 	showView(view) {
