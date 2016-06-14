@@ -165,7 +165,7 @@ class App extends lrs.View {
 
 		if (!this.eventStreamsConfigured){
 
-			this.deviceStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.deviceStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/status' }).then(function(stream) {
 				stream.on('event', function(data) {
 
 					console.log(data)
@@ -213,7 +213,7 @@ class App extends lrs.View {
 
 			})
 
-			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine' }).then(function(stream) {
 				stream.on('event', function(data) {
 
 					var event = new CustomEvent('deviceConfigChanged', {
@@ -231,7 +231,7 @@ class App extends lrs.View {
 
 			})
 
-			this.flashStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/flash/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.flashStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/flash/status' }).then(function(stream) {
 				stream.on('event', function(data) {
 
 					console.log(data)

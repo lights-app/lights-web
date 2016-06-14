@@ -63,7 +63,7 @@ class Device extends lrs.LRSObject {
 
 			var self = this
 
-			var call = lights.app.particle.getVariable({ deviceId: this.id, name: 'config', auth: lights.app.particle.auth.accessToken })
+			var call = lights.app.particle.getVariable({ deviceId: this.id, name: 'config' })
 
 			call.then(function(data) {
 
@@ -354,7 +354,7 @@ class Device extends lrs.LRSObject {
 
 				setTimeout(() => {
 
-					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken })
+					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload })
 
 					call.then(function(data) {
 
@@ -402,7 +402,7 @@ class Device extends lrs.LRSObject {
 
 		console.warn("Resetting", this.id, "config")
 
-		var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: argument, auth: lights.app.particle.auth.accessToken })
+		var call = lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: argument })
 
 		call.then(function(data) {
 
