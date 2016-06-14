@@ -111,7 +111,14 @@ gulp.task('less', function() {
 
 gulp.task('vendor', function() {
 	
-	var stream = gulp.src(['./vendor/lars/lrs.js', './vendor/particle-api-js/dist/particle.min.js', './vendor/suncalc/suncalc.js', './vendor/dynamics.js/lib/dynamics.js'])
+	var files = [
+		argv.es5 ? './vendor/lars/lrs.js' : './vendor/lars/lrs-es6.js',
+		'./vendor/particle-api-js/dist/particle.min.js',
+		'./vendor/suncalc/suncalc.js',
+		'./vendor/dynamics.js/lib/dynamics.js'
+	]
+	
+	var stream = gulp.src(files)
 		.pipe(concat('vendor.js'))
 		.pipe(gulp.dest('./build/static/js'))
 		
