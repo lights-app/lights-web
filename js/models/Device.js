@@ -1,4 +1,4 @@
-class Device extends lrs.LRSObject {
+class Device extends Model {
 
 	static fromParticleDevice(device) {
 
@@ -29,13 +29,7 @@ class Device extends lrs.LRSObject {
 	
 	constructor(attributes) {
 
-		super()
-
-		for (let attributeName of Object.keys(attributes)) {
-
-			this[attributeName] = attributes[attributeName]
-
-		}
+		super(attributes)
 
 		this.version = [3]
 		this.channelCount = 2

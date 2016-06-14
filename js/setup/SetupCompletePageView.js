@@ -8,7 +8,7 @@ class SetupCompletePageView extends lrs.views.Page {
 
 		var self = this
 
-		for (let device of lights.app.devicesArray) {
+		for (let device of lights.app.devices.records) {
 
 			device.getConfig()
 			
