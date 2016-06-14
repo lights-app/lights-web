@@ -27,7 +27,7 @@ class SetupCompletePageView extends lrs.views.Page {
 
 		console.log(this)
 
-		this.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
+		this.owner.owner.views.rooms.show()
 		// this.owner.showView(new lrs.views.Rooms())
 		this.owner.owner.views.setup.hide()
 

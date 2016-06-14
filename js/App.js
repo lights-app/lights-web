@@ -76,18 +76,13 @@ class App extends lrs.View {
 		if (this.particle.isLoggedIn) {
 			
 
-			self.setRooms()
+			this.setRooms()
 
-			self.subscribeToEventStreams()
+			this.subscribeToEventStreams()
+			
+			this.views.setup.hide()
+			this.views.rooms.show()
 
-			console.log(self)
-
-			setTimeout( () => {
-				console.log(this, 'f')
-				self.views.setup.hide()
-				self.views.rooms.showView(new lrs.views.RoomsOverview())
-				// self.views.setup.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
-			}, 1)
 		}
 		
 		return this
