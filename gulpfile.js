@@ -8,6 +8,7 @@ var concat = require('gulp-concat')
 var sourcemaps = require('gulp-sourcemaps')
 var gls = require('gulp-live-server')
 var iife = require('gulp-iife')
+var order = require('gulp-order')
 var babel = require('gulp-babel')
 var autoprefixer = require('gulp-autoprefixer')
 var server
@@ -39,6 +40,12 @@ gulp.task('js', function() {
 				this.emit('end')
 			}
 		}))
+		.pipe(order([
+			'**/App.js',
+			'**/Collection.js',
+			'**/Model.js',
+			'**/*.js'
+		]))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
 		.pipe(iife())
