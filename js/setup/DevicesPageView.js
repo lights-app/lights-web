@@ -61,7 +61,7 @@ class DevicesPageView extends lrs.views.Page {
 
 		}
 
-		if (lights.app.devices.length > 0) {
+		if (lights.app.devices.size > 0) {
 			
 			lights.app.storage('devices', lights.app.devices)
 

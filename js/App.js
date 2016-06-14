@@ -146,7 +146,7 @@ class App extends lrs.View {
 					// TODO: Something weird is happening here.
 					lights.app.devices[data.coreid].connected = true
 
-					for (let device of lights.app.devices.records) {
+					for (let device of lights.app.devices) {
 
 						if (device.id === data.coreid) {
 

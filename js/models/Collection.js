@@ -13,7 +13,7 @@ class Collection extends lrs.mix().with(lrs.Events) {
 		
 	}
 
-	get length() {
+	get size() {
 		
 		return this.records.length
 		
@@ -36,7 +36,7 @@ class Collection extends lrs.mix().with(lrs.Events) {
 
 	}
 
-	remove(record, options = {}) {
+	delete(record, options = {}) {
 		
 		var index = this.records.indexOf(record)
 		
@@ -72,6 +72,18 @@ class Collection extends lrs.mix().with(lrs.Events) {
 		
 	}
 
+}
+
+// TODO: Add entries, keys and values iterators?
+
+Collection.prototype[Symbol.iterator] = function*() {
+	
+	for (let record of this.records) {
+		
+		yield record
+		
+	}
+	
 }
 
 lights.Collection = Collection
