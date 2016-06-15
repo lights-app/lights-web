@@ -17,6 +17,12 @@ class RoomDeviceListItemView extends lrs.views.ListItem {
 		this.name = this.object.name
 		this.roomName = this.object.roomName
 
+		if (this.el.dataset.checked == "true") {
+
+			this.check()
+
+		}
+
 	}
 
 	toggleAction() {
@@ -26,6 +32,26 @@ class RoomDeviceListItemView extends lrs.views.ListItem {
 		this.selected = !this.selected
 
 		this.classList.toggle('selected', this.selected)
+
+	}
+
+	check() {
+
+		this.views.checkmark.check()
+
+		this.selected = true
+
+		this.classList.add('selected')
+
+	}
+
+	uncheck() {
+
+		this.views.checkmark.uncheck()
+
+		this.selected = false
+
+		this.classList.remove('selected')
 
 	}
 

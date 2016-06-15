@@ -48,6 +48,8 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 			console.log(device)
 
+			device.view.views.checkmark.uncheck()
+
 			self.flashFirmware(device.object, self.url, device)
 
 		}

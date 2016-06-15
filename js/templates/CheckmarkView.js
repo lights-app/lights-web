@@ -10,7 +10,7 @@ class CheckmarkView extends lrs.LRSView {
 
 		if (this.el.dataset.checked == "true") {
 
-			this.toggleAction()
+			this.check()
 
 		}
 		

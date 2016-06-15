@@ -37,10 +37,10 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 		this.selected = !this.selected
 
 		var parentWidth = this.el.parentElement.offsetWidth
-		var thisWidth = this.el.offsetWidth
 		var parentOffsetLeft = this.el.parentElement.offsetLeft
+		var thisWidth = this.el.offsetWidth + parentOffsetLeft
 		var thisOffsetLeft = this.el.offsetLeft
-		var shiftAmount = -1 * (thisOffsetLeft - parentOffsetLeft)
+		var shiftAmount = -1 * thisOffsetLeft
 		var selectedMomentIndex = Array.prototype.indexOf.call(this.el.parentElement.childNodes, this.el)
 		var marginRight = this.el.currentStyle || window.getComputedStyle(this.el)
 		marginRight = marginRight.marginRight
@@ -53,7 +53,7 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 
 			if (i < selectedMomentIndex) {
 
-				moment.el.style["transform"] = "translate3d(" + (thisWidth + 10) + "px, 0, 0)" 
+				moment.el.style["transform"] = "translate3d(" + (thisWidth) + "px, 0, 0)" 
 
 			} else if (i > selectedMomentIndex) {
 
