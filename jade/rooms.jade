@@ -1,21 +1,21 @@
 mixin roomTemplates
 
-	section.rooms-overview-page(data-template='RoomsOverview')
+	section.rooms-overview-page.side-panel(data-template='RoomsOverview')
 		header.toolbar
 			.left
 				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-				button.settings-btn(data-action='click:settings()') Settings
+				button.settings-btn(data-view='SettingsBtn:settingsBtn') Settings
 			.title
 				h1(data-outlet='title') Lights
 			.right
 				.add-btn(data-view='AddBtn:addBtn')
 		section.page-content
-			ul.room-list(data-view='LRSList:roomList:RoomListItem')
+			ul.room-list.list.border-2.border-radius(data-view='RoomList:roomList:RoomListItem')
 				li.no-rooms(data-view="noRooms")
 					h2 It's empty in here!
 					p.text-center Time to add some rooms. Click the "+" icon in the top right corner to add a new room
 
-	section.new-room-device-list-page(data-template='NewRoomDevicesPage')
+	section.new-room-device-list-page.main-panel(data-template='NewRoomDevicesPage')
 		header.toolbar
 			.left
 				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
@@ -26,10 +26,10 @@ mixin roomTemplates
 		section.page-content
 			h1.self-center.text-center Select the lights you want to use in this room
 			p.self-center.text-center Selected lights that are online will start to pulse
-			ul.self-center.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
+			ul.self-center.device-list.list.border-2.border-radius(data-view='LRSList:lightsDeviceList:DeviceListItem')
 			button.box-btn(data-action='click:next()') Next
 
-	section.new-room-naming-page(data-template='NewRoomNamingPage')
+	section.new-room-naming-page.main-panel(data-template='NewRoomNamingPage')
 		header.toolbar
 			.left
 				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
@@ -42,7 +42,7 @@ mixin roomTemplates
 			ul.room-icon-list(data-view='LRSList:roomIconList:RoomIconListItem')
 			button.box-btn(data-action='click:next()') Next
 
-	section.new-room-completion-page(data-template='NewRoomCompletionPage')
+	section.new-room-completion-page.main-panel(data-template='NewRoomCompletionPage')
 		header.toolbar
 			.left
 				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
@@ -56,7 +56,7 @@ mixin roomTemplates
 			button.box-btn(data-action='click:skip()') Skip
 			button.box-btn(data-action='click:newMoment()') New moment
 
-	section.new-moment-page(data-template='NewMomentPage')
+	section.new-moment-page.main-panel(data-template='NewMomentPage')
 		header.toolbar
 			.left
 				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
@@ -67,10 +67,10 @@ mixin roomTemplates
 		section.page-content
 			h1.self-center.text-center Configure your lights 
 			p.self-center.text-center Select the lights you want to use and which color they should be.
-			ul.new-moment-device-list(data-view='LRSList:momentDeviceList:MomentDeviceListItem')
+			ul.new-moment-device-list(data-view='LRSList:momentDeviceList:DeviceListItem')
 			button.box-btn(data-action='click:next()') Next
 
-	section.new-moment-naming-page(data-template='NewMomentNamingPage')
+	section.new-moment-naming-page.main-panel(data-template='NewMomentNamingPage')
 		header.toolbar
 			.left
 				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
@@ -85,17 +85,17 @@ mixin roomTemplates
 
 	li.room-list-item(data-template='RoomListItem')
 		button(data-action='click:openColorWheel()')
-		.horizontal-container
-			.room-data
-				span(data-outlet='name')
-				ul.moment-list(data-view='LRSList:momentList:MomentListItem')
-					li.moment-list-item.add-moment-btn(data-action='click:addMoment()')
-						span +
+		.room-data
+			span(data-outlet='name')
 			img.room-icon(data-outlet='icon')
+		.moment-list-container
+			ul.moment-list.no-scrollbar(data-view='LRSList:momentList:MomentListItem')
+				li.moment-list-item.border-4.fill-5.add-moment-btn(data-action='click:addMoment()')
+					span +
 		.lights-config(data-view='lightsConfig1')
 			.lights-config.front.active(data-view='lightsConfig2')
 
-	li.moment-list-item(data-template='MomentListItem' data-action='click:select()')
+	li.moment-list-item.border-4.fill-5(data-template='MomentListItem' data-action='click:select()')
 		span(data-outlet='name')
 			
 	div.room(data-template='Room')
