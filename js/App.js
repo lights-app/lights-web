@@ -42,16 +42,19 @@ class App extends lrs.View {
 
 		this.roomIconList = [
 			{name: "Living Room",
-			icon: "static/img/icons/couch.svg"
+			icon: "static/img/icons/living-room.svg"
 			},
 			{name: "Kitchen",
 			icon: "static/img/icons/kitchen.svg"
 			},
-			{name: "Living Room",
-			icon: "static/img/icons/couch.svg"
+			{name: "Bedroom",
+			icon: "static/img/icons/bedroom.svg"
 			},
-			{name: "Kitchen",
-			icon: "static/img/icons/kitchen.svg"
+			{name: "Guest Room",
+			icon: "static/img/icons/guest-room.svg"
+			},
+			{name: "Hallway",
+			icon: "static/img/icons/hallway.svg"
 			}
 		]
 
