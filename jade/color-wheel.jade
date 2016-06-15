@@ -1,0 +1,44 @@
+mixin color-wheel
+
+	section.color-wheel.main-panel(data-template='ColorWheel' data-action='click:toggle()')
+			header.toolbar
+				.left
+					button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+				.title
+					h1(data-outlet='name')
+				.right
+					.close-btn(data-view='CloseBtn:closeBtn()')
+			section.page-content
+				.color-wheel-container
+					.brightness-slider-track
+						.on-off-btn-container
+							button.on-off-btn.is-on(data-view='onOffBtn' data-action='click:onOffClick()' data-isOn='true')
+								svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve")
+									path(id="XMLID_1_" class="line" d="M15.5,6.3C9.8,8.2,5.6,13.6,5.6,20c0,7.9,6.4,14.4,14.4,14.4S34.4,27.9,34.4,20 c0-6.4-4.1-11.8-9.9-13.7")
+									line(id="XMLID_5_" class="line" x1="20" y1="16" x2="20" y2="3.4")
+						.brightness-slider-arm(data-view='brightnessSliderArm')
+							.brightness-slider(data-action='mousedown:brightnessTouchstart();touchstart:brightnessTouchstart()')
+						.color-wheel-bg(data-view='colorWheelBg' data-action='mousedown:colorWheelTouchstart();touchstart:colorWheelTouchstart()')
+							.color-wheel-bg-scrim(data-view='colorWheelBgScrim')
+							.color-wheel-arm(data-view='colorWheelArm')
+								.color-wheel-slide-arm(data-view='colorWheelSlideArm')
+									.color-wheel-picker(data-view='colorWheelPicker')
+										.color-wheel-picker-scrim(data-view='colorWheelPickerScrim')
+
+				.bottom-container
+					.favourite-colors-container
+						ul.favourite-colors-list(data-view='LRSList:favouriteColorsList:FavouriteColorsListItem')
+							li.favourite-colors-list-item.add-favourite-color-btn(data-action='click:addFavouriteColor()' data-view='addFavouriteColorBtn')
+								.add-favourite-color-btn-scrim(data-view='addFavouriteColorBtnScrim')
+								span +
+
+					.room-device-list-container
+						ul.room-device-list(data-view='LRSList:roomDeviceList:RoomDeviceListItem')
+
+		li.favourite-colors-list-item(data-template='FavouriteColorsListItem' data-action='click:select()' data-view='favouriteColorsListItem')
+			span.delete(data-action='click:deleteFavouriteColor(object)' data-view='deleteFavouriteColorBtn') +
+			
+
+		li.room-device-list-item.border-2.border-radius.selectable.fill-3.selected(data-template='RoomDeviceListItem' data-action='click:toggle()' data-checked='true')
+			span(data-outlet='roomName')
+			.checkmark(data-view='Checkmark:checkmark' data-checked='true')

@@ -10,6 +10,12 @@ mixin templates
 			line(class="close-btn-line" x1="2.5" y1="2.5" x2="14.5" y2="14.5")
 			line(class="close-btn-line" x1="2.5" y1="14.5" x2="14.5" y2="2.5")
 
+	button.settings-btn(data-template='SettingsBtn' data-action='click:openSettings()')
+		svg(version="1.1" id="Layer_1" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:svg="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="20.5 17 17 17" style="enable-background:new 20.5 17 17 17;" xml:space="preserve")
+			g(transform="translate(0,-952.36218)")
+				path(class="settings-btn-line" d="M29,969.4c-0.6,0-1.2,0.1-1.7,0.2c-0.2,0-0.4,0.2-0.4,0.4l-0.3,1.2c-0.8,0.3-1.5,0.7-2.1,1.2l-1.2-0.3 c-0.2-0.1-0.4,0-0.6,0.2c-0.4,0.4-0.7,0.9-1,1.4s-0.5,1-0.7,1.6c-0.1,0.2,0,0.4,0.1,0.6l0.9,0.9c-0.1,0.8-0.1,1.6,0,2.4l-0.9,0.9 c-0.2,0.2-0.2,0.4-0.1,0.6c0.2,0.6,0.4,1.1,0.7,1.6c0.3,0.5,0.6,1,1,1.4c0.2,0.2,0.4,0.2,0.6,0.2l1.2-0.3c0.6,0.5,1.4,0.9,2.1,1.2 l0.3,1.2c0.1,0.2,0.2,0.4,0.4,0.4c0.6,0.1,1.2,0.2,1.7,0.2s1.2-0.1,1.8-0.2c0.2,0,0.4-0.2,0.4-0.4l0.3-1.2c0.8-0.3,1.5-0.7,2.1-1.2 l1.2,0.3c0.2,0.1,0.4,0,0.6-0.2c0.4-0.4,0.7-0.9,1-1.4s0.5-1,0.7-1.6c0.1-0.2,0-0.4-0.1-0.6l-0.9-0.9c0.1-0.8,0.1-1.6,0-2.4 l0.9-0.9c0.2-0.2,0.2-0.4,0.1-0.6c-0.2-0.6-0.4-1.1-0.7-1.6s-0.6-1-1-1.4c-0.2-0.2-0.4-0.2-0.6-0.2l-1.2,0.3 c-0.6-0.5-1.3-0.9-2.1-1.2l-0.3-1.2c-0.1-0.2-0.2-0.4-0.4-0.4C30.2,969.4,29.6,969.4,29,969.4z M29,973.7c-1.1,0-2.1,0.4-2.9,1.2 c-1.6,1.6-1.6,4.2,0,5.8c1.6,1.6,4.2,1.6,5.8,0c1.6-1.6,1.6-4.2,0-5.8C31.1,974.1,30,973.7,29,973.7z")
+
+
 	.toggle(data-template='Toggle' data-action='click:toggle()')
 		.toggle-fill
 		.toggle-state
@@ -18,7 +24,7 @@ mixin templates
 		svg.checkmark(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 10 10" style="enable-background:new 0 0 10 10;" xml:space="preserve")
 			polyline(class="line" points="0,4.3 3.9,8.3 10,2.2 ")
 
-	li.device-list-item(data-template='DeviceListItem' data-action='click:toggle()')
+	li.device-list-item.selectable.fill-2(data-template='DeviceListItem' data-action='click:toggle()')
 		.device-info-container
 			.checkmark(data-view='Checkmark:checkmark')
 			span(data-outlet='name')
@@ -42,46 +48,3 @@ mixin templates
 		.status-container
 			.lights-device-icon
 			.status
-
-	section.color-wheel(data-template='ColorWheel' data-action='click:toggle()')
-		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='name')
-			.right
-				.close-btn(data-view='CloseBtn:closeBtn()')
-		section.page-content
-			.color-wheel-container
-				.brightness-slider-track
-					.on-off-btn-container
-						button.on-off-btn.is-on(data-view='onOffBtn' data-action='click:onOffClick()' data-isOn='true')
-							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve")
-								path(id="XMLID_1_" class="line" d="M15.5,6.3C9.8,8.2,5.6,13.6,5.6,20c0,7.9,6.4,14.4,14.4,14.4S34.4,27.9,34.4,20 c0-6.4-4.1-11.8-9.9-13.7")
-								line(id="XMLID_5_" class="line" x1="20" y1="16" x2="20" y2="3.4")
-					.brightness-slider-arm(data-view='brightnessSliderArm')
-						.brightness-slider(data-action='mousedown:brightnessTouchstart()')
-					.color-wheel-bg(data-view='colorWheelBg' data-action='mousedown:colorWheelTouchstart();touchstart:colorWheelTouchstart()')
-						.color-wheel-bg-scrim(data-view='colorWheelBgScrim')
-						.color-wheel-arm(data-view='colorWheelArm')
-							.color-wheel-slide-arm(data-view='colorWheelSlideArm')
-								.color-wheel-picker(data-view='colorWheelPicker')
-									.color-wheel-picker-scrim(data-view='colorWheelPickerScrim')
-
-			.bottom-container
-				.favourite-colors-container
-					ul.favourite-colors-list(data-view='LRSList:favouriteColorsList:FavouriteColorsListItem')
-						li.favourite-colors-list-item.add-favourite-color-btn(data-action='click:addFavouriteColor()' data-view='addFavouriteColorBtn')
-							.add-favourite-color-btn-scrim(data-view='addFavouriteColorBtnScrim')
-							span +
-
-				.room-device-list-container
-					ul.room-device-list(data-view='LRSList:roomDeviceList:RoomDeviceListItem')
-
-	li.favourite-colors-list-item(data-template='FavouriteColorsListItem' data-action='click:select()' data-view='favouriteColorsListItem')
-		span.delete(data-action='click:deleteFavouriteColor(object)' data-view='deleteFavouriteColorBtn') +
-		
-
-	li.room-device-list-item(data-template='RoomDeviceListItem' data-action='click:toggle()')
-		span(data-outlet='roomName')
-		.checkmark(data-view='Checkmark:checkmark' data-checked='true')
