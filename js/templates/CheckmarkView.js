@@ -1,5 +1,3 @@
-'use strict';
-
 class CheckmarkView extends lrs.LRSView {
 	
 	get template() { return 'Checkmark' }

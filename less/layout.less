@@ -30,3 +30,91 @@ body {
 	display: none !important;
 	
 }
+
+.page-container {
+	
+	position: relative;
+	
+	height: 100%;
+	
+	&::before {
+	
+		display: block;
+		content: '';
+		
+		position: absolute;
+		
+		width: 100%;
+		height: @toolbar-height;
+		
+		background-color: @blue-1;
+		
+	}
+	
+	> * {
+		
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		
+		width: 100%;
+		
+	}
+	
+	.toolbar {
+		
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		
+		position: relative;
+		
+		height: @toolbar-height;
+		
+		h1 {
+			
+			position: absolute;
+			left: 0px;
+			right: 0px;
+			z-index: 0;
+			
+			text-align: center;
+			
+			+ * {
+				
+				margin-left: auto;
+				
+			}
+			
+		}
+		
+		> * {
+			
+			position: relative;
+			z-index: 1;
+			
+		}
+		
+	}
+	
+}
+
+.page-content {
+	
+	background: @blue-0;
+	height: calc(100% ~"-" @toolbar-height);
+	
+}
+
+.page-shadow-overlay {
+	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	
+	background: fade(black, 40%);
+	
+}

@@ -7,6 +7,8 @@ var argv = require('yargs').argv
 var concat = require('gulp-concat')
 var sourcemaps = require('gulp-sourcemaps')
 var gls = require('gulp-live-server')
+var iife = require('gulp-iife')
+var order = require('gulp-order')
 var babel = require('gulp-babel')
 var autoprefixer = require('gulp-autoprefixer')
 var server
@@ -38,12 +40,23 @@ gulp.task('js', function() {
 				this.emit('end')
 			}
 		}))
+		.pipe(order([
+			'**/App.js',
+			'**/Collection.js',
+			'**/Model.js',
+			'**/*.js'
+		]))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
-		.pipe(babel({
+		.pipe(iife())
+		
+	if (argv.es5) {
+		stream = stream.pipe(babel({
 			presets: ['es2015']
 		}))
-		.pipe(sourcemaps.write())
+	}
+	
+	stream = stream.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./build/static/js'))
 		
 	if (argv.publish) {
@@ -98,7 +111,14 @@ gulp.task('less', function() {
 
 gulp.task('vendor', function() {
 	
-	var stream = gulp.src(['./vendor/lars/lrs.js', './vendor/particle-api-js/dist/particle.min.js', './vendor/suncalc/suncalc.js'])
+	var files = [
+		argv.es5 ? './vendor/lars/lrs.js' : './vendor/lars/lrs-es6.js',
+		'./vendor/particle-api-js/dist/particle.min.js',
+		'./vendor/suncalc/suncalc.js',
+		'./vendor/dynamics.js/lib/dynamics.js'
+	]
+	
+	var stream = gulp.src(files)
 		.pipe(concat('vendor.js'))
 		.pipe(gulp.dest('./build/static/js'))
 		

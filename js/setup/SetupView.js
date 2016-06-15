@@ -1,5 +1,3 @@
-'use strict';
-
 class SetupView extends lrs.views.Paged {
 	
 	startAction() {

@@ -1,5 +1,3 @@
-'use strict';
-
 class RoomDeviceListItemView extends lrs.views.ListItem {
 
 	get template() { return 'RoomDeviceListItem'}

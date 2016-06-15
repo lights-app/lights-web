@@ -1,5 +1,3 @@
-'use strict';
-
 class NewRoomCompletionPageView extends lrs.views.Page {
 	
 	get template() {

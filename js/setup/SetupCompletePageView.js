@@ -1,5 +1,3 @@
-'use strict';
-
 class SetupCompletePageView extends lrs.views.Page {
 	
 	get template() { return 'SetupCompletePage' }
@@ -10,7 +8,7 @@ class SetupCompletePageView extends lrs.views.Page {
 
 		var self = this
 
-		for (let device of lights.app.devicesArray) {
+		for (let device of lights.app.devices) {
 
 			device.getConfig()
 			
@@ -29,7 +27,7 @@ class SetupCompletePageView extends lrs.views.Page {
 
 		console.log(this)
 
-		this.owner.owner.views.rooms.showView(new lrs.views.RoomsOverview())
+		this.owner.owner.views.rooms.show()
 		// this.owner.showView(new lrs.views.Rooms())
 		this.owner.owner.views.setup.hide()
 

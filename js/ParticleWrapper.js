@@ -1,5 +1,3 @@
-'use strict';
-
 class ParticleWrapper extends lrs.LRSObject {
 	
 	constructor(particleOptions, {auth}) {

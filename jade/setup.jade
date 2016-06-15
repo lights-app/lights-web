@@ -2,10 +2,8 @@ mixin setupTemplates
 
 	section.login-page(data-template='SetupLogin')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') Login
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Login
 		section.page-content
 			image.particle-icon(src='static/img/icons/particle-gray.svg')
 				p.text-center Sign in to your Particle account to set up Lights on any of your Particle devices
@@ -22,10 +20,8 @@ mixin setupTemplates
 	
 	section.devices-page(data-template='DevicesPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') Select devices
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Select devices
 
 		section.page-content
 			p.self-center.text-center Select the devices you want to use with Lights.
@@ -37,9 +33,7 @@ mixin setupTemplates
 	
 	section.devices-reprogramming-page(data-template='DevicesReprogrammingPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
 			h1(data-outlet='title') Reprogramming
 
 		section.page-content
@@ -52,10 +46,8 @@ mixin setupTemplates
 	
 	section.devices-naming-page(data-template='DevicesNamingPage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') Naming
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Naming
 
 		section.page-content
 			h2 Name your Lights
@@ -66,10 +58,8 @@ mixin setupTemplates
 
 	section.setup-complete-page(data-template='SetupCompletePage')
 		header.toolbar
-			.left
-				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-			.title
-				h1(data-outlet='title') Setup complete
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Setup complete
 
 		section.page-content
 			h2 Setup complete!

@@ -1,5 +1,3 @@
-'use strict';
-
 class DeviceTimer extends lrs.LRSObject {
 	
 	constructor(config, channelCount) {

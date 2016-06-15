@@ -1,5 +1,3 @@
-'use strict';
-
 class SetupLoginView extends lrs.views.Page {
 	
 	get template() { return 'SetupLogin' }

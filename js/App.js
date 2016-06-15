@@ -1,5 +1,3 @@
-'use strict';
-
 class App extends lrs.View {
 	
 	constructor({el, template, options = {}} = {}) {
@@ -28,13 +26,13 @@ class App extends lrs.View {
 			console.log(self.sunrise)
 
 		})
-
+		
+		this.devices = new lights.Collection()
+		
 		// Load devices stored in localStorage to a temporary variable
-		this._devices = this.storage('devices') || {}
-		// Create an object to hold the actual devices
-		this.devices = {}
-		// Create a devicesArray variable to store the devices in an array. Handy for view creation
-		this.devicesArray = []
+		for (let device of this.storage('devices') || []) {
+			this.devices.add(new lights.Device(device))
+		}
 
 		this.favouriteColors = this.storage('favouriteColors') || []
 
@@ -79,73 +77,19 @@ class App extends lrs.View {
 		console.log(this.particle.isLoggedIn)
 
 		if (this.particle.isLoggedIn) {
+			
 
-			// Create an object to temporarily hold Particle devices
-			this.particleDevices = {}
+			this.setRooms()
 
-			lights.app.particle.listDevices().then( (response) => {
+			this.subscribeToEventStreams()
+			
+			this.views.setup.hide()
+			this.views.rooms.show()
 
-				for (let device of response.body) {
-
-					console.log(this)
-					
-					this.particleDevices[device.id] = lights.Device.fromParticleDevice(device)
-
-				}
-
-				console.log(self.particleDevices)
-
-				self.setDevices()
-
-				self.setRooms()
-
-				self.subscribeToEventStreams()
-
-				console.log(self)
-
-				setTimeout( () => {
-					console.log(this, 'f')
-					self.views.setup.hide()
-					self.views.rooms.showView(new lrs.views.RoomsOverview())
-					// self.views.setup.showView(new lrs.views.DevicesReprogrammingPage({devices: self.devicesArray}))
-				}, 1)
-
-			}).catch( function(err) {
-
-				console.error(err.stack)
-
-			})
 		}
 		
 		return this
 		
-	}
-
-	setDevices() {
-
-		console.log(this._devices)
-
-		// Then iterate over all devices and create new lights.Devices so all functions are set correctly
-		for (let key in this._devices) {
-			
-			console.log(key)
-
-			this.devices[key] = lights.Device.fromParticleDevice(this.particleDevices[key])
-			this.devicesArray.push(this.devices[key])
-
-		}
-
-		// After particle wrapper has been loaded, get the config of all devices
-		for (let key in this.devices) {
-
-			console.log("Getting device config for", key)
-			
-			console.log(key)
-
-			this.devices[key].getConfig()
-
-		}
-
 	}
 
 	setRooms() {
@@ -170,7 +114,7 @@ class App extends lrs.View {
 
 		if (!this.eventStreamsConfigured){
 
-			this.deviceStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.deviceStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/status' }).then(function(stream) {
 				stream.on('event', function(data) {
 
 					console.log(data)
@@ -201,10 +145,11 @@ class App extends lrs.View {
 					document.dispatchEvent(event)
 
 					console.log("Device", data.coreid, data.data)
-
+					
+					// TODO: Something weird is happening here.
 					lights.app.devices[data.coreid].connected = true
 
-					for (let device of lights.app.devicesArray) {
+					for (let device of lights.app.devices) {
 
 						if (device.id === data.coreid) {
 
@@ -218,7 +163,7 @@ class App extends lrs.View {
 
 			})
 
-			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine' }).then(function(stream) {
 				stream.on('event', function(data) {
 
 					var event = new CustomEvent('deviceConfigChanged', {
@@ -236,7 +181,7 @@ class App extends lrs.View {
 
 			})
 
-			this.flashStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/flash/status', auth: this.particle.auth.accessToken}).then(function(stream) {
+			this.flashStatusStream = this.particle.getEventStream({deviceId: 'mine', name: 'spark/flash/status' }).then(function(stream) {
 				stream.on('event', function(data) {
 
 					console.log(data)
@@ -436,5 +381,5 @@ class App extends lrs.View {
 	
 }
 
-window.lights = window.lights || {}
+const lights = window.lights = {}
 window.lights.App = App

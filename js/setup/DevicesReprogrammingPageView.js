@@ -1,5 +1,3 @@
-'use strict';
-
 class DevicesReprogrammingPageView extends lrs.views.Page {
 	
 	get template() { return 'DevicesReprogrammingPage' }
@@ -80,7 +78,7 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 				var file = new File([xhr.response], 'lights.bin')
 
 				// Flash the binary firmware to the specified device
-				var flash = lights.app.particle.flashDevice({deviceId: device.id, files: { file1: file}, auth: lights.app.particle.auth.accessToken })
+				var flash = lights.app.particle.flashDevice({deviceId: device.id, files: { file1: file} })
 
 				flash.then (
 
@@ -130,7 +128,7 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 		// Check if we should rename the device
 		if(lights.app.devices[e.detail.id].name.split('__')[0] !== 'Lights') {
 
-			var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName, auth: lights.app.particle.auth.accessToken})
+			var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName })
 
 			rename.then(
 

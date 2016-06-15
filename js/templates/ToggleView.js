@@ -1,5 +1,3 @@
-'use strict';
-
 class ToggleView extends lrs.LRSView {
 	
 	get template() { return 'Toggle' }

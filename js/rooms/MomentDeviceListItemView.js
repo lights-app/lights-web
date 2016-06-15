@@ -1,5 +1,3 @@
-'use strict';
-
 class MomentDeviceListItemView extends lrs.LRSView.views.LRSListItemView {
 	
 	// constructor({el, options}) {

@@ -1,5 +1,3 @@
-'use strict';
-
 class NewRoomNamingPageView extends lrs.views.Page {
 	
 	get template() {

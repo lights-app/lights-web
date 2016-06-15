@@ -1,5 +1,3 @@
-'use strict';
-
 class NewRoomDevicesPageView extends lrs.views.Page {
 	
 	get template() {
@@ -14,7 +12,7 @@ class NewRoomDevicesPageView extends lrs.views.Page {
 
 		console.log(this)
 
-		this.views.lightsDeviceList.reset(lights.app.devicesArray)
+		this.views.lightsDeviceList.reset(lights.app.devices.records)
 
 		return this
 

@@ -1,5 +1,3 @@
-'use strict';
-
 class DeviceReprogrammingListItemView extends lrs.views.ListItem {
 
 	get template() { return 'DeviceReprogrammingListItem'}
