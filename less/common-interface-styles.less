@@ -1,0 +1,305 @@
+.list {
+
+	> li:last-child {
+
+		border-bottom: none;
+	}
+
+	> li {
+
+		border-bottom: 1px solid @cool-gray-2;
+
+	}
+
+}
+
+.border-radius {
+
+	border-radius: @border-radius;
+	overflow: hidden;
+
+}
+
+.box-btn {
+
+	width: 100%;
+	max-width: 300px;
+
+	margin: 10px 0;
+	padding: 10px;
+
+	align-self: center;
+
+	border-radius: @border-radius;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+
+	background-color: @bright-blue-1;
+
+	transition: all 0.2s ease;
+
+	&:hover {
+
+		background-color: @bright-blue-2;
+		opacity: 1;
+
+	}
+
+	&:active {
+
+		background-color: @bright-blue-0;
+		opacity: 1;
+		transition: all 0.1s ease;
+
+	}
+
+	&.green {
+
+		background-color: @green-1;
+		color: #FFF;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+
+		&:hover {
+
+			background-color: @green;
+
+		}
+
+		&:active {
+
+			background-color: @green-0;
+
+		}
+
+	}
+
+	&.red {
+
+		background-color: @red;
+
+	}
+
+	&.disabled {
+
+		pointer-events: none;
+		background-color: @cool-gray-0;
+		color: @cool-gray-3;
+
+	}
+
+}
+
+.border-0 {
+
+	border: 1px solid @cool-gray-0;
+
+}
+
+.border-1 {
+
+	border: 1px solid @cool-gray-1;
+
+}
+
+.border-2 {
+
+	border: 1px solid @cool-gray-2;
+
+}
+
+.border-3 {
+
+	border: 1px solid @cool-gray-3;
+
+}
+
+.border-4 {
+
+	border: 1px solid @cool-gray-4;
+
+}
+
+.fill-1 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.1);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+
+}
+
+.fill-2 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.2);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+
+}
+
+.fill-3 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.3);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+
+}
+
+.fill-4 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.4);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+
+}
+
+.fill-5 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.5);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+}
+
+.fill-6 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.6);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+}
+
+.fill-7 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.7);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+}
+
+.fill-8 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.8);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+}
+
+.fill-9 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 0.9);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+}
+
+.fill-10 {
+
+	@bg-color: rgba(red(@cool-gray-2), green(@cool-gray-2), blue(@cool-gray-2), 1);
+	background-color: @bg-color;
+
+	&.selectable {
+
+		background-color: transparent;
+
+		&.selected {
+
+			background-color: @bg-color
+
+		}
+
+	}
+}
