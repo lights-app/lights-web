@@ -33,19 +33,19 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 	}
 
-	openColorWheelAction(view, el, e) {
-
-		console.log('room')
-		var id = this.object.devices[0].id
-		this.owner.owner.owner.showView(new lrs.views.ColorWheel({room: this.object, rgb: lights.app.devices[id].channels[0].rgb }))
-
-	}
-
 	addMomentAction(view, el, e) {
 
-		console.log('oment')
 		var room = this
-		this.owner.owner.owner.showView(new lrs.LRSView.views.NewMomentPageView({room: room}))
+
+		if (this.colorWheel) {
+
+			this.colorWheel.remove()
+
+		}
+
+		var newMomentPage = new lrs.LRSView.views.NewMomentPageView({room: room})
+		this.owner.owner.classList.add('hide')
+		newMomentPage.appendTo(this.owner.owner.owner)
 
 	}
 

@@ -11,8 +11,6 @@ class RoomListView extends lrs.views.LRSListView {
 	constructor(el, options) {
 	
 		super(el, options)
-
-		console.log(this)		
 		
 		return this
 	
@@ -21,8 +19,6 @@ class RoomListView extends lrs.views.LRSListView {
 	openColorWheelAction(view, el, e) {
 
 		var id = view.object.devices[0].id
-
-		console.log(this.owner.owner)
 
 		if(!this.owner.owner.views.colorWheel) {
 
