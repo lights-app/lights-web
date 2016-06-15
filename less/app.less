@@ -5,6 +5,7 @@
 
 @import "type";
 
+@import "common-interface-elements";
 @import "welcome";
 @import "layout";
 @import "setup";
@@ -32,6 +33,8 @@ body {
 
 	font-family: 'Roboto';
 
+	overflow: hidden;
+
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -51,7 +54,7 @@ body {
 
 	overflow: hidden;
 
-	// border-radius: @btn-border-radius;
+	// border-radius: @border-radius;
 	// border: 1px solid @cool-gray-2;
 
 	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
@@ -62,6 +65,16 @@ body {
 
 	pointer-events: none;
 
+}
+
+.no-scrollbar {
+
+	&::-webkit-scrollbar {
+
+		display: none;
+
+	}
+	
 }
 
 h1, h2, p {
@@ -136,73 +149,17 @@ button {
 
 }
 
-.box-btn {
+.main-panel {
 
-	width: 100%;
-	max-width: 300px;
+	width: ~"calc(100vw - @{side-panel-width})";
+	min-width: ~"calc(100vw - @{side-panel-width})";
 
-	margin: 10px 0;
-	padding: 10px;
+}
 
-	align-self: center;
+.side-panel {
 
-	border-radius: @btn-border-radius;
-	border: 1px solid rgba(255, 255, 255, 0.2);
-
-	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-
-	background-color: @bright-blue-1;
-
-	transition: all 0.2s ease;
-
-	&:hover {
-
-		background-color: @bright-blue-2;
-		opacity: 1;
-
-	}
-
-	&:active {
-
-		background-color: @bright-blue-0;
-		opacity: 1;
-		transition: all 0.1s ease;
-
-	}
-
-	&.green {
-
-		background-color: @green-1;
-		color: #FFF;
-		border: 1px solid rgba(255, 255, 255, 0.3);
-
-		&:hover {
-
-			background-color: @green;
-
-		}
-
-		&:active {
-
-			background-color: @green-0;
-
-		}
-
-	}
-
-	&.red {
-
-		background-color: @red;
-
-	}
-
-	&.disabled {
-
-		pointer-events: none;
-		background-color: @cool-gray-0;
-		color: @cool-gray-3;
-
-	}
+	width: @side-panel-width;
+	min-width: @side-panel-width;
 
 }
 
@@ -215,7 +172,7 @@ button {
 
 	height: @toolbar-height;
 
-	background-color: @blue-1;
+	background-color: hsl(hue(@blue-0), saturation(@blue-0), lightness(@blue-0) + 7%);
 
 	.left, .right {
 
@@ -276,9 +233,10 @@ button {
 .add-btn, .close-btn{
 
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	align-content: center;
 
 	svg{
 
@@ -294,6 +252,32 @@ button {
 
 	}
 
+}
+
+.settings-btn {
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+
+	svg {
+
+		width: 17px;
+		height: 17px;
+		overflow: visible;
+
+	}
+
+	.settings-btn-line {
+
+		stroke: @text-color;
+		stroke-width: 1px;
+
+		fill: transparent;
+
+	}
 }
 
 .page-content {
@@ -323,4 +307,21 @@ button {
 
 	align-self: flex-end;
 	
+}
+
+@media (max-width: 800px) {
+
+	.side-panel {
+
+		width: 100%;
+		min-width: initial;
+
+	}
+
+	.main-panel {
+
+		width: 100%;
+
+	}
+
 }
