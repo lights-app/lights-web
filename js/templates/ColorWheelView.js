@@ -19,6 +19,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		this._colorWheelTouchMove = this._colorWheelTouchMove.bind(this)
 		this._brightnessTouchMove = this._brightnessTouchMove.bind(this)
+		this._removeBrightnessTouchMoveEventListeners = this._removeBrightnessTouchMoveEventListeners.bind(this)
+		this._removeColorWheelTouchMoveEventListeners = this._removeColorWheelTouchMoveEventListeners.bind(this)
 
 		// Variable for the start values of a mouseclick/tap
 		this.mouseStart = [0, 0]
@@ -38,7 +40,7 @@ class ColorWheelView extends lrs.views.Page {
 		this.prevHsv = []
 
 		// The range (in degrees) visible around the color wheel in degrees
-		this.brightnessSliderRange = 330
+		this.brightnessSliderRange = 315
 		// The offset from 0 degrees (based on the brightnessSliderRange)
 		this.brightnessSliderAngleOffset = (360 - this.brightnessSliderRange) / 2
 
@@ -57,6 +59,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
+		this.showFavouriteColors()
+
 		return this
 
 	}
@@ -67,9 +71,18 @@ class ColorWheelView extends lrs.views.Page {
 		
 	}
 
+	backAction() {
+
+		this.owner.remove(this.view)
+		lights.app.views.rooms.views.content[0].classList.remove('hide')
+
+	}
+
 	brightnessTouchstartAction(view, el, e) {
 
 		var self = this
+
+		console.log(view, el, e)
 
 		this.disableTransitions()
 
@@ -97,29 +110,14 @@ class ColorWheelView extends lrs.views.Page {
 		document.addEventListener('mousemove', this._brightnessTouchMove)
 		document.addEventListener('touchmove', this._brightnessTouchMove)
 
-		document.addEventListener('mouseup', self._mouseUp = function(e){
-
-			document.removeEventListener('mousemove', self._brightnessTouchMove)
-			document.removeEventListener('touchmove', self._brightnessTouchMove)
-			self._mouseMove = undefined
-			clearInterval(self._dataSendInterval)
-			// Send latest value
-			self.sendData()
-
-			self.enableTransitions()
-
-			// Remove this event listener
-			document.removeEventListener('mouseup', self._mouseUp)
-
-			self.dragging = false
-
-		})
+		document.addEventListener('mouseup', this._removeBrightnessTouchMoveEventListeners)
+		document.addEventListener('touchend', this._removeBrightnessTouchMoveEventListeners)
 
 	}
 
 	_brightnessTouchMove(e) {
 
-		// console.log(this)
+		console.log(this)
 
 		if (e.touches) {
 
@@ -135,6 +133,24 @@ class ColorWheelView extends lrs.views.Page {
 		this.touch.value = (this.getAngle(this.touch)[0] - this.brightnessSliderAngleOffset) / this.brightnessSliderRange
 
 		this.setBrightnessSlider(this.touch.value)
+
+	}
+
+	_removeBrightnessTouchMoveEventListeners(e) {
+
+		document.removeEventListener('mousemove', this._brightnessTouchMove)
+		document.removeEventListener('touchmove', this._brightnessTouchMove)
+		this._mouseMove = undefined
+		clearInterval(this._dataSendInterval)
+		// Send latest value
+		this.sendData()
+
+		this.enableTransitions()
+
+		// Remove this event listener
+		document.removeEventListener('mouseup', this._mouseUp)
+
+		this.dragging = false
 
 	}
 
@@ -209,25 +225,8 @@ class ColorWheelView extends lrs.views.Page {
 		document.addEventListener('mousemove', this._colorWheelTouchMove)
 		document.addEventListener('touchmove', this._colorWheelTouchMove)
 
-		document.addEventListener('mouseup', self._mouseUp = function(e){
-
-			document.removeEventListener('mousemove', self._colorWheelTouchMove)
-			document.removeEventListener('touchmove', self._colorWheelTouchMove)
-			self._mouseMove = undefined
-			clearInterval(self._dataSendInterval)
-			// Remove class when user is done using the color picker
-			self.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.remove('active')
-			// Send latest value
-			self.sendData()
-
-			self.enableTransitions()
-
-			// Remove this event listener
-			document.removeEventListener('mouseup', self._mouseUp)
-
-			self.dragging = false
-
-		})
+		document.addEventListener('mouseup', this._removeColorWheelTouchMoveEventListeners)
+		document.addEventListener('touchend', this._removeColorWheelTouchMoveEventListeners)
 
 	}
 
@@ -250,6 +249,26 @@ class ColorWheelView extends lrs.views.Page {
 		this.touch.radius = this.touch.radius / this.touch.maxRadius
 
 		this.setColorWheelPickerPosition(this.touch.angle[2], this.touch.radius)
+
+	}
+
+	_removeColorWheelTouchMoveEventListeners(e) {
+
+		document.removeEventListener('mousemove', this._colorWheelTouchMove)
+		document.removeEventListener('touchmove', this._colorWheelTouchMove)
+		this._mouseMove = undefined
+		clearInterval(this._dataSendInterval)
+		// Remove class when user is done using the color picker
+		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.remove('active')
+		// Send latest value
+		this.sendData()
+
+		this.enableTransitions()
+
+		// Remove this event listener
+		document.removeEventListener('mouseup', this._mouseUp)
+
+		this.dragging = false
 
 	}
 
@@ -484,6 +503,62 @@ class ColorWheelView extends lrs.views.Page {
 
 	}
 
+	showFavouriteColors() {
+
+		for (let color of this.views.favouriteColorsList.content) {
+
+			var timeout = this.views.favouriteColorsList.indexForView(color.view)
+
+			console.log(color, timeout)
+
+			setTimeout( () => {
+
+				color.view.classList.add('bounce-in')
+				color.view.classList.add('visible')
+
+				setTimeout( () => {
+
+					color.view.classList.remove('bounce-in')
+
+				}, 700)
+
+			}, 30 * timeout)
+
+		}
+
+		setTimeout( () => {
+
+			this.views.favouriteColorsList.views.addFavouriteColorBtn.classList.add('bounce-in')
+
+		}, 30 * this.views.favouriteColorsList.content.length)
+
+	}
+
+	hideFavouriteColors() {
+
+		for (let color of this.views.favouriteColorsList.content) {
+
+			var timeout = this.views.favouriteColorsList.indexForView(color.view)
+
+			console.log(color, timeout)
+
+			setTimeout( () => {
+
+				color.view.classList.remove('bounce-in')
+				color.view.classList.remove('visible')
+
+			}, 30 * timeout)
+
+		}
+
+		setTimeout( () => {
+
+			this.views.favouriteColorsList.views.addFavouriteColorBtn.classList.remove('bounce-in')
+
+		}, 30 * this.views.favouriteColorsList.content.length)
+
+	}
+
 	addFavouriteColorAction() {
 
 		var color = new lights.Color([Math.round(this.rgb[0]), Math.round(this.rgb[1]), Math.round(this.rgb[2])], 'rgb')
@@ -517,6 +592,16 @@ class ColorWheelView extends lrs.views.Page {
 			lights.app.favouriteColors.push(color)
 			lights.app.storage('favouriteColors', lights.app.favouriteColors)
 			this.views.favouriteColorsList.add(color)
+			var view = this.views.favouriteColorsList.viewForObject(color)
+			view.classList.add('selected')
+			view.classList.add('bounce-in')
+
+			setTimeout( () => {
+
+				view.classList.remove('bounce-in')
+				view.classList.add('visible')
+
+			}, 700)
 
 		} else {
 
