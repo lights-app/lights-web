@@ -22,11 +22,9 @@ class Room extends lrs.LRSObject {
 
 		for (let device of this.devices) {
 
-			channelCount += lights.app.devices[device.id].channelCount
+			channelCount += device.channelCount
 
 		}
-
-		console.log(channelCount)
 
 		return channelCount
 
