@@ -146,7 +146,8 @@ class App extends lrs.View {
 
 					console.log("Device", data.coreid, data.data)
 					
-					// TODO: Something weird is happening here.
+					// TODO: Something weird is happening here. 
+					// This is causing repeated events
 					lights.app.devices[data.coreid].connected = true
 
 					for (let device of lights.app.devices) {

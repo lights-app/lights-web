@@ -520,7 +520,7 @@ class ColorWheelView extends lrs.views.Page {
 
 				}, 700)
 
-			}, 30 * timeout)
+			}, 60 * timeout)
 
 		}
 

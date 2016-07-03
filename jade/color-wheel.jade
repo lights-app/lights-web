@@ -2,12 +2,10 @@ mixin color-wheel
 
 	section.color-wheel.main-panel(data-template='ColorWheel' data-action='click:toggle()')
 			header.toolbar
-				.left
-					button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
-				.title
-					h1(data-outlet='name')
-				.right
-					.close-btn(data-view='CloseBtn:closeBtn()')
+				button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+				h1(data-outlet='name')
+				.close-btn(data-view='CloseBtn:closeBtn()')
+
 			section.page-content
 				.color-wheel-container
 					.brightness-slider-track
