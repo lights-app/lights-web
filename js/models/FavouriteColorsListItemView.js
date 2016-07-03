@@ -65,6 +65,8 @@ class FavouriteColorsListItemView extends lrs.views.ListItem {
 
 			if (color.hex === this.object.hex) {
 
+				e.stopPropagation()
+
 				console.log("found match for", color.hex, "in favouriteColors")
 
 				this.classList.add('disappear')
