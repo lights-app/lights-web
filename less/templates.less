@@ -22,12 +22,13 @@
 
 	cursor: pointer;
 
-	.device-info-container {
+	.left, .right {
 
 		display: flex;
+		flex-direction: row;
 		align-items: center;
-		position: relative;
 		overflow: visible;
+		position: relative;
 
 	}
 
@@ -44,9 +45,7 @@
 
 	}
 
-	.status-container {
-
-		align-self: flex-end;
+	.right {
 
 		.lights-device-icon {
 
@@ -55,7 +54,7 @@
 
 			margin-right: @status-symbol-size / 2;
 
-			background-image: url('/static/img/Lights icon-10px.svg');
+			background-image: url('/static/img/icons/lights-icon-10px.svg');
 			background-size: contain;
 
 			display: inline-block;

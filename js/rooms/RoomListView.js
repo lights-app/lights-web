@@ -20,8 +20,8 @@ class RoomListView extends lrs.views.LRSListView {
 
 		var id = view.object.devices[0].id
 
-		var colorWheel = new lrs.views.ColorWheel({room: view.object, rgb: [255, 255, 255] })
-		lights.app.views.rooms.views.content[0].classList.add('hide')
+		var colorWheel = new lrs.views.ColorWheel({room: view.object, rgb: [255, 255, 0] })
+		// lights.app.views.rooms.views.content[0].classList.add('hide')
 		// colorWheel.appendTo(this.owner.owner, 'colorWheel')
 		this.owner.owner.showView(colorWheel, 'colorWheel')
 		// this.owner.owner.owner.showView()

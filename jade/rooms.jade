@@ -87,7 +87,9 @@ mixin roomTemplates
 		input(data-outlet='name' type='text')
 
 	li.moment-device-list-item.device-list-item(data-template='MomentDeviceListItem' data-action='click:toggle()')
-		.toggle(data-view='Toggle:toggle')
-		span(data-outlet='name')
-		.color-wheel-icon
+		.left
+			.toggle(data-view='Toggle:toggle')
+			span(data-outlet='name')
+		.right
+			.color-wheel-icon
 		

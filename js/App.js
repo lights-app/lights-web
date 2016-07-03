@@ -86,6 +86,26 @@ class App extends lrs.View {
 			this.views.setup.hide()
 			this.views.rooms.show()
 
+			// Call Particle.listDevices to get a list with up-to-date properties
+			var particleDevices = this.particle.listDevices()
+
+			// Iterate over list and set connected status of our devices
+			particleDevices.then( (devices) => {
+
+				console.log(devices)
+
+				for (var device of devices.body) {
+
+					if (this.devices.recordsById[device.id]) {
+
+						this.devices.recordsById[device.id].connected = device.connected
+
+					}
+
+				}
+
+			})
+
 		}
 		
 		return this
@@ -145,11 +165,8 @@ class App extends lrs.View {
 					document.dispatchEvent(event)
 
 					console.log("Device", data.coreid, data.data)
-					
-					// TODO: Something weird is happening here. 
-					// This is causing repeated events
-					lights.app.devices[data.coreid].connected = true
 
+					// Set device status
 					for (let device of lights.app.devices) {
 
 						if (device.id === data.coreid) {

@@ -57,7 +57,11 @@ class ColorWheelView extends lrs.views.Page {
 
 		})
 
-		this.showFavouriteColors()
+		setTimeout( () => {
+
+			this.showFavouriteColors()
+
+		}, 1000)
 
 		return this
 
@@ -449,14 +453,16 @@ class ColorWheelView extends lrs.views.Page {
 				// console.log(device.object.id)
 
 				var data = []
+				
+				for (var i = 0; i <  device.object.channelCount; i++) {
 
-				for (var i = 0; i < lights.app.devices[device.object.id].channelCount; i++) {
+					console.log(device.object)
 
 					data.push(this.rgb)
 
 				}
 
-				lights.app.devices[device.object.id].sendColorData(data)
+				lights.app.devices.recordsById[device.object.id].sendColorData(data)
 
 			}
 
@@ -507,8 +513,6 @@ class ColorWheelView extends lrs.views.Page {
 
 			var timeout = this.views.favouriteColorsList.indexForView(color.view)
 
-			console.log(color, timeout)
-
 			setTimeout( () => {
 
 				color.view.classList.add('bounce-in')
@@ -520,7 +524,7 @@ class ColorWheelView extends lrs.views.Page {
 
 				}, 700)
 
-			}, 60 * timeout)
+			}, 30 * timeout)
 
 		}
 
@@ -537,8 +541,6 @@ class ColorWheelView extends lrs.views.Page {
 		for (let color of this.views.favouriteColorsList.content) {
 
 			var timeout = this.views.favouriteColorsList.indexForView(color.view)
-
-			console.log(color, timeout)
 
 			setTimeout( () => {
 

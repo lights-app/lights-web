@@ -348,7 +348,7 @@ class Device extends Model {
 
 				setTimeout(() => {
 
-					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload })
+					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken})
 
 					call.then(function(data) {
 
