@@ -182,12 +182,12 @@
 .room-data {
 
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
 	width: 100%;
 
-	padding: 10px 10px 0 10px;
+	padding: 0;
 
 	span {
 
@@ -267,19 +267,20 @@
 		white-space: nowrap;
 
 		line-height: 14px;
-		border-radius: 3px;
 
 		transition: all 0.3s ease;
 
 		&:hover {
 
-			background-color: @blue-2;
+			background-color: @cool-gray-2;
 		}
 
 		&.selected, &:active {
 
 			background-color: @cool-gray-4;
 			color: @blue-0;
+
+			transition: all 0s;
 
 		}
 
@@ -296,6 +297,21 @@
 	.add-moment-btn {
 
 		order: 99999;
+	}
+
+}
+
+.moment-device-list-item {
+
+	flex-direction: row;
+	justify-content: flex-start;
+
+	.color-wheel-icon {
+
+		width: 35px;
+		height: 35px;
+		background-image: url('/static/img/icons/color-wheel-icon.svg');
+
 	}
 
 }
@@ -327,13 +343,14 @@
 
 .room-icon-list-item {
 	
-	margin: 0 10px;
+	margin: 10px 10px;
 	width: 170px;
 	padding: 10px;
-	border: 1px solid transparent;
+	// border: 1px solid transparent;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	cursor: pointer;
 
 	img {
 
@@ -355,11 +372,6 @@
 	}
 
 	&.selected {
-
-		.color-rgba(@cool-gray-2-raw, 0.3);
-		background-color: @rgba;
-		border: 1px solid @cool-gray-2;
-		border-radius: 10px;
 
 		input {
 

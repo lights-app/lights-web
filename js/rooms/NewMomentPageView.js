@@ -43,6 +43,8 @@ class NewMomentPageView extends lrs.views.Page {
 
 		if (selectedDevices.length > 0) {
 
+			console.log(this)
+
 			this.owner.showView(new lrs.LRSView.views.NewMomentNamingPageView({selectedDevices: selectedDevices, room :this.room}))
 
 		} else {

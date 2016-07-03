@@ -18,7 +18,7 @@ mixin templates
 		svg.checkmark(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 10 10" style="enable-background:new 0 0 10 10;" xml:space="preserve")
 			polyline(class="line" points="0,4.3 3.9,8.3 10,2.2 ")
 
-	li.device-list-item(data-template='DeviceListItem' data-action='click:toggle()')
+	li.device-list-item.selectable.fill-2(data-template='DeviceListItem' data-action='click:toggle()')
 		.device-info-container
 			.checkmark(data-view='Checkmark:checkmark')
 			span(data-outlet='name')

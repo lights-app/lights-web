@@ -43,7 +43,7 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 		var newMomentPage = new lrs.LRSView.views.NewMomentPageView({room: room})
 		this.owner.owner.classList.add('hide')
-		newMomentPage.appendTo(this.owner.owner.owner)
+		newMomentPage.appendTo(this.owner.owner.owner, 'newMomentPage')
 
 	}
 
