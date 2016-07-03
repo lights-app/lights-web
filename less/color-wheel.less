@@ -29,7 +29,7 @@
 
 	max-width: @color-wheel-max-dimension;
 	max-height: @color-wheel-max-dimension;
-	margin-top: 40px;
+	margin-top: @color-wheel-padding;
 
 	width: ~"calc(100vw - @{color-wheel-padding} * 2)";
 
@@ -665,12 +665,6 @@
 }
 
 @media (max-width: 600px) {
-
-	.color-wheel-container {
-
-		margin-top: 10px;
-
-	}
 
 	.color-wheel-bg {
 

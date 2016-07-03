@@ -99,6 +99,7 @@ class App extends lrs.View {
 					if (this.devices.recordsById[device.id]) {
 
 						this.devices.recordsById[device.id].connected = device.connected
+						this.devices.recordsById[device.id].getConfig()
 
 					}
 
