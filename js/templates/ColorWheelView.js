@@ -142,6 +142,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		document.removeEventListener('mousemove', this._brightnessTouchMove)
 		document.removeEventListener('touchmove', this._brightnessTouchMove)
+		document.removeEventListener('mouseup', this._removeBrightnessTouchMoveEventListeners)
+		document.removeEventListener('touchend', this._removeBrightnessTouchMoveEventListeners)
 		this._mouseMove = undefined
 		clearInterval(this._dataSendInterval)
 		// Send latest value
@@ -258,6 +260,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		document.removeEventListener('mousemove', this._colorWheelTouchMove)
 		document.removeEventListener('touchmove', this._colorWheelTouchMove)
+		document.removeEventListener('mouseup', this._removeColorWheelTouchMoveEventListeners)
+		document.removeEventListener('touchend', this._removeColorWheelTouchMoveEventListeners)
 		this._mouseMove = undefined
 		clearInterval(this._dataSendInterval)
 		// Remove class when user is done using the color picker
