@@ -34,6 +34,13 @@ class RoomsOverviewView extends lrs.views.Page {
 
 	}
 
+	settingsAction(view, el, e) {
+
+		console.log(e)
+		this.owner.showView(new lrs.views.SettingsPage())
+
+	}
+
 }
 
 lrs.View.register(RoomsOverviewView)

@@ -1,0 +1,9 @@
+mixin settings
+
+	section.settings-page(data-template='SettingsPage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Settings
+			//- .add-btn(data-view='AddBtn:addBtn')
+		section.page-content
+			button.box-btn(data-action='click:logout()') Log out
