@@ -165,21 +165,6 @@ button {
 
 // }
 
-.toolbar {
-
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	position: relative;
-	margin: 0;
-	padding: 0;
-
-	height: @toolbar-height;
-
-	background-color: hsl(hue(@blue-0), saturation(@blue-0), lightness(@blue-0) + 7%);
-
-}
-
 .back-btn {
 
 	height: 100%;
@@ -204,54 +189,46 @@ button {
 
 }
 
-.add-btn, .close-btn{
+.toolbar-btn{
+
+	@stroke-width: 1.3px;
+
+	@native-dimension: 17px;
+	@dimension: 20px;
+	@scale: @dimension / @native-dimension;
+	@inv-scale: 1 / @scale;
 
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	align-content: center;
+
+	overflow: visible;
 
 	svg{
 
-		width: 17px;
-		height: 17px;
-
-	}
-
-	.add-btn-line, .close-btn-line {
-
-		stroke: @text-color;
-		stroke-width: 1px;
-
-	}
-
-}
-
-.settings-btn {
-
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	align-content: center;
-
-	svg {
-
-		width: 17px;
-		height: 17px;
+		width: @dimension;
+		height: @dimension;
 		overflow: visible;
 
 	}
 
-	.settings-btn-line {
+	.line {
 
 		stroke: @text-color;
-		stroke-width: 1px;
-
+		stroke-width: @stroke-width * @inv-scale;
 		fill: transparent;
+		overflow: visible;
 
 	}
+
+	path, circle, line, polyline {
+
+		overflow: visible;
+
+	}
+
 }
 
 .page-content {
