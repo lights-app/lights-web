@@ -1,0 +1,134 @@
+.settings-page {
+
+	@settings-height: 45px;
+	@margin-left: 20px;
+
+	.settings-list {
+
+		margin-top: @settings-height;
+
+		background-color: hsl(hue(@blue-0), saturation(@blue-0), lightness(@blue-0) + 7%);
+
+
+		.setting {
+
+			display: flex;
+			flex-direction: row;
+
+			align-items: center;
+
+			position: relative;
+
+			padding-left: @margin-left;
+
+			height: @settings-height;
+			text-align: left;
+
+			& * {
+
+				z-index: 1;
+
+			}
+
+			&::after {
+
+				content: '';
+				display: block;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+
+				width: ~"calc(100% - @{margin-left})";
+				height: 1px;
+				background-color: @cool-gray-3;
+				margin-left: @margin-left;
+
+			}
+
+			&:last-child {
+
+				&::after {
+
+					display: none;
+				}
+				
+			}
+
+			.setting-icon {
+
+				@stroke-width: 1px;
+				@dimension: 22px;
+
+				@native-dimension: 22px;
+				@scale: @dimension / @native-dimension;
+				@inv-scale: 1 / @scale;
+
+				width: @dimension;
+				height: @dimension;
+
+				overflow: visible;
+
+				margin-right: 10px;
+
+				svg {
+
+					overflow: visible;
+
+				}
+
+				.line {
+
+					stroke: @text-color;
+					stroke-width: @stroke-width * @inv-scale;
+					fill: transparent;
+
+				}
+
+				.line-dotted {
+
+					stroke: @text-color;
+					stroke-width: @stroke-width * @inv-scale;
+					fill: transparent;
+					
+					stroke-linecap: round;
+					stroke-miterlimit: 10;
+					stroke-dasharray: 0, 1.9212;
+				}
+
+				.fill {
+
+					fill: @text-color;
+
+				}
+
+			}
+
+		}
+
+	}
+
+	.setting-btn {
+	
+		width: 100%;
+		height: 100%;
+		position: absolute;
+
+		top: 0;
+		left: 0;
+
+		transition: all 0.3s ease;
+
+		z-index: 0;
+
+		&:active {
+
+			background-color: @cool-gray-3;
+			opacity: 1 !important;
+
+			transition: all 0s;
+
+		}
+
+	}
+
+}
