@@ -73,13 +73,6 @@ class ColorWheelView extends lrs.views.Page {
 		
 	}
 
-	backAction() {
-
-		this.owner.remove(this.view)
-		lights.app.views.rooms.views.content[0].classList.remove('hide')
-
-	}
-
 	brightnessTouchstartAction(view, el, e) {
 
 		var self = this
