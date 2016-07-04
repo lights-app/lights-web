@@ -65,7 +65,7 @@ mixin roomTemplates
 			button.box-btn(data-action='click:done()') Done
 
 	li.room-list-item(data-template='RoomListItem')
-		button(data-action='click:openColorWheel()')
+		button(data-action='mouseup:openColorWheel();touchend:openColorWheel()')
 		.horizontal-container
 			.room-data
 				span(data-outlet='name')
