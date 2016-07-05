@@ -10,7 +10,15 @@ class RangeSliderView extends lrs.LRSView {
 		this._removeEventListeners = this._removeEventListeners.bind(this)
 
 		this.unit = String(this.el.dataset.unit) || ''
-		this.default = parseFloat(this.el.dataset.default)
+
+		if (this.el.dataset.default) {
+
+			this.default = parseFloat(this.el.dataset.default)
+
+		} else {
+
+			this.views.defaultTrack.el.style['display'] = 'none'
+		}
 
 		this.min = parseFloat(this.el.dataset.min)
 		this.max = parseFloat(this.el.dataset.max)

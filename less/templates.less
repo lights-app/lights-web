@@ -525,18 +525,18 @@
 .range-slider {
 
 	@stroke-width: 1px;
-	@padding: 2px;
 
 	@thumb-dimension: 40px;
 	// Must be an even number to properly center over the thumb
-	@default-thumb-offset: 4px;
+	@default-thumb-offset: 6px;
+	@padding: @default-thumb-offset / 2;
 
 	@slider-height: @thumb-dimension + @stroke-width + @default-thumb-offset + (@padding * 2);
 
 	width: 100%;
 	height: @slider-height;
 
-	padding: 2px;
+	padding: @padding;
 
 	overflow: hidden;
 	position: relative;
