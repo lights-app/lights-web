@@ -12,6 +12,7 @@ class InterpolationTimePageView extends lrs.views.Page {
 
 		console.log(this)
 
+		console.log('setting the value')
 		this.views.rangeSlider.setThumbPosByValue(lights.app.interpolationTime)
 
 		this.views.rangeSlider.el.addEventListener('change', (e) => {

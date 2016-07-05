@@ -10,6 +10,7 @@ class RangeSliderView extends lrs.LRSView {
 		this._removeEventListeners = this._removeEventListeners.bind(this)
 
 		this.unit = String(this.el.dataset.unit) || ''
+		this.default = parseFloat(this.el.dataset.default)
 
 		this.min = parseFloat(this.el.dataset.min)
 		this.max = parseFloat(this.el.dataset.max)
@@ -22,7 +23,8 @@ class RangeSliderView extends lrs.LRSView {
 		this.currentStep
 
 		// Set the slider to the position given, or to the minimum 
-		this.setThumbPosByValue(this.el.dataset.value|| this.min)
+		this.setThumbPosByValue(this.el.dataset.value || this.min, this.views.track)
+		this.setDefaultThumbPosByValue(this.default)
 
 		console.log(this)
 		
@@ -49,9 +51,11 @@ class RangeSliderView extends lrs.LRSView {
 
 	_sliderTouchMove(e) {
 
+		this.touch.prevCoordinates = this.touch.coordinates
+
 		if (e.touches) {
 
-			// e.preventDefault()
+			e.preventDefault()
 			this.touch.coordinates = [e.touches[0].clientX - this.touch.topLeft[0], e.touches[0].clientY - this.touch.topLeft[1]]
 
 		} else {
@@ -60,18 +64,31 @@ class RangeSliderView extends lrs.LRSView {
 
 		}
 
+		this.touch.speed = this.touch.coordinates[0] - this.touch.prevCoordinates[0]
+		// console.log(this.touch.speed)
+
+		var maxLength = 0.3
+		var maxSpeed = 4
+		var speed = Math.abs(this.touch.speed)
+
+		var speedPercentage = speed / maxSpeed
+
+		if (speedPercentage > 1) {speedPercentage = 1}
+
+		var transition = (1 - speedPercentage) * maxLength
+
+		console.log(speedPercentage, transition)
+
+		this.views.track.el.style['transition'] = 'all ' + transition + 's'
+
 		this.touch.percentage = (this.touch.coordinates[0] / this.touch.width) * 100
 		var step = Math.round(this.touch.percentage / this.mappedStepSize)
 
-		this.setThumbPos(step)
-
-		console.log(this.stepsize, step, this.currentStep, this.value)
+		this.setThumbPos(step, this.views.track)
 
 	}
 
 	setThumbPosByValue(value) {
-
-		console.log(value)
 
 		var step = (value - this.min) / this.stepsize
 		this.setThumbPos(step)
@@ -84,9 +101,19 @@ class RangeSliderView extends lrs.LRSView {
 
 			this.views.track.el.style["transform"] = "translate3d(" + (step * this.mappedStepSize) + "%, 0, 0)"
 			this.currentStep = step
-			this.value = (this.min + (step * this.stepsize)).toFixed(this.decimalPlaces)
+			this.value = parseFloat((this.min + (step * this.stepsize)).toFixed(this.decimalPlaces))
 
 			this.views.track.views.thumb.views.output.el.innerHTML = String(this.value) + this.unit
+
+			if (this.value === this.default) {
+
+				this.views.track.views.thumb.classList.add('default')
+
+			} else {
+
+				this.views.track.views.thumb.classList.remove('default')
+
+			}
 
 			var event = new CustomEvent('change', {
 				detail: {
@@ -111,6 +138,35 @@ class RangeSliderView extends lrs.LRSView {
 			this.views.track.el.style["transform"] = "translate3d(" + (this.stepCount * this.mappedStepSize) + "%, 0, 0)"
 			this.currentStep = step
 			this.value = this.min + (this.stepCount * this.stepsize)
+
+		}
+
+	}
+
+	setDefaultThumbPosByValue(value) {
+
+		var step = (value - this.min) / this.stepsize
+		this.setDefaultThumbPos(step)
+
+	}
+
+	setDefaultThumbPos(step) {
+
+		if (step >= 0 && step <= this.stepCount) {
+
+			this.views.defaultTrack.el.style["transform"] = "translate3d(" + (step * this.mappedStepSize) + "%, 0, 0)"
+
+		}
+
+		if (step < 0) {
+
+			this.views.defaultTrack.el.style["transform"] = "translate3d(" + (0 * this.mappedStepSize) + "%, 0, 0)"
+
+		}
+
+		if (step > this.stepCount) {
+
+			this.views.defaultTrack.el.style["transform"] = "translate3d(" + (this.stepCount * this.mappedStepSize) + "%, 0, 0)"
 
 		}
 

@@ -26,9 +26,12 @@ mixin templates
 			polyline(class="line" points="0,4.3 3.9,8.3 10,2.2 ")
 
 	.range-slider(data-template='RangeSlider')
-		.track(data-view='track')
-			.thumb(data-view='thumb' data-action='mousedown:touchstart();touchstart:touchstart()')
-				span(data-view='output')
+		.range-slider-container
+			.default-track.track(data-view='defaultTrack')
+				.default-thumb(data-view='defaultThumb')
+			.track(data-view='track')
+				.thumb(data-view='thumb' data-action='mousedown:touchstart();touchstart:touchstart()')
+					span(data-view='output')
 
 	li.device-list-item.selectable.fill-2(data-template='DeviceListItem' data-action='click:toggle()')
 		.left
