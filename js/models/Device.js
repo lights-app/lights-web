@@ -63,20 +63,24 @@ class Device extends Model {
 
 				self.lastUpdated = Date.now()
 
-				if(self.parseConfig()) { 
+				if(self.parseConfig()) {
+
+					setTimeout( () => {
+
+					// Each time we get a new config we also trigger the deviceConfigChanged event
+					var event = new CustomEvent('deviceConfigChanged', {
+							detail: {
+								id: self.id
+							}
+						})
+
+						document.dispatchEvent(event)
+
+					}, 0)
 
 					return true 
 
 				}
-
-				// // Each time we get a new config we also trigger the deviceConfigChanged event
-				// var event = new CustomEvent('deviceConfigChanged', {
-				// 	detail: {
-				// 		id: self.id
-				// 	}
-				// })
-
-				// document.dispatchEvent(event)
 
 			}, function(err) {
 

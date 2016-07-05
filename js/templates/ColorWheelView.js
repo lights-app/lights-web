@@ -378,10 +378,12 @@ class ColorWheelView extends lrs.views.Page {
 
 			for (let device of this.devices) {
 
+				console.log(device)
+
 				if(device.id === e.detail.id) {
 
-					this.setColorWheelPickerPosition(lights.app.devices[device.id].channels[0].hsv[0] * 360, lights.app.devices[device.id].channels[0].hsv[1])
-					this.setBrightnessSlider(lights.app.devices[device.id].channels[0].hsv[2])
+					this.setColorWheelPickerPosition(lights.app.devices.recordsById[device.id].channels[0].hsv[0] * 360, lights.app.devices.recordsById[device.id].channels[0].hsv[1])
+					this.setBrightnessSlider(lights.app.devices.recordsById[device.id].channels[0].hsv[2])
 
 				}
 

@@ -70,7 +70,7 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 		for (var i = 0; i < this.devices.length; i++) {
 
-			var device = lights.app.devices[this.devices[i].id]
+			var device = lights.app.devices.recordsById[this.devices[i].id]
 
 			console.log(device)
 

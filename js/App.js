@@ -182,19 +182,29 @@ class App extends lrs.View {
 
 			})
 
-			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine' }).then(function(stream) {
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', name: 'configChanged'}).then(function(stream) {
 				stream.on('event', function(data) {
 
-					var event = new CustomEvent('deviceConfigChanged', {
-						detail: {
-							id: data.coreid
-						}
-					})
+					console.log(data)
 
-					self.devices[data.coreid].config = data.data
-					self.devices[data.coreid].parseConfig()
+					setTimeout( () => {
 
-					document.dispatchEvent(event)
+						console.log(lights.app.devices)
+
+						var event = new CustomEvent('deviceConfigChanged', {
+							detail: {
+								id: data.coreid
+							}
+						})
+
+						lights.app.devices.recordsById[data.coreid].config = data.data
+						lights.app.devices.recordsById[data.coreid].parseConfig()
+
+						document.dispatchEvent(event)
+
+					}, 0)
+
+					
 
 				})
 
