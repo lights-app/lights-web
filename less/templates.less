@@ -522,6 +522,62 @@
 
 }
 
+.range-slider {
+
+	@thumb-dimension: 40px;
+	@stroke-width: 1px;
+
+	width: 100%;
+	height: @thumb-dimension + @stroke-width;
+	overflow: hidden;
+	position: relative;
+
+	&::before {
+
+		content: '';
+		width: 100%;
+		height: 1px;
+		position: absolute;
+		display: block;
+		margin-top: @thumb-dimension/2;
+		background-color: @cool-gray-4;
+
+	}
+
+	.track {
+
+		width: ~"calc(100% - @{thumb-dimension})";
+		background-color: red;
+
+		transition: all 0.3s ease;
+
+	}
+
+	.thumb {		
+
+		width: @thumb-dimension;
+		height: @thumb-dimension;
+		background-color: @blue-0;
+		border-radius: 1000px;
+		border: @stroke-width solid @cool-gray-4;
+
+		position: absolute;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		& * {
+
+			font-size: 13px;
+
+		}
+		// margin-top: @thumb-dimension/-2;
+
+	}
+
+}
+
 @keyframes rotate {
 
 	0% {
