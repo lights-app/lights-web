@@ -68,6 +68,12 @@ class SettingsPageView extends lrs.views.Page {
 
 	}
 
+	closeAction() {
+
+		this.owner.showView(this.owner.views.content[0])
+		
+	}
+
 }
 
 lrs.View.register(SettingsPageView)
