@@ -21,8 +21,15 @@ class SettingsPageView extends lrs.views.Page {
 
 	interpolationTimeSettingAction(view, el, e) {
 
-		console.log(this)
 		this.owner.showView(new lrs.views.InterpolationTimePage())
+
+	}
+
+	devicesSettingAction(view, el, e) {
+
+		console.log('settings')
+
+		this.owner.showView(new lrs.views.DevicesSettingPage())
 
 	}
 

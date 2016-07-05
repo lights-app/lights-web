@@ -31,8 +31,7 @@ mixin settings
 
 						span Fade time
 
-
-				li.setting.devices-setting.disabled
+				li.setting.devices-setting
 					button.setting-btn(data-action='click:devicesSetting()')
 						.setting-icon
 							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -79,3 +78,11 @@ mixin settings
 		section.page-content
 			p.self-center.text-center Set the speed with which the lights fade from one color to another.
 			.range-slider.self-center(data-view='RangeSlider:rangeSlider' data-min='0.1' data-max='5' data-stepsize='0.1' data-default='0.7' data-unit='s')
+
+	section.devices-page(data-template='DevicesSettingPage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Devices
+			//- .close-btn(data-view='CloseBtn:closeBtn')
+		section.page-content
+			ul.self-center.device-list.list.border-2.border-radius(data-view='List:lightsDeviceList:DeviceListItem')
