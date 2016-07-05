@@ -19,7 +19,14 @@ class SettingsPageView extends lrs.views.Page {
 	
 	}
 
-	logoutAction() {
+	interpolationTimeSettingAction(view, el, e) {
+
+		console.log(this)
+		this.owner.showView(new lrs.views.InterpolationTimePage())
+
+	}
+
+	logoutAction(view, el, e) {
 
 		console.log('logging out')
 

@@ -36,7 +36,7 @@ class App extends lrs.View {
 
 		this.favouriteColors = this.storage('favouriteColors') || []
 
-		this.interpolationTime = this.storage('interpolationTime') || 7
+		this.interpolationTime = this.storage('interpolationTime') || 0.7
 
 		this.roomIconList = [
 			{name: "Living Room",

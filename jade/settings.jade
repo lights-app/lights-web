@@ -8,65 +8,74 @@ mixin settings
 		section.page-content
 			ul.settings-list
 
-				li.setting.timer-setting
+				li.setting.timer-setting.disabled
 					button.setting-btn
-					.setting-icon
-						svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-						viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
-							g(id="XMLID_5_")
-								path(class="line" d="M5.3,2.2C2.4,4.1,0.5,7.3,0.5,11c0,5.8,4.7,10.5,10.5,10.5S21.5,16.8,21.5,11S16.8,0.5,11,0.5 v4.4")
-							g(id="XMLID_1_")
-								circle(class="fill" cx="11" cy="11" r="1.1")
-								polygon(class="fill" points="10,11.4 8.3,6.6 11.8,10.3 	")
+						.setting-icon
+							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+							viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
+								g(id="XMLID_5_")
+									path(class="line" d="M5.3,2.2C2.4,4.1,0.5,7.3,0.5,11c0,5.8,4.7,10.5,10.5,10.5S21.5,16.8,21.5,11S16.8,0.5,11,0.5 v4.4")
+								g(id="XMLID_1_")
+									circle(class="fill" cx="11" cy="11" r="1.1")
+									polygon(class="fill" points="10,11.4 8.3,6.6 11.8,10.3 	")
 
-					span Timers
+						span Timers
 
 				li.setting.interpolation-time-setting
+					button.setting-btn(data-action='click:interpolationTimeSetting()')
+						.setting-icon
+							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+							viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
+								polyline(class="line" points="0.5,0 0.5,21.5 22,21.5 ")
+								path(class="line" d="M0.5,16.9C11.7,16.9,11.9,2.7,22,2.7")
+
+						span Fade time
+
+
+				li.setting.devices-setting.disabled
+					button.setting-btn(data-action='click:devicesSetting()')
+						.setting-icon
+							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+							viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
+
+								g(id="XMLID_51_")
+									path(id="XMLID_52_" class="line" d="M14.2,21.5H8.2c-1.2-1.2-1.8-1.8-3-3v-18h11.9v18C16,19.7,15.3,20.3,14.2,21.5z")
+									rect(id="XMLID_53_" x="7.8" y="8.6" class="line" width="6.8" height="7.5")
+									circle(id="XMLID_54_" class="line" cx="11.2" cy="4.2" r="1.6")
+								line(id="XMLID_20_" class="line" x1="6.4" y1="2.3" x2="6.4" y2="2.3")
+								line(id="XMLID_19_" class="line-dotted" x1="6.4" y1="4.2" x2="6.4" y2="16.7")
+								line(id="XMLID_18_" class="line" x1="6.4" y1="17.6" x2="6.4" y2="17.6")
+								g(id="XMLID_22_")
+									line(id="XMLID_25_" class="line" x1="15.9" y1="2.3" x2="15.9" y2="2.3")
+									line(id="XMLID_24_" class="line-dotted" x1="15.9" y1="4.2" x2="15.9" y2="16.7")
+									line(id="XMLID_23_" class="line" x1="15.9" y1="17.6" x2="15.9" y2="17.6")
+
+						span Devices
+
+				li.setting.calibration-setting.disabled
 					button.setting-btn
-					.setting-icon
-						svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-						viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
-							polyline(class="line" points="0.5,0 0.5,21.5 22,21.5 ")
-							path(class="line" d="M0.5,16.9C11.7,16.9,11.9,2.7,22,2.7")
+						.setting-icon
+							svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+							viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
+								line(class="line" x1="2.6" y1="1.6" x2="2.6" y2="6.3")
+								line(class="line" x1="2.6" y1="11.9" x2="2.6" y2="20.4")
+								line(class="line" x1="0" y1="9" x2="5.3" y2="9")
+								line(class="line" x1="10.9" y1="1.6" x2="10.9" y2="11.7")
+								line(class="line" x1="10.9" y1="17.3" x2="10.9" y2="20.4")
+								line(class="line" x1="8.4" y1="14.5" x2="13.6" y2="14.5")
+								line(class="line" x1="19.3" y1="1.6" x2="19.3" y2="9")
+								line(class="line" x1="19.3" y1="14.6" x2="19.3" y2="20.4")
+								line(class="line" x1="16.7" y1="11.7" x2="22" y2="11.7")
 
-					span Fade time
-
-				li.setting.devices-setting
-					button.setting-btn
-					.setting-icon
-						svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-						viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
-							//- style(type="text/css")
-							//- 	.st2{fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:0,1.9212;}
-							g(id="XMLID_51_")
-								path(id="XMLID_52_" class="line" d="M14.2,21.5H8.2c-1.2-1.2-1.8-1.8-3-3v-18h11.9v18C16,19.7,15.3,20.3,14.2,21.5z")
-								rect(id="XMLID_53_" x="7.8" y="8.6" class="line" width="6.8" height="7.5")
-								circle(id="XMLID_54_" class="line" cx="11.2" cy="4.2" r="1.6")
-							line(id="XMLID_20_" class="line" x1="6.4" y1="2.3" x2="6.4" y2="2.3")
-							line(id="XMLID_19_" class="line-dotted" x1="6.4" y1="4.2" x2="6.4" y2="16.7")
-							line(id="XMLID_18_" class="line" x1="6.4" y1="17.6" x2="6.4" y2="17.6")
-							g(id="XMLID_22_")
-								line(id="XMLID_25_" class="line" x1="15.9" y1="2.3" x2="15.9" y2="2.3")
-								line(id="XMLID_24_" class="line-dotted" x1="15.9" y1="4.2" x2="15.9" y2="16.7")
-								line(id="XMLID_23_" class="line" x1="15.9" y1="17.6" x2="15.9" y2="17.6")
-
-					span Devices
-
-				li.setting.calibration-setting
-					button.setting-btn
-					.setting-icon
-						svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-						viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve")
-							line(class="line" x1="2.6" y1="1.6" x2="2.6" y2="6.3")
-							line(class="line" x1="2.6" y1="11.9" x2="2.6" y2="20.4")
-							line(class="line" x1="0" y1="9" x2="5.3" y2="9")
-							line(class="line" x1="10.9" y1="1.6" x2="10.9" y2="11.7")
-							line(class="line" x1="10.9" y1="17.3" x2="10.9" y2="20.4")
-							line(class="line" x1="8.4" y1="14.5" x2="13.6" y2="14.5")
-							line(class="line" x1="19.3" y1="1.6" x2="19.3" y2="9")
-							line(class="line" x1="19.3" y1="14.6" x2="19.3" y2="20.4")
-							line(class="line" x1="16.7" y1="11.7" x2="22" y2="11.7")
-
-					span Calibration
+						span Calibration
 
 			button.box-btn.red(data-action='click:logout()') Log out
+
+	section.interpolation-time-page(data-template='InterpolationTimePage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Fade time
+			//- .close-btn(data-view='CloseBtn:closeBtn')
+		section.page-content
+			p.self-center.text-center Set the speed with which the lights fade from one color to another.
+			.range-slider.self-center(data-view='RangeSlider:rangeSlider' data-min='0.1' data-max='5' data-stepsize='0.1' data-value='3' data-unit='s')

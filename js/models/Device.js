@@ -46,8 +46,6 @@ class Device extends Model {
 		
 		this.config = ""
 		this.lastUpdated = -1
-
-		
 		
 	}
 
@@ -314,7 +312,8 @@ class Device extends Model {
 				payload += String.fromCharCode(channelByte)
 
 				// Split interpolation time into 3 bytes
-				var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, false)
+				// Multiply interpolation time by 10 to get from seconds to 10ths of seconds
+				var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime * 10, 3, false)
 
 				payload += String.fromCharCode(interpolationTime[0])
 				payload += String.fromCharCode(interpolationTime[1])

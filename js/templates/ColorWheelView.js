@@ -100,7 +100,7 @@ class ColorWheelView extends lrs.views.Page {
 
 			self.sendData()
 
-		}, 500)
+		}, lights.app.interpolationTime * 1000)
 
 		document.addEventListener('mousemove', this._brightnessTouchMove)
 		document.addEventListener('touchmove', this._brightnessTouchMove)
@@ -184,7 +184,7 @@ class ColorWheelView extends lrs.views.Page {
 
 			self.sendData()
 
-		}, 500)
+		}, lights.app.interpolationTime * 1000)
 
 		// Add class while user is using the color wheel picker
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.add('active')
@@ -453,7 +453,7 @@ class ColorWheelView extends lrs.views.Page {
 				
 				for (var i = 0; i <  device.object.channelCount; i++) {
 
-					console.log(device.object)
+					// console.log(device.object)
 
 					data.push(this.rgb)
 
