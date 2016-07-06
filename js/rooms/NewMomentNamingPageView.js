@@ -14,6 +14,8 @@ class NewMomentNamingPageView extends lrs.views.Page {
 
 		this.selectedDevices = args.selectedDevices
 		this.room = args.room
+
+		console.log(args)
 		
 		return this
 
@@ -26,6 +28,7 @@ class NewMomentNamingPageView extends lrs.views.Page {
 		if(this.momentName.length > 0) {
 
 			var newMoment = new Moment(this.momentName, this.selectedDevices)
+			console.log(newMoment)
 			this.room.object.moments.push(newMoment)
 			lights.app.storage('rooms', lights.app.rooms)
 			this.room.views.momentList.add(newMoment)

@@ -10,6 +10,8 @@ class NewMomentPageView extends lrs.views.Page {
 
 		super(args)
 
+		var self = this
+
 		console.log(this)
 		console.log(args)
 
@@ -18,6 +20,27 @@ class NewMomentPageView extends lrs.views.Page {
 		this.room = args.room
 
 		this.views.momentDeviceList.reset(args.room.object.devices)
+
+		for (let deviceView of this.views.momentDeviceList.content) {
+
+			console.log(deviceView)
+
+			if (!lights.app.devices.recordsById[deviceView.object.id].connected) {
+
+				deviceView.view.classList.add('disconnected')
+
+			}
+		}
+
+		for (let deviceObject of this.views.momentDeviceList.content) {
+
+			deviceObject.view.views.toggle.el.addEventListener('change', function(e){
+
+				return self.toggleChanged(e, deviceObject.view)
+
+			})
+
+		}
 		
 		return this
 
@@ -33,7 +56,7 @@ class NewMomentPageView extends lrs.views.Page {
 
 			if (deviceView.views.toggle.checked) {
 
-				selectedDevices.push(deviceView.object)
+				selectedDevices.push(lights.app.devices.recordsById[deviceView.object.id])
 
 			}
 
@@ -52,6 +75,39 @@ class NewMomentPageView extends lrs.views.Page {
 			console.log("No devices selected")
 
 		}
+
+	}
+
+	toggleChanged(e, view) {
+
+		if (e.detail.checked) {
+
+			view.classList.add('selected')
+
+		} else {
+
+			view.classList.remove('selected')
+
+		}
+
+	}
+
+	openColorWheelAction(view, el, e) {
+
+		console.log(lights.app.devices.recordsById[view.object.id])
+
+		var device = lights.app.devices.recordsById[view.object.id]
+
+		// Create a temporary Room object to use the colorWHeel
+		var tempRoom = new Room(view.object.roomName , null, [device])
+
+		console.log(this)
+
+		var colorWheel = new lrs.views.ColorWheel({room: tempRoom, rgb: device.channels[0].rgb})
+		// lights.app.views.rooms.views.content[0].classList.add('hide')
+		// colorWheel.appendTo(this.owner.owner, 'colorWheel')
+		this.owner.showView(colorWheel, 'colorWheel')
+		// this.owner.owner.owner.showView()
 
 	}
 

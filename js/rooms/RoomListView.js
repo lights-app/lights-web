@@ -19,7 +19,7 @@ class RoomListView extends lrs.views.LRSListView {
 	openColorWheelAction(view, el, e) {
 
 		var id = view.object.devices[0].id
-
+		
 		var colorWheel = new lrs.views.ColorWheel({room: view.object, rgb: lights.app.devices.recordsById[id].channels[0].rgb})
 		// lights.app.views.rooms.views.content[0].classList.add('hide')
 		// colorWheel.appendTo(this.owner.owner, 'colorWheel')

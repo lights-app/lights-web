@@ -12,6 +12,7 @@ class App extends lrs.View {
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.eventStreamsConfigured = false
+		this.roomsLoaded = false
 		this.requiresParticleVersion = [0, 1, 1]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
@@ -30,6 +31,8 @@ class App extends lrs.View {
 		this.devices = new lights.Collection()
 		// Contains all Particle devices associated with this account
 		this.particleDevices = []
+
+		this.userSettings = {}
 		
 		// Load devices stored in localStorage to a temporary variable
 		for (let device of this.storage('devices') || []) {
@@ -76,7 +79,7 @@ class App extends lrs.View {
 		
 		this.createDomConnections()
 
-		console.log(this.particle.isLoggedIn)
+		console.log('Particle logged in', this.particle.isLoggedIn)
 
 		if (this.particle.isLoggedIn) {
 			
@@ -119,17 +122,23 @@ class App extends lrs.View {
 
 	setRooms() {
 
-		// Take the same approach for the rooms as we did for lights.app.devices
-		this._rooms = this.storage('rooms') || []
-		this.rooms = []
+		if (!this.roomsLoaded){
 
-		for (let room of this._rooms) {
+			// Take the same approach for the rooms as we did for lights.app.devices
+			this._rooms = this.storage('rooms') || []
+			this.rooms = []
 
-			this.rooms.push(new lights.Room(room.name, room.icon, room.devices, room.moments))
+			for (let room of this._rooms) {
+
+				this.rooms.push(new lights.Room(room.name, room.icon, room.devices, room.moments))
+
+			}
+
+			this.roomsLoaded = true
+
+			console.log("Rooms loaded", this.roomsLoaded, lights.app.rooms)
 
 		}
-
-		console.log("Rooms loaded", lights.app.rooms)
 
 	}
 
@@ -303,12 +312,6 @@ class App extends lrs.View {
 		
 	}
 
-	getDevice(id) {
-
-
-
-	}
-
 	HSVtoRGB(h, s, v) {
 	    var r, g, b, i, f, p, q, t;
 	    if (arguments.length === 1) {
@@ -412,7 +415,7 @@ class App extends lrs.View {
 
 	}
 
-	arrayEquals(a, b) {
+	arraysEqual(a, b) {
 
 		console.log('comparing', a, 'to', b)
 

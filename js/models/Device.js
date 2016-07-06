@@ -128,7 +128,7 @@ class Device extends Model {
 			this.version[1] = parseInt(this.config.charCodeAt(1))
 			this.version[2] = parseInt(this.config.charCodeAt(2))
 
-			if (!lights.app.arrayEquals(this.version, lights.app.requiresParticleVersion)) {
+			if (!lights.app.arraysEqual(this.version, lights.app.requiresParticleVersion)) {
 
 				console.warn('version mismatch. required', lights.app.requiresParticleVersion, 'running, ', lights.app.devices.recordsById[this.id].version)
 				console.log(lights.app.devices.recordsById[this.id].version)

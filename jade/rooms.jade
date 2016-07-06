@@ -69,7 +69,7 @@ mixin roomTemplates
 		.horizontal-container
 			.room-data
 				span(data-outlet='name')
-				ul.moment-list(data-view='LRSList:momentList:MomentListItem')
+				ul.moment-list(data-view='MomentList:momentList:MomentListItem')
 					li.moment-list-item.add-moment-btn.border-2.border-radius.fill-4(data-action='click:addMoment()')
 						span +
 			img.room-icon(data-outlet='icon')
@@ -86,10 +86,11 @@ mixin roomTemplates
 		img(data-outlet='icon')
 		input(data-outlet='name' type='text')
 
-	li.moment-device-list-item.device-list-item(data-template='MomentDeviceListItem' data-action='click:toggle()')
+	li.moment-device-list-item.device-list-item.fill-2.selectable(data-template='MomentDeviceListItem' data-action='click:toggle()')
 		.left
 			.toggle(data-view='Toggle:toggle')
-			span(data-outlet='name')
+			span.name(data-outlet='name')
+			span.message Device disconnected, please reconnect
 		.right
-			.color-wheel-icon
+			image.color-wheel-icon(src='static/img/icons/color-wheel-icon.svg' data-action='click:openColorWheel()')
 		
