@@ -121,13 +121,30 @@ class Device extends Model {
 
 			}
 
-
 			this.config = tempConfig
 
 			// Get device software version
 			this.version[0] = parseInt(this.config.charCodeAt(0))
 			this.version[1] = parseInt(this.config.charCodeAt(1))
 			this.version[2] = parseInt(this.config.charCodeAt(2))
+
+			if (!lights.app.arrayEquals(this.version, lights.app.requiresParticleVersion)) {
+
+				console.warn('version mismatch. required', lights.app.requiresParticleVersion, 'running, ', lights.app.devices.recordsById[this.id].version)
+				console.log(lights.app.devices.recordsById[this.id].version)
+
+				var event = new CustomEvent('deviceVersionMismatch', {
+					detail: {
+						id: this.id,
+						device: this
+					}
+				})
+
+				document.dispatchEvent(event)
+
+			}
+
+			console.log(this.version)
 
 			// Get channelCount
 			this.channelCount = parseInt(this.config.charCodeAt(3))

@@ -86,3 +86,14 @@ mixin settings
 			//- .close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
 			ul.self-center.device-list.list.border-2.border-radius(data-view='List:lightsDeviceList:DeviceListItem')
+			button.box-btn(data-action='click:addDevice()') Add device
+
+	section.add-device-page(data-template='AddDeviceSettingPage')
+		header.toolbar
+			button.back-btn(data-view='backBtn' data-outlet='title' data-action='click:back()') Back
+			h1(data-outlet='title') Devices
+			//- .close-btn(data-view='CloseBtn:closeBtn')
+		section.page-content
+			p.self-center.text-center Select the devices you want to add
+			ul.self-center.device-list.list.border-2.border-radius(data-view='List:lightsDeviceList:DeviceListItem')
+			button.box-btn(data-action='click:addDevice()' data-view='addDeviceBtn') Add device

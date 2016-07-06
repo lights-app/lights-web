@@ -18,6 +18,14 @@ class DevicesSettingPageView extends lrs.views.Page {
 	
 	}
 
+	addDeviceAction(view, el, e) {
+
+		console.log('settings')
+
+		this.owner.showView(new lrs.views.AddDeviceSettingPage())
+
+	}
+
 }
 
 lrs.View.register(DevicesSettingPageView)

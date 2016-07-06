@@ -12,7 +12,7 @@ class App extends lrs.View {
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.eventStreamsConfigured = false
-		this.requiresParticleVersion = [0, 1, 0]
+		this.requiresParticleVersion = [0, 1, 1]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
 
@@ -28,6 +28,8 @@ class App extends lrs.View {
 		})
 		
 		this.devices = new lights.Collection()
+		// Contains all Particle devices associated with this account
+		this.particleDevices = []
 		
 		// Load devices stored in localStorage to a temporary variable
 		for (let device of this.storage('devices') || []) {
@@ -92,14 +94,16 @@ class App extends lrs.View {
 			// Iterate over list and set connected status of our devices
 			particleDevices.then( (devices) => {
 
-				console.log(devices)
-
 				for (var device of devices.body) {
+
+					this.particleDevices.push(lights.Device.fromParticleDevice(device))
 
 					if (this.devices.recordsById[device.id]) {
 
 						this.devices.recordsById[device.id].connected = device.connected
 						this.devices.recordsById[device.id].getConfig()
+
+						console.log(this.devices.recordsById[device.id].version)
 
 					}
 
@@ -168,7 +172,7 @@ class App extends lrs.View {
 					console.log("Device", data.coreid, data.data)
 
 					// Set device status
-					for (let device of lights.app.devices) {
+					for (let device of lights.app.devices.records) {
 
 						if (device.id === data.coreid) {
 
@@ -405,6 +409,25 @@ class App extends lrs.View {
 	getBitValueAt(number, position) {
 
 		return parseInt(this.toBitString(number).substring(position, position + 1))
+
+	}
+
+	arrayEquals(a, b) {
+
+		console.log('comparing', a, 'to', b)
+
+		for(let i = 0; i < a.length; i++){
+
+			if(a[i] !== b[i]) {
+
+				console.warn('arrays not equal')
+
+				return false
+
+			}
+
+		}
+		return true
 
 	}
 	
