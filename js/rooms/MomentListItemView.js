@@ -92,7 +92,7 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 
 			}
 
-			lights.app.devices.recordsById[device.id].sendColorData(colorData)
+			lights.app.devices.recordsById[device.id].sendColorData({rgb: colorData})
 
 		}
 

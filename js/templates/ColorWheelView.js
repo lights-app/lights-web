@@ -51,6 +51,8 @@ class ColorWheelView extends lrs.views.Page {
 		this.views.favouriteColorsList.reset(lights.app.favouriteColors)
 		this.views.roomDeviceList.reset(args.room.devices)
 
+		this.checkOnOffBtnState()
+
 		document.addEventListener('deviceConfigChanged', function(e){
 
 			return self.deviceConfigChangedHandler(e)
@@ -376,6 +378,8 @@ class ColorWheelView extends lrs.views.Page {
 		// This prevents the color wheel from picking up 'echos' of our own data and resetting the picker
 		if (!this.dragging && Date.now() - this.lastDataTransmission > 2000) {
 
+			this.checkOnOffBtnState()
+
 			for (let device of this.devices) {
 
 				console.log(device)
@@ -461,13 +465,63 @@ class ColorWheelView extends lrs.views.Page {
 
 				}
 
-				lights.app.devices.recordsById[device.object.id].sendColorData(data)
+				lights.app.devices.recordsById[device.object.id].sendColorData({rgb: data})
 
 			}
 
 		}
 
 		this.lastDataTransmission = Date.now()
+
+	}
+
+	checkOnOffBtnState() {
+
+		var deviceOn = false
+
+		for (let device of this.room.devices) {
+
+			for (let channel of lights.app.devices.recordsById[device.id].channels) {
+
+				if (channel.isOn) {
+
+					this.setOnOffBtnState(true)
+
+					deviceOn = true
+
+					console.log('device', device.id, 'is on')
+
+					break
+
+				}
+
+			}
+
+		}
+
+		if(!deviceOn) {
+
+			console.log('no devices on')
+			this.setOnOffBtnState(false)
+
+		}
+
+	}
+
+	setOnOffBtnState(isOn) {
+
+		if (isOn) {
+
+			this.views.onOffBtn.el.dataset.ison = 'true'
+			this.views.onOffBtn.el.classList.add('is-on')
+
+		} else {
+
+			this.views.onOffBtn.el.dataset.ison = 'false'
+			this.views.onOffBtn.el.classList.remove('is-on')
+			this.setBrightnessSlider(0)
+
+		}
 
 	}
 
@@ -479,13 +533,34 @@ class ColorWheelView extends lrs.views.Page {
 
 		if (this.views.onOffBtn.el.dataset.ison === 'true') {
 
-			this.views.onOffBtn.el.dataset.ison = 'false'
-			this.views.onOffBtn.el.classList.remove('is-on')
+			this.setOnOffBtnState(false)
+
+			for (let device of this.views.roomDeviceList.views.content) {
+
+				if(device.views.checkmark.checked) {
+
+					lights.app.devices.recordsById[device.object.id].turnOff()
+
+					this.setBrightnessSlider(0)
+
+				}
+
+			}
 
 		} else {
 
-			this.views.onOffBtn.el.dataset.ison = 'true'
-			this.views.onOffBtn.el.classList.add('is-on')
+			this.setOnOffBtnState(true)
+
+			for (let device of this.views.roomDeviceList.views.content) {
+
+				if(device.views.checkmark.checked) {
+
+					lights.app.devices.recordsById[device.object.id].turnOn()
+					this.setBrightnessSlider(this.room.devices[0].channels[0].hsv[2])
+
+				}
+
+			}
 
 		}
 

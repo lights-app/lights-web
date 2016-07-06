@@ -12,6 +12,7 @@ class Color extends lrs.LRSObject {
 		this.hexPrefixed = ""
 		this.rgbToRgb14Factor = (Math.pow(127, 2) - 1) / 255
 		this.rgb14ToRgbFactor = 1 / this.rgbToRgb14Factor
+		this.isOn = true
 
 		if (type === 'rgb') {
 

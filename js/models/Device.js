@@ -104,6 +104,20 @@ class Device extends Model {
 		if (this.config.length == 158) {
 
 			var configArray = []
+			// Construct and print out a semi-legible lights config
+			for (var i = 0; i < this.config.length; i++) {
+
+				if (this.config.substring(i, i + 1) != 'd' && this.config.substring(i, i + 1) != 'u'){
+					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
+				} else {
+					configArray.push(this.config.substring(i, i + 1))
+				}
+
+			}
+
+			console.log(configArray)
+
+			var configArray = []
 			var tempConfig = ""
 
 			// Subtract 1 from all values and construct and print out a semi-legible lights config
@@ -158,10 +172,8 @@ class Device extends Model {
 					this.channels.push(new lights.Channel())
 
 				}
-				
 
 			}
-
 			
 			// The next byte (4) specifies content length, which we can skip
 			var configPos = 4
@@ -208,6 +220,8 @@ class Device extends Model {
 					}
 
 					var color = new lights.Color(colorArray, 'rgb')
+
+					color.isOn = this.channels[i].isOn
 
 					this.channels[i] = color
 
@@ -261,9 +275,29 @@ class Device extends Model {
 
 	}
 
-	sendColorData(rgb) {
+	sendColorData(args) {
+
+		var rgb = args.rgb
+		var force = args.force || false
 
 		if (this.connected) {
+
+			if (rgb === undefined) {
+
+				console.log('rgb undefined, using current values')
+
+				// rgb = this.channels
+				rgb = []
+		
+				for (let channel of this.channels) {
+
+					rgb.push(channel.rgb)
+
+				}
+
+				console.log(rgb)
+
+			}
 
 			// Assume that the rgb values are equal to the current state
 			// As soon as a difference is found we can send the data
@@ -285,13 +319,18 @@ class Device extends Model {
 
 					if (!isEqual) {
 
+						console.log('difference found, sending the data')
+
 						var color = new lights.Color(rgb[i], 'rgb')
+						color.isOn = this.channels[i].isOn
 
 						// Set the light's current color to the new color
 						this.channels[i] = color
+
 					}
 
 				}
+
 			} catch (err) {
 
 				isEqual = false
@@ -299,7 +338,7 @@ class Device extends Model {
 			}
 
 			// If the color that we want to send is different from the current color of the light, send it
-			if (!isEqual) {
+			if (!isEqual || force) {
 
 				// Function declaration for color data
 				var payload = 'c'
@@ -320,6 +359,8 @@ class Device extends Model {
 					// e.g.: turning on channel 3 would mean adding 2^4 = 16 to channelByte
 					if (this.channels[i].isOn) {
 
+						console.log('channel', i, 'is on')
+
 						channelByte += Math.pow(2, i + 1)
 
 					}
@@ -327,7 +368,7 @@ class Device extends Model {
 				}
 
 				// Let's set the chanelByte to 126 (all channels) for now
-				channelByte = 126
+				// channelByte = 126
 
 				// Convert that number to a char
 				payload += String.fromCharCode(channelByte)
@@ -394,9 +435,12 @@ class Device extends Model {
 
 	turnOff(channelNumber) {
 
+		console.log('turning off channel', channelNumber)
+
 		if (channelNumber !== undefined) {
 			
 			this.channels[channelNumber].isOn = false
+			console.log(this.channels[channelNumber].isOn)
 
 		} else {
 
@@ -407,6 +451,30 @@ class Device extends Model {
 			}
 
 		}
+
+		this.sendColorData( {force: true} )
+
+	}
+
+	turnOn(channelNumber) {
+
+		console.log('turning on channel', channelNumber)
+
+		if (channelNumber !== undefined) {
+			
+			this.channels[channelNumber].isOn = true
+
+		} else {
+
+			for (let channel of this.channels) {
+
+				channel.isOn = true
+
+			}
+
+		}
+
+		this.sendColorData( {force: true} )
 
 	}
 
