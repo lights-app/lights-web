@@ -27,8 +27,6 @@ class SettingsPageView extends lrs.views.Page {
 
 	devicesSettingAction(view, el, e) {
 
-		console.log('settings')
-
 		this.owner.showView(new lrs.views.DevicesSettingPage())
 
 	}

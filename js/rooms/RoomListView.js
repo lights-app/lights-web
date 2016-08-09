@@ -9,7 +9,7 @@ class RoomListView extends lrs.views.LRSListView {
 	}
 
 	constructor(el, options) {
-	
+
 		super(el, options)
 		
 		return this

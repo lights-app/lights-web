@@ -7,12 +7,14 @@ class DevicesSettingPageView extends lrs.views.Page {
 	}
 
 	constructor(el, options) {
+
+		console.log(el, options)
 	
 		super(el, options)
 
 		console.log(this)
 
-		this.views.lightsDeviceList.reset(lights.app.devices.records)
+		this.views.devicesSettingList.reset(lights.app.devices.records)
 		
 		return this
 	

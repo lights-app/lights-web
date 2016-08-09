@@ -85,7 +85,7 @@ mixin settings
 			h1(data-outlet='title') Devices
 			//- .close-btn(data-view='CloseBtn:closeBtn')
 		section.page-content
-			ul.self-center.device-list.list.border-2.border-radius(data-view='List:lightsDeviceList:DeviceListItem')
+			ul.self-center.device-list.list.border-2.border-radius.devices-setting-list(data-view='DevicesSettingList:devicesSettingList:DeviceListItem')
 			button.box-btn(data-action='click:addDevice()') Add device
 
 	section.add-device-page(data-template='AddDeviceSettingPage')

@@ -22,6 +22,7 @@ class DevicesPageView extends lrs.views.Page {
 			}
 
 			self.views.lightsDeviceList.reset(lightsDevices)
+			console.log(lightsDevices)
 
 		}).catch( function(err) {
 

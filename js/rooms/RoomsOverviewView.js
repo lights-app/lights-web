@@ -10,7 +10,7 @@ class RoomsOverviewView extends lrs.views.Page {
 	
 		super(el, options)
 
-		console.log(this)
+		console.log(this, el, options)
 
 		lights.app.setRooms()
 
