@@ -101,7 +101,12 @@ class Device extends Model {
 	parseConfig() {
 
 		// Check data length
-		if (this.config.length == 158) {
+
+		// The first two bytes indicate the total content length, excluding the first two bytes
+		// Thus we add 2 to compensate
+		var totalContentLengt = lights.app.combineBytes([this.config.charCodeAt(0) - 1, this.config.charCodeAt(1) - 1]) + 2
+
+		if (this.config.length == totalContentLengt) {
 
 			var configArray = []
 			// Construct and print out a semi-legible lights config
@@ -137,10 +142,15 @@ class Device extends Model {
 
 			this.config = tempConfig
 
+			var configPos = 2
+
 			// Get device software version
-			this.version[0] = parseInt(this.config.charCodeAt(0))
-			this.version[1] = parseInt(this.config.charCodeAt(1))
-			this.version[2] = parseInt(this.config.charCodeAt(2))
+			this.version[0] = parseInt(this.config.charCodeAt(configPos))
+			configPos++
+			this.version[1] = parseInt(this.config.charCodeAt(configPos))
+			configPos++
+			this.version[2] = parseInt(this.config.charCodeAt(configPos))
+			configPos++
 
 			if (!lights.app.arraysEqual(this.version, lights.app.requiresParticleVersion)) {
 
@@ -160,8 +170,13 @@ class Device extends Model {
 
 			console.log(this.version)
 
+			// Get the antennaMode
+			this.antennaMode = parseInt(this.config.charCodeAt(configPos))
+			configPos++
+
 			// Get channelCount
-			this.channelCount = parseInt(this.config.charCodeAt(3))
+			this.channelCount = parseInt(this.config.charCodeAt(configPos))
+			configPos++
 
 			if (this.channels.length != this.channelCount) {
 
@@ -175,8 +190,7 @@ class Device extends Model {
 
 			}
 			
-			// The next byte (4) specifies content length, which we can skip
-			var configPos = 4
+			// The next byte (7) specifies lightsConfig content length, which we can skip
 			configPos++
 
 			// The next byte specifies the function being called which we use to check if the config is formed correctly

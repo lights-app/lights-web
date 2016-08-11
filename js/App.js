@@ -13,7 +13,7 @@ class App extends lrs.View {
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.eventStreamsConfigured = false
 		this.roomsLoaded = false
-		this.requiresParticleVersion = [0, 1, 2]
+		this.requiresParticleVersion = [0, 2, 2]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
 

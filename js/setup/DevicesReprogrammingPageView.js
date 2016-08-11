@@ -10,7 +10,7 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 		console.log(args)
 
-		this.url = "/static/bin/lights.bin"
+		this.url = "/static/bin/lights-v" + lights.app.requiresParticleVersion[0] + '.' + lights.app.requiresParticleVersion[1] + '.' + lights.app.requiresParticleVersion[2] + '.bin'
 
 		this.devices = args.devices
 
