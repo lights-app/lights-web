@@ -22,6 +22,14 @@ class CheckmarkView extends lrs.LRSView {
 
 		this.classList.toggle('checked', this.checked)
 
+		var event = new CustomEvent('change', {
+			detail: {
+				checked: this.checked
+			}
+		})
+
+		this.el.dispatchEvent(event)
+
 	}
 
 	check() {
@@ -29,12 +37,28 @@ class CheckmarkView extends lrs.LRSView {
 		this.checked = true
 		this.classList.add('checked')
 
+		var event = new CustomEvent('change', {
+			detail: {
+				checked: this.checked
+			}
+		})
+
+		this.el.dispatchEvent(event)
+
 	}
 
 	uncheck() {
 
 		this.checked = false
 		this.classList.remove('checked')
+
+		var event = new CustomEvent('change', {
+			detail: {
+				checked: this.checked
+			}
+		})
+
+		this.el.dispatchEvent(event)
 
 	}
 

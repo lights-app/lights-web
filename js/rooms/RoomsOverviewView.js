@@ -10,7 +10,7 @@ class RoomsOverviewView extends lrs.views.Page {
 	
 		super(el, options)
 
-		console.log(this)
+		console.log(this, el, options)
 
 		lights.app.setRooms()
 
@@ -31,6 +31,13 @@ class RoomsOverviewView extends lrs.views.Page {
 	addAction(view, el, e) {
 
 		this.owner.showView(new lrs.views.NewRoomDevicesPage())
+
+	}
+
+	settingsAction(view, el, e) {
+
+		console.log(e)
+		this.owner.showView(new lrs.views.SettingsPage())
 
 	}
 

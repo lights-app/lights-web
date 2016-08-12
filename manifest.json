@@ -1,0 +1,33 @@
+{
+  "name": "Lights",
+  "icons": [
+    {
+      "src": "static/img/icons/lights-app-icon-76px.png",
+      "sizes": "76x76",
+      "type": "image/png"
+    },
+    {
+      "src": "static/img/icons/lights-app-icon-120px.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "static/img/icons/lights-app-icon-152px.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "static/img/icons/lights-app-icon-167px.png",
+      "sizes": "167x167",
+      "type": "image/png"
+    },
+    {
+      "src": "static/img/icons/lights-app-icon-180px.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+  ],
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "landscape"
+}

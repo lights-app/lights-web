@@ -27,10 +27,9 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 
 	}
 
-	selectAction() {
+	select() {
 
 		var self = this
-		console.log(this)
 
 		this.selected = !this.selected
 
@@ -51,7 +50,7 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 
 			if (i < selectedMomentIndex) {
 
-				moment.el.style["transform"] = "translate3d(" + (thisWidth) + "px, 0, 0)" 
+				moment.el.style["transform"] = "translate3d(" + (thisWidth + 10) + "px, 0, 0)" 
 
 			} else if (i > selectedMomentIndex) {
 
@@ -73,7 +72,31 @@ class MomentListItemView extends lrs.LRSView.views.LRSListItemView {
 
 		}
 
-		// this.classList.add('selected')
+	}
+
+	selectAction(view, el, e) {
+
+		var self = this
+
+		for (let device of view.object.devices) {
+
+			console.log(device)
+
+			var colorData = []
+
+			for (let i = 0; i < device.channelCount; i++) {
+
+				console.log('Current', lights.app.devices.recordsById[device.id].channels[i].rgb, device.channels[i].rgb)
+				colorData.push(device.channels[i].rgb)
+				console.log(device.channels[i].rgb)
+
+			}
+
+			lights.app.devices.recordsById[device.id].sendColorData({rgb: colorData})
+
+		}
+
+		this.select()
 
 	}
 

@@ -35,15 +35,12 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 		var room = this
 
-		if (this.colorWheel) {
-
-			this.colorWheel.remove()
-
-		}
+		console.log(this)
 
 		var newMomentPage = new lrs.LRSView.views.NewMomentPageView({room: room})
-		this.owner.owner.classList.add('hide')
-		newMomentPage.appendTo(this.owner.owner.owner)
+		// this.owner.owner.classList.add('hide')
+		// newMomentPage.appendTo(this.owner.owner.owner, 'newMomentPage')
+		this.owner.owner.owner.showView(newMomentPage, 'newMomentPage')
 
 	}
 
@@ -70,7 +67,7 @@ class RoomListItemView extends lrs.View.views.LRSListItemView {
 
 		for (var i = 0; i < this.devices.length; i++) {
 
-			var device = lights.app.devices[this.devices[i].id]
+			var device = lights.app.devices.recordsById[this.devices[i].id]
 
 			console.log(device)
 

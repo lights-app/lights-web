@@ -17,10 +17,12 @@ class DevicesPageView extends lrs.views.Page {
 			for (let device of response.body) {
 				
 				lightsDevices.push(lights.Device.fromParticleDevice(device))
+				lights.app.particleDevices.push(lights.Device.fromParticleDevice(device))
 
 			}
 
 			self.views.lightsDeviceList.reset(lightsDevices)
+			console.log(lightsDevices)
 
 		}).catch( function(err) {
 
@@ -71,7 +73,7 @@ class DevicesPageView extends lrs.views.Page {
 
 			} else {
 
-				this.owner.showView(new lrs.views.DevicesNamingPage())
+				this.owner.showView(new lrs.views.DevicesNamingPage({devices: lights.app.devices.records}))
 
 			}
 

@@ -5,8 +5,6 @@ class ToggleView extends lrs.LRSView {
 	constructor(args) {
 
 		super(args)
-
-
 		
 		return this
 
@@ -21,6 +19,14 @@ class ToggleView extends lrs.LRSView {
 		console.log(this)
 
 		this.classList.toggle('checked', this.checked)
+
+		var event = new CustomEvent('change', {
+			detail: {
+				checked: this.checked
+			}
+		})
+
+		this.el.dispatchEvent(event)
 
 	}
 

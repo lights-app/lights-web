@@ -46,8 +46,6 @@ class Device extends Model {
 		
 		this.config = ""
 		this.lastUpdated = -1
-
-		
 		
 	}
 
@@ -65,20 +63,24 @@ class Device extends Model {
 
 				self.lastUpdated = Date.now()
 
-				if(self.parseConfig()) { 
+				if(self.parseConfig()) {
+
+					setTimeout( () => {
+
+					// Each time we get a new config we also trigger the deviceConfigChanged event
+					var event = new CustomEvent('deviceConfigChanged', {
+							detail: {
+								id: self.id
+							}
+						})
+
+						document.dispatchEvent(event)
+
+					}, 0)
 
 					return true 
 
 				}
-
-				// // Each time we get a new config we also trigger the deviceConfigChanged event
-				// var event = new CustomEvent('deviceConfigChanged', {
-				// 	detail: {
-				// 		id: self.id
-				// 	}
-				// })
-
-				// document.dispatchEvent(event)
 
 			}, function(err) {
 
@@ -99,7 +101,26 @@ class Device extends Model {
 	parseConfig() {
 
 		// Check data length
-		if (this.config.length == 158) {
+
+		// The first two bytes indicate the total content length, excluding the first two bytes
+		// Thus we add 2 to compensate
+		var totalContentLengt = lights.app.combineBytes([this.config.charCodeAt(0) - 1, this.config.charCodeAt(1) - 1]) + 2
+
+		if (this.config.length == totalContentLengt) {
+
+			var configArray = []
+			// Construct and print out a semi-legible lights config
+			for (var i = 0; i < this.config.length; i++) {
+
+				if (this.config.substring(i, i + 1) != 'd' && this.config.substring(i, i + 1) != 'u'){
+					configArray.push(parseInt(this.config.charCodeAt(i)) - 1)
+				} else {
+					configArray.push(this.config.substring(i, i + 1))
+				}
+
+			}
+
+			console.log(configArray)
 
 			var configArray = []
 			var tempConfig = ""
@@ -119,16 +140,43 @@ class Device extends Model {
 
 			}
 
-
 			this.config = tempConfig
 
+			var configPos = 2
+
 			// Get device software version
-			this.version[0] = parseInt(this.config.charCodeAt(0))
-			this.version[1] = parseInt(this.config.charCodeAt(1))
-			this.version[2] = parseInt(this.config.charCodeAt(2))
+			this.version[0] = parseInt(this.config.charCodeAt(configPos))
+			configPos++
+			this.version[1] = parseInt(this.config.charCodeAt(configPos))
+			configPos++
+			this.version[2] = parseInt(this.config.charCodeAt(configPos))
+			configPos++
+
+			if (!lights.app.arraysEqual(this.version, lights.app.requiresParticleVersion)) {
+
+				console.warn('version mismatch. required', lights.app.requiresParticleVersion, 'running, ', lights.app.devices.recordsById[this.id].version)
+				console.log(lights.app.devices.recordsById[this.id].version)
+
+				var event = new CustomEvent('deviceVersionMismatch', {
+					detail: {
+						id: this.id,
+						device: this
+					}
+				})
+
+				document.dispatchEvent(event)
+
+			}
+
+			console.log(this.version)
+
+			// Get the antennaMode
+			this.antennaMode = parseInt(this.config.charCodeAt(configPos))
+			configPos++
 
 			// Get channelCount
-			this.channelCount = parseInt(this.config.charCodeAt(3))
+			this.channelCount = parseInt(this.config.charCodeAt(configPos))
+			configPos++
 
 			if (this.channels.length != this.channelCount) {
 
@@ -139,13 +187,10 @@ class Device extends Model {
 					this.channels.push(new lights.Channel())
 
 				}
-				
 
 			}
-
 			
-			// The next byte (4) specifies content length, which we can skip
-			var configPos = 4
+			// The next byte (7) specifies lightsConfig content length, which we can skip
 			configPos++
 
 			// The next byte specifies the function being called which we use to check if the config is formed correctly
@@ -189,6 +234,8 @@ class Device extends Model {
 					}
 
 					var color = new lights.Color(colorArray, 'rgb')
+
+					color.isOn = this.channels[i].isOn
 
 					this.channels[i] = color
 
@@ -242,9 +289,29 @@ class Device extends Model {
 
 	}
 
-	sendColorData(rgb) {
+	sendColorData(args) {
+
+		var rgb = args.rgb
+		var force = args.force || false
 
 		if (this.connected) {
+
+			if (rgb === undefined) {
+
+				console.log('rgb undefined, using current values')
+
+				// rgb = this.channels
+				rgb = []
+		
+				for (let channel of this.channels) {
+
+					rgb.push(channel.rgb)
+
+				}
+
+				console.log(rgb)
+
+			}
 
 			// Assume that the rgb values are equal to the current state
 			// As soon as a difference is found we can send the data
@@ -266,13 +333,18 @@ class Device extends Model {
 
 					if (!isEqual) {
 
+						console.log('difference found, sending the data')
+
 						var color = new lights.Color(rgb[i], 'rgb')
+						color.isOn = this.channels[i].isOn
 
 						// Set the light's current color to the new color
 						this.channels[i] = color
+
 					}
 
 				}
+
 			} catch (err) {
 
 				isEqual = false
@@ -280,7 +352,7 @@ class Device extends Model {
 			}
 
 			// If the color that we want to send is different from the current color of the light, send it
-			if (!isEqual) {
+			if (!isEqual || force) {
 
 				// Function declaration for color data
 				var payload = 'c'
@@ -301,6 +373,8 @@ class Device extends Model {
 					// e.g.: turning on channel 3 would mean adding 2^4 = 16 to channelByte
 					if (this.channels[i].isOn) {
 
+						console.log('channel', i, 'is on')
+
 						channelByte += Math.pow(2, i + 1)
 
 					}
@@ -308,13 +382,14 @@ class Device extends Model {
 				}
 
 				// Let's set the chanelByte to 126 (all channels) for now
-				channelByte = 126
+				// channelByte = 126
 
 				// Convert that number to a char
 				payload += String.fromCharCode(channelByte)
 
 				// Split interpolation time into 3 bytes
-				var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime, 3, false)
+				// Multiply interpolation time by 10 to get from seconds to 10ths of seconds
+				var interpolationTime = lights.app.splitBytes(lights.app.interpolationTime * 10, 3, false)
 
 				payload += String.fromCharCode(interpolationTime[0])
 				payload += String.fromCharCode(interpolationTime[1])
@@ -348,7 +423,7 @@ class Device extends Model {
 
 				setTimeout(() => {
 
-					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload })
+					var call = new lights.app.particle.callFunction({ deviceId: this.id, name: 'lights', argument: payload, auth: lights.app.particle.auth.accessToken})
 
 					call.then(function(data) {
 
@@ -374,9 +449,12 @@ class Device extends Model {
 
 	turnOff(channelNumber) {
 
+		console.log('turning off channel', channelNumber)
+
 		if (channelNumber !== undefined) {
 			
 			this.channels[channelNumber].isOn = false
+			console.log(this.channels[channelNumber].isOn)
 
 		} else {
 
@@ -387,6 +465,30 @@ class Device extends Model {
 			}
 
 		}
+
+		this.sendColorData( {force: true} )
+
+	}
+
+	turnOn(channelNumber) {
+
+		console.log('turning on channel', channelNumber)
+
+		if (channelNumber !== undefined) {
+			
+			this.channels[channelNumber].isOn = true
+
+		} else {
+
+			for (let channel of this.channels) {
+
+				channel.isOn = true
+
+			}
+
+		}
+
+		this.sendColorData( {force: true} )
 
 	}
 

@@ -2,11 +2,11 @@ mixin roomTemplates
 
 	section.rooms-overview-page(data-template='RoomsOverview')
 		header.toolbar
-			button.settings-btn(data-action='click:settings()') Settings
+			button.settings-btn(data-view='SettingsBtn:settingsBtn') Settings
 			h1(data-outlet='title') Rooms
 			.add-btn(data-view='AddBtn:addBtn')
 		section.page-content
-			ul.room-list(data-view='LRSList:roomList:RoomListItem')
+			ul.room-list.list.border-2.border-radius(data-view='RoomList:roomList:RoomListItem')
 				li.no-rooms(data-view="noRooms")
 					h2 It's empty in here!
 					p.text-center Time to add some rooms. Click the "+" icon in the top right corner to add a new room
@@ -19,7 +19,7 @@ mixin roomTemplates
 		section.page-content
 			h1.self-center.text-center Select the lights you want to use in this room
 			p.self-center.text-center Selected lights that are online will start to pulse
-			ul.self-center.device-list(data-view='LRSList:lightsDeviceList:DeviceListItem')
+			ul.self-center.device-list.list.border-2.border-radius(data-view='LRSList:lightsDeviceList:DeviceListItem')
 			button.box-btn(data-action='click:next()') Next
 
 	section.new-room-naming-page(data-template='NewRoomNamingPage')
@@ -51,7 +51,7 @@ mixin roomTemplates
 		section.page-content
 			h1.self-center.text-center Configure your lights 
 			p.self-center.text-center Select the lights you want to use and which color they should be.
-			ul.new-moment-device-list(data-view='LRSList:momentDeviceList:MomentDeviceListItem')
+			ul.new-moment-device-list.self-center.device-list.list.border-2.border-radius(data-view='LRSList:momentDeviceList:MomentDeviceListItem')
 			button.box-btn(data-action='click:next()') Next
 
 	section.new-moment-naming-page(data-template='NewMomentNamingPage')
@@ -65,29 +65,32 @@ mixin roomTemplates
 			button.box-btn(data-action='click:done()') Done
 
 	li.room-list-item(data-template='RoomListItem')
-		button(data-action='click:openColorWheel()')
+		button(data-action='mouseup:openColorWheel();touchend:openColorWheel()')
 		.horizontal-container
 			.room-data
 				span(data-outlet='name')
-				ul.moment-list(data-view='LRSList:momentList:MomentListItem')
-					li.moment-list-item.add-moment-btn(data-action='click:addMoment()')
+				ul.moment-list(data-view='MomentList:momentList:MomentListItem')
+					li.moment-list-item.add-moment-btn.border-2.border-radius.fill-4(data-action='click:addMoment()')
 						span +
 			img.room-icon(data-outlet='icon')
 		.lights-config(data-view='lightsConfig1')
 			.lights-config.front.active(data-view='lightsConfig2')
 
-	li.moment-list-item(data-template='MomentListItem' data-action='click:select()')
+	li.moment-list-item.border-2.border-radius.fill-4(data-template='MomentListItem' data-action='click:select()')
 		span(data-outlet='name')
 			
 	div.room(data-template='Room')
 		h1(data-outlet='name')
 
-	li.room-icon-list-item(data-template='RoomIconListItem' data-action='click:toggle()')
+	li.room-icon-list-item.border-2.border-radius.selectable.fill-2(data-template='RoomIconListItem' data-action='click:toggle()')
 		img(data-outlet='icon')
 		input(data-outlet='name' type='text')
 
-	li.moment-device-list-item(data-template='MomentDeviceListItem' data-action='click:toggle()')
-		.toggle(data-view='Toggle:toggle')
-		span(data-outlet='name')
-		.expand-arrow
+	li.moment-device-list-item.device-list-item.fill-2.selectable(data-template='MomentDeviceListItem' data-action='click:toggle()')
+		.left
+			.toggle(data-view='Toggle:toggle')
+			span.name(data-outlet='name')
+			span.message Device disconnected, please reconnect
+		.right
+			image.color-wheel-icon(src='static/img/icons/color-wheel-icon.svg' data-action='click:openColorWheel()')
 		

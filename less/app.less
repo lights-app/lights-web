@@ -12,11 +12,14 @@
 @import "color-wheel";
 @import "templates";
 @import "rooms";
+@import "settings";
 
 html {
 
 	width: 100%;
 	height: 100%;
+
+	touch-action: manipulation;
 
 }
 
@@ -59,6 +62,13 @@ body {
 
 	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 
+}
+
+// Needed to prevent iOS from zooming when entering text
+select,
+textarea,
+input {
+	font-size: 16px;
 }
 
 .no-pointer-events {
@@ -134,7 +144,7 @@ button {
 
 	&:active {
 
-		opacity: 0.3;
+		opacity: 0.3 !important;
 
 	}
 	
@@ -149,19 +159,19 @@ button {
 
 }
 
-.main-panel {
+// .main-panel {
 
-	width: ~"calc(100vw - @{side-panel-width})";
-	min-width: ~"calc(100vw - @{side-panel-width})";
+// 	width: ~"calc(100vw - @{side-panel-width})";
+// 	min-width: ~"calc(100vw - @{side-panel-width})";
 
-}
+// }
 
-.side-panel {
+// .side-panel {
 
-	width: @side-panel-width;
-	min-width: @side-panel-width;
+// 	width: @side-panel-width;
+// 	min-width: @side-panel-width;
 
-}
+// }
 
 .back-btn {
 
@@ -177,8 +187,6 @@ button {
 		// position: absolute;
 		position: relative;
 		display: inline-block;
-		left: 0;
-		top: 0;
 		background-image: url('/static/img/icons/back.svg');
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
@@ -189,60 +197,54 @@ button {
 
 }
 
-.add-btn, .close-btn{
+.toolbar-btn{
+
+	@stroke-width: 1.3px;
+
+	@native-dimension: 17px;
+	@dimension: 20px;
+	@scale: @dimension / @native-dimension;
+	@inv-scale: 1 / @scale;
 
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	align-content: center;
+
+	overflow: visible;
 
 	svg{
 
-		width: 17px;
-		height: 17px;
-
-	}
-
-	.add-btn-line, .close-btn-line {
-
-		stroke: @text-color;
-		stroke-width: 1px;
-
-	}
-
-}
-
-.settings-btn {
-
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	align-content: center;
-
-	svg {
-
-		width: 17px;
-		height: 17px;
+		width: @dimension;
+		height: @dimension;
 		overflow: visible;
 
 	}
 
-	.settings-btn-line {
+	.line {
 
 		stroke: @text-color;
-		stroke-width: 1px;
-
+		stroke-width: @stroke-width * @inv-scale;
 		fill: transparent;
+		overflow: visible;
 
 	}
+
+	path, circle, line, polyline {
+
+		overflow: visible;
+
+	}
+
 }
 
 .page-content {
 
 	width: 100%;
+	max-width: 1024px;
 	position: relative;
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 

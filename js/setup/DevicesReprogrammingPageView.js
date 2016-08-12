@@ -10,7 +10,7 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 		console.log(args)
 
-		this.url = "/static/bin/lights.bin"
+		this.url = "/static/bin/lights-v" + lights.app.requiresParticleVersion[0] + '.' + lights.app.requiresParticleVersion[1] + '.' + lights.app.requiresParticleVersion[2] + '.bin'
 
 		this.devices = args.devices
 
@@ -120,13 +120,13 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 		console.log(e)
 
-		var oldName = lights.app.devices[e.detail.id].name
+		var oldName = lights.app.devices.recordsById[e.detail.id].name
 		var newName = String("Lights__" + oldName)
-		lights.app.devices[e.detail.id].reprogram = false
-		lights.app.devices[e.detail.id].reprogrammed = true
+		lights.app.devices.recordsById[e.detail.id].reprogram = false
+		lights.app.devices.recordsById[e.detail.id].reprogrammed = true
 
 		// Check if we should rename the device
-		if(lights.app.devices[e.detail.id].name.split('__')[0] !== 'Lights') {
+		if(lights.app.devices.recordsById[e.detail.id].name.split('__')[0] !== 'Lights') {
 
 			var rename = lights.app.particle.renameDevice({ deviceId: e.detail.id, name: newName })
 
@@ -151,8 +151,8 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 	flashFailedHandler(e) {
 
 		console.log("Flashing", e.detail.id, "failed, retrying...")
-		lights.app.devices[e.detail.id].reprogram = true
-		lights.app.devices[e.detail.id].reprogrammed = false
+		lights.app.devices.recordsById[e.detail.id].reprogram = true
+		lights.app.devices.recordsById[e.detail.id].reprogrammed = false
 
 		// this.flashFirmware(lights.app.devices[e.detail.id], this.url)
 
@@ -209,7 +209,7 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 			setTimeout(function() {
 
-				self.owner.showView(new lrs.views.DevicesNamingPage())
+				self.owner.showView(new lrs.views.DevicesNamingPage({devices: self.devices}))
 
 			}, 3000)
 

@@ -12,7 +12,8 @@ class App extends lrs.View {
 		
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.eventStreamsConfigured = false
-		this.requiresParticleVersion = [0, 1, 0]
+		this.roomsLoaded = false
+		this.requiresParticleVersion = [0, 2, 2]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
 
@@ -28,6 +29,10 @@ class App extends lrs.View {
 		})
 		
 		this.devices = new lights.Collection()
+		// Contains all Particle devices associated with this account
+		this.particleDevices = []
+
+		this.userSettings = {}
 		
 		// Load devices stored in localStorage to a temporary variable
 		for (let device of this.storage('devices') || []) {
@@ -36,7 +41,7 @@ class App extends lrs.View {
 
 		this.favouriteColors = this.storage('favouriteColors') || []
 
-		this.interpolationTime = this.storage('interpolationTime') || 7
+		this.interpolationTime = this.storage('interpolationTime') || 0.7
 
 		this.roomIconList = [
 			{name: "Living Room",
@@ -74,7 +79,7 @@ class App extends lrs.View {
 		
 		this.createDomConnections()
 
-		console.log(this.particle.isLoggedIn)
+		console.log('Particle logged in', this.particle.isLoggedIn)
 
 		if (this.particle.isLoggedIn) {
 			
@@ -86,6 +91,29 @@ class App extends lrs.View {
 			this.views.setup.hide()
 			this.views.rooms.show()
 
+			// Call Particle.listDevices to get a list with up-to-date properties
+			var particleDevices = this.particle.listDevices()
+
+			// Iterate over list and set connected status of our devices
+			particleDevices.then( (devices) => {
+
+				for (var device of devices.body) {
+
+					this.particleDevices.push(lights.Device.fromParticleDevice(device))
+
+					if (this.devices.recordsById[device.id]) {
+
+						this.devices.recordsById[device.id].connected = device.connected
+						this.devices.recordsById[device.id].getConfig()
+
+						console.log(this.devices.recordsById[device.id].version)
+
+					}
+
+				}
+
+			})
+
 		}
 		
 		return this
@@ -94,17 +122,23 @@ class App extends lrs.View {
 
 	setRooms() {
 
-		// Take the same approach for the rooms as we did for lights.app.devices
-		this._rooms = this.storage('rooms') || []
-		this.rooms = []
+		if (!this.roomsLoaded){
 
-		for (let room of this._rooms) {
+			// Take the same approach for the rooms as we did for lights.app.devices
+			this._rooms = this.storage('rooms') || []
+			this.rooms = []
 
-			this.rooms.push(new lights.Room(room.name, room.icon, room.devices, room.moments))
+			for (let room of this._rooms) {
+
+				this.rooms.push(new lights.Room(room.name, room.icon, room.devices, room.moments))
+
+			}
+
+			this.roomsLoaded = true
+
+			console.log("Rooms loaded", this.roomsLoaded, lights.app.rooms)
 
 		}
-
-		console.log("Rooms loaded", lights.app.rooms)
 
 	}
 
@@ -145,11 +179,9 @@ class App extends lrs.View {
 					document.dispatchEvent(event)
 
 					console.log("Device", data.coreid, data.data)
-					
-					// TODO: Something weird is happening here.
-					lights.app.devices[data.coreid].connected = true
 
-					for (let device of lights.app.devices) {
+					// Set device status
+					for (let device of lights.app.devices.records) {
 
 						if (device.id === data.coreid) {
 
@@ -163,19 +195,29 @@ class App extends lrs.View {
 
 			})
 
-			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine' }).then(function(stream) {
+			this.configChangedStream = this.particle.getEventStream({deviceId: 'mine', name: 'configChanged'}).then(function(stream) {
 				stream.on('event', function(data) {
 
-					var event = new CustomEvent('deviceConfigChanged', {
-						detail: {
-							id: data.coreid
-						}
-					})
+					console.log(data)
 
-					self.devices[data.coreid].config = data.data
-					self.devices[data.coreid].parseConfig()
+					setTimeout( () => {
 
-					document.dispatchEvent(event)
+						console.log(lights.app.devices)
+
+						var event = new CustomEvent('deviceConfigChanged', {
+							detail: {
+								id: data.coreid
+							}
+						})
+
+						lights.app.devices.recordsById[data.coreid].config = data.data
+						lights.app.devices.recordsById[data.coreid].parseConfig()
+
+						document.dispatchEvent(event)
+
+					}, 0)
+
+					
 
 				})
 
@@ -268,12 +310,6 @@ class App extends lrs.View {
 		
 		window.localStorage.user = user
 		
-	}
-
-	getDevice(id) {
-
-
-
 	}
 
 	HSVtoRGB(h, s, v) {
@@ -376,6 +412,25 @@ class App extends lrs.View {
 	getBitValueAt(number, position) {
 
 		return parseInt(this.toBitString(number).substring(position, position + 1))
+
+	}
+
+	arraysEqual(a, b) {
+
+		console.log('comparing', a, 'to', b)
+
+		for(let i = 0; i < a.length; i++){
+
+			if(a[i] !== b[i]) {
+
+				console.warn('arrays not equal')
+
+				return false
+
+			}
+
+		}
+		return true
 
 	}
 	

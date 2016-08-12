@@ -51,13 +51,19 @@ class ColorWheelView extends lrs.views.Page {
 		this.views.favouriteColorsList.reset(lights.app.favouriteColors)
 		this.views.roomDeviceList.reset(args.room.devices)
 
+		this.checkOnOffBtnState()
+
 		document.addEventListener('deviceConfigChanged', function(e){
 
 			return self.deviceConfigChangedHandler(e)
 
 		})
 
-		this.showFavouriteColors()
+		setTimeout( () => {
+
+			this.showFavouriteColors()
+
+		}, 1000)
 
 		return this
 
@@ -67,13 +73,6 @@ class ColorWheelView extends lrs.views.Page {
 
 		this.owner.showView(this.owner.views.content[0])
 		
-	}
-
-	backAction() {
-
-		this.owner.remove(this.view)
-		lights.app.views.rooms.views.content[0].classList.remove('hide')
-
 	}
 
 	brightnessTouchstartAction(view, el, e) {
@@ -103,7 +102,7 @@ class ColorWheelView extends lrs.views.Page {
 
 			self.sendData()
 
-		}, 500)
+		}, lights.app.interpolationTime * 1000)
 
 		document.addEventListener('mousemove', this._brightnessTouchMove)
 		document.addEventListener('touchmove', this._brightnessTouchMove)
@@ -138,6 +137,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		document.removeEventListener('mousemove', this._brightnessTouchMove)
 		document.removeEventListener('touchmove', this._brightnessTouchMove)
+		document.removeEventListener('mouseup', this._removeBrightnessTouchMoveEventListeners)
+		document.removeEventListener('touchend', this._removeBrightnessTouchMoveEventListeners)
 		this._mouseMove = undefined
 		clearInterval(this._dataSendInterval)
 		// Send latest value
@@ -185,7 +186,7 @@ class ColorWheelView extends lrs.views.Page {
 
 			self.sendData()
 
-		}, 500)
+		}, lights.app.interpolationTime * 1000)
 
 		// Add class while user is using the color wheel picker
 		this.views.colorWheelBg.views.colorWheelArm.views.colorWheelSlideArm.views.colorWheelPicker.classList.add('active')
@@ -254,6 +255,8 @@ class ColorWheelView extends lrs.views.Page {
 
 		document.removeEventListener('mousemove', this._colorWheelTouchMove)
 		document.removeEventListener('touchmove', this._colorWheelTouchMove)
+		document.removeEventListener('mouseup', this._removeColorWheelTouchMoveEventListeners)
+		document.removeEventListener('touchend', this._removeColorWheelTouchMoveEventListeners)
 		this._mouseMove = undefined
 		clearInterval(this._dataSendInterval)
 		// Remove class when user is done using the color picker
@@ -375,12 +378,16 @@ class ColorWheelView extends lrs.views.Page {
 		// This prevents the color wheel from picking up 'echos' of our own data and resetting the picker
 		if (!this.dragging && Date.now() - this.lastDataTransmission > 2000) {
 
+			this.checkOnOffBtnState()
+
 			for (let device of this.devices) {
+
+				console.log(device)
 
 				if(device.id === e.detail.id) {
 
-					this.setColorWheelPickerPosition(lights.app.devices[device.id].channels[0].hsv[0] * 360, lights.app.devices[device.id].channels[0].hsv[1])
-					this.setBrightnessSlider(lights.app.devices[device.id].channels[0].hsv[2])
+					this.setColorWheelPickerPosition(lights.app.devices.recordsById[device.id].channels[0].hsv[0] * 360, lights.app.devices.recordsById[device.id].channels[0].hsv[1])
+					this.setBrightnessSlider(lights.app.devices.recordsById[device.id].channels[0].hsv[2])
 
 				}
 
@@ -449,20 +456,72 @@ class ColorWheelView extends lrs.views.Page {
 				// console.log(device.object.id)
 
 				var data = []
+				
+				for (var i = 0; i <  device.object.channelCount; i++) {
 
-				for (var i = 0; i < lights.app.devices[device.object.id].channelCount; i++) {
+					// console.log(device.object)
 
 					data.push(this.rgb)
 
 				}
 
-				lights.app.devices[device.object.id].sendColorData(data)
+				lights.app.devices.recordsById[device.object.id].sendColorData({rgb: data})
 
 			}
 
 		}
 
 		this.lastDataTransmission = Date.now()
+
+	}
+
+	checkOnOffBtnState() {
+
+		var deviceOn = false
+
+		for (let device of this.room.devices) {
+
+			for (let channel of lights.app.devices.recordsById[device.id].channels) {
+
+				if (channel.isOn) {
+
+					this.setOnOffBtnState(true)
+
+					deviceOn = true
+
+					console.log('device', device.id, 'is on')
+
+					break
+
+				}
+
+			}
+
+		}
+
+		if(!deviceOn) {
+
+			console.log('no devices on')
+			this.setOnOffBtnState(false)
+
+		}
+
+	}
+
+	setOnOffBtnState(isOn) {
+
+		if (isOn) {
+
+			this.views.onOffBtn.el.dataset.ison = 'true'
+			this.views.onOffBtn.el.classList.add('is-on')
+
+		} else {
+
+			this.views.onOffBtn.el.dataset.ison = 'false'
+			this.views.onOffBtn.el.classList.remove('is-on')
+			this.setBrightnessSlider(0)
+
+		}
 
 	}
 
@@ -474,13 +533,34 @@ class ColorWheelView extends lrs.views.Page {
 
 		if (this.views.onOffBtn.el.dataset.ison === 'true') {
 
-			this.views.onOffBtn.el.dataset.ison = 'false'
-			this.views.onOffBtn.el.classList.remove('is-on')
+			this.setOnOffBtnState(false)
+
+			for (let device of this.views.roomDeviceList.views.content) {
+
+				if(device.views.checkmark.checked) {
+
+					lights.app.devices.recordsById[device.object.id].turnOff()
+
+					this.setBrightnessSlider(0)
+
+				}
+
+			}
 
 		} else {
 
-			this.views.onOffBtn.el.dataset.ison = 'true'
-			this.views.onOffBtn.el.classList.add('is-on')
+			this.setOnOffBtnState(true)
+
+			for (let device of this.views.roomDeviceList.views.content) {
+
+				if(device.views.checkmark.checked) {
+
+					lights.app.devices.recordsById[device.object.id].turnOn()
+					this.setBrightnessSlider(this.room.devices[0].channels[0].hsv[2])
+
+				}
+
+			}
 
 		}
 
@@ -506,8 +586,6 @@ class ColorWheelView extends lrs.views.Page {
 		for (let color of this.views.favouriteColorsList.content) {
 
 			var timeout = this.views.favouriteColorsList.indexForView(color.view)
-
-			console.log(color, timeout)
 
 			setTimeout( () => {
 
@@ -537,8 +615,6 @@ class ColorWheelView extends lrs.views.Page {
 		for (let color of this.views.favouriteColorsList.content) {
 
 			var timeout = this.views.favouriteColorsList.indexForView(color.view)
-
-			console.log(color, timeout)
 
 			setTimeout( () => {
 

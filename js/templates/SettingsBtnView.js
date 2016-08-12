@@ -12,12 +12,6 @@ class SettingsBtnView extends lrs.LRSView {
 
 	}
 
-	openSettingsAction() {
-
-		
-
-	}
-
 }
 
 lrs.View.register(SettingsBtnView)

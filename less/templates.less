@@ -22,12 +22,13 @@
 
 	cursor: pointer;
 
-	.device-info-container {
+	.left, .right {
 
 		display: flex;
+		flex-direction: row;
 		align-items: center;
-		position: relative;
 		overflow: visible;
+		position: relative;
 
 	}
 
@@ -44,9 +45,7 @@
 
 	}
 
-	.status-container {
-
-		align-self: flex-end;
+	.right {
 
 		.lights-device-icon {
 
@@ -55,7 +54,7 @@
 
 			margin-right: @status-symbol-size / 2;
 
-			background-image: url('/static/img/Lights icon-10px.svg');
+			background-image: url('/static/img/icons/lights-icon-10px.svg');
 			background-size: contain;
 
 			display: inline-block;
@@ -516,6 +515,136 @@
 
 			stroke-dashoffset: 0;
 			transition-delay: 0.2s;
+
+		}
+
+	}
+
+}
+
+.range-slider {
+
+	@stroke-width: 1px;
+
+	@thumb-dimension: 40px;
+	// Must be an even number to properly center over the thumb
+	@default-thumb-offset: 6px;
+	@padding: @default-thumb-offset / 2;
+
+	@slider-height: @thumb-dimension + @stroke-width + @default-thumb-offset + (@padding * 2);
+
+	width: 100%;
+	height: @slider-height;
+
+	padding: @padding;
+
+	overflow: hidden;
+	position: relative;
+
+	// background-color: rgba(255, 255, 255, 0.1);
+
+	.range-slider-container {
+
+		width: 100%;
+		height: 1px;
+
+		margin-top: (@slider-height / 2) - @padding;
+
+		overflow: visible;
+
+		background-color: @cool-gray-4;
+
+	}
+
+	.track {
+
+		width: ~"calc(100% - @{thumb-dimension})";
+
+		transition: all 0.3s ease;
+
+	}
+
+	.default-thumb {
+
+		position: absolute;
+
+		box-sizing: border-box;
+
+		width: @thumb-dimension + @default-thumb-offset;
+		height: @thumb-dimension + @default-thumb-offset;
+
+		background-color: @blue-0;
+		border-radius: 1000px;
+		border: @stroke-width solid @green;
+
+		margin-left: -@default-thumb-offset / 2;
+
+		transform: translate3d(0, ~"calc(-50%)", 0);
+
+	}
+
+	.thumb {		
+
+		width: @thumb-dimension;
+		height: @thumb-dimension;
+		background-color: @blue-0;
+		border-radius: 1000px;
+		border: @stroke-width solid @cool-gray-4;
+
+		position: absolute;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		transform: translate3d(0, ~"calc(-50%)", 0);
+
+		& * {
+
+			font-size: 13px;
+			z-index: 10;
+
+			transition: all 0.3s ease;
+
+		}
+
+		&::before {
+
+			content: '';
+
+			position: absolute;
+
+			top: -1px;
+			right: -1px;
+			bottom: -1px;
+			left: -1px;
+
+			border-radius: 1000px;
+
+			background-color: @green;
+
+			z-index: 0;
+
+			transform: scale3d(0, 0, 0);
+
+			transition: all 0.3s ease;
+
+		}
+		
+		&.default {
+
+			border: 1px solid @green;
+
+			&::before {
+
+				transform: scale3d(1, 1, 1);
+
+			}
+
+			span {
+
+				color: hsl(hue(@green), saturation(@green), lightness(@green) - 45%);
+			}
 
 		}
 

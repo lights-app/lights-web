@@ -6,7 +6,7 @@ class DevicesNamingPageView extends lrs.views.Page {
 		
 		super(args)
 
-		this.views.deviceNamingList.reset(lights.app.devices.records)
+		this.views.deviceNamingList.reset(args.devices)
 		
 		return this
 	}
@@ -22,6 +22,8 @@ class DevicesNamingPageView extends lrs.views.Page {
 				lights.app.particle.renameDevice({ deviceId: device.id, name: `Lights__${deviceView.name}` }).then( function(data) {
 					
 					console.log('Device renamed successfully to ' + deviceView.name, data)
+
+					lights.app.devices.recordsById[device.id].name = deviceView.name
 					
 				}, function(err) {
 					

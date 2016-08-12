@@ -29,7 +29,23 @@ class NewRoomCompletionPageView extends lrs.views.Page {
 		console.log(view)
 
 		// Add the new room to the view
-		view.owner.views.content[0].views.roomList.add(view.room)
+		// view.owner.views.content[0].views.roomList.add(view.room)
+
+		// Delay addition to room list so user can see room be added to list
+		setTimeout( () => {
+
+			view.owner.views.content[0].views.roomList.add(view.room)
+			var element = view.owner.views.content[0].views.roomList.viewForObject(view.room)
+			element.classList.add('out-of-view')
+			
+			// Remove class to animate element into view
+			setTimeout( () => {
+
+				element.classList.remove('out-of-view')
+
+			}, 10)
+
+		}, 1000)
 
 		// Just to be sure, try to remove the "no rooms" message from the rooms views
 		try {
