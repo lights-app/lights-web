@@ -115,9 +115,27 @@ class App extends lrs.View {
 			})
 
 		}
+
+		// Track focus of window to update devices when app is in focus again
+		window.addEventListener("focus", this.getDevicesConfig, true)
 		
 		return this
 		
+	}
+
+	getDevicesConfig() {
+
+		for (var device of window.lights.app.devices.records) {
+
+			// Only update config if 2 seconds have passed since last update
+			if (Date.now() - device.lastUpdated > 2000) {
+
+				device.getConfig();
+			
+			}
+			
+		}
+
 	}
 
 	setRooms() {
