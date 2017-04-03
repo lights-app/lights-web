@@ -83,11 +83,11 @@ class RangeSliderView extends lrs.LRSView {
 
 		if (speedPercentage > 1) {speedPercentage = 1}
 
-		var transition = (1 - speedPercentage) * maxLength
+		// var transition = (1 - speedPercentage) * maxLength
 
-		console.log(speedPercentage, transition)
+		// console.log(speedPercentage, transition)
 
-		this.views.track.el.style['transition'] = 'all ' + transition + 's'
+		// this.views.track.el.style['transition'] = 'all ' + transition + 's'
 
 		this.touch.percentage = (this.touch.coordinates[0] / this.touch.width) * 100
 		var step = Math.round(this.touch.percentage / this.mappedStepSize)
