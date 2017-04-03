@@ -281,11 +281,50 @@ class Device extends Model {
 
 			console.log(configArray)
 
+			// The devices's software might be out-of-date
+			// Check software version
+			this.getSoftwareVersion()
+
+			if (!lights.app.arraysEqual(lights.app.requiresParticleVersion, this.version)) {
+
+				// The device's software does not correspond to the required version
+				// The device should be updated to the required version
+				// TODO: Show popup requesting user permission to update device
+
+			}
+
 			console.log('Config length incorrect, try refreshing device config')
 
 			return false
 
 		}
+
+	}
+
+	getSoftwareVersion() {
+
+		var call = lights.app.particle.getVariable({ deviceId: this.id, name: 'version' })
+
+		call.then(function(data) {
+
+			var result = data.body.result
+
+			var readPos = 0;
+			// Get device software version
+			this.version[0] = parseInt(result.charCodeAt(readPos))
+			readPos++
+			this.version[1] = parseInt(result.charCodeAt(readPos))
+			readPos++
+			this.version[2] = parseInt(result.charCodeAt(readPos))
+			readPos++
+
+		}, function(err) {
+
+			console.log('An error occurred while getting attrs:', err)
+
+			return false
+
+		})
 
 	}
 
