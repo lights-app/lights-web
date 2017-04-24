@@ -32,6 +32,7 @@ class Device extends Model {
 		super(attributes)
 
 		this.version = [3]
+		this.softwareUpToDate = true;
 		this.channelCount = 2
 		this.channels = []
 
@@ -104,9 +105,9 @@ class Device extends Model {
 
 		// The first two bytes indicate the total content length, excluding the first two bytes
 		// Thus we add 2 to compensate
-		var totalContentLengt = lights.app.combineBytes([this.config.charCodeAt(0) - 1, this.config.charCodeAt(1) - 1]) + 2
+		var totalContentLength = lights.app.combineBytes([this.config.charCodeAt(0) - 1, this.config.charCodeAt(1) - 1]) + 2
 
-		if (this.config.length == totalContentLengt) {
+		if (this.config.length == totalContentLength) {
 
 			var configArray = []
 			// Construct and print out a semi-legible lights config
@@ -152,23 +153,25 @@ class Device extends Model {
 			this.version[2] = parseInt(this.config.charCodeAt(configPos))
 			configPos++
 
-			if (!lights.app.arraysEqual(this.version, lights.app.requiresParticleVersion)) {
+			this.checkSoftwareVersion()
 
-				console.warn('version mismatch. required', lights.app.requiresParticleVersion, 'running, ', lights.app.devices.recordsById[this.id].version)
-				console.log(lights.app.devices.recordsById[this.id].version)
+			// if (!lights.app.arraysEqual(this.version, lights.app.requiresParticleVersion)) {
 
-				var event = new CustomEvent('deviceVersionMismatch', {
-					detail: {
-						id: this.id,
-						device: this
-					}
-				})
+			// 	console.warn('version mismatch. required', lights.app.requiresParticleVersion, 'running, ', lights.app.devices.recordsById[this.id].version)
+			// 	console.log(lights.app.devices.recordsById[this.id].version)
 
-				document.dispatchEvent(event)
+			// 	var event = new CustomEvent('deviceVersionMismatch', {
+			// 		detail: {
+			// 			id: this.id,
+			// 			device: this
+			// 		}
+			// 	})
 
-			}
+			// 	document.dispatchEvent(event)
 
-			console.log(this.version)
+			// }
+
+			// console.log(this.version)
 
 			// Get the antennaMode
 			this.antennaMode = parseInt(this.config.charCodeAt(configPos))
@@ -294,6 +297,7 @@ class Device extends Model {
 			}
 
 			console.log('Config length incorrect, try refreshing device config')
+			console.log('Expected', totalContentLength, 'bytes, received', this.config.length, 'bytes')
 
 			return false
 
@@ -305,26 +309,53 @@ class Device extends Model {
 
 		var call = lights.app.particle.getVariable({ deviceId: this.id, name: 'version' })
 
-		call.then(function(data) {
+		call.then( (data) => {
 
 			var result = data.body.result
 
 			var readPos = 0;
 			// Get device software version
-			this.version[0] = parseInt(result.charCodeAt(readPos))
+			this.version[0] = parseInt(result.charCodeAt(readPos)) - 1
 			readPos++
-			this.version[1] = parseInt(result.charCodeAt(readPos))
+			this.version[1] = parseInt(result.charCodeAt(readPos)) - 1
 			readPos++
-			this.version[2] = parseInt(result.charCodeAt(readPos))
-			readPos++
+			this.version[2] = parseInt(result.charCodeAt(readPos)) - 1
 
-		}, function(err) {
+			this.checkSoftwareVersion()
 
-			console.log('An error occurred while getting attrs:', err)
+		}, (err) => {
+
+			console.log('An error occurred while getting device version', err)
+
+			this.version[0] = -1
+			this.version[1] = -1
+			this.version[2] = -1
+
+			this.checkSoftwareVersion()
 
 			return false
 
 		})
+
+	}
+
+	checkSoftwareVersion() {
+
+		if (!lights.app.arraysEqual(this.version, lights.app.requiresParticleVersion) ) {
+
+			console.log('Software version mismatch, running', this.version, 'required', lights.app.requiresParticleVersion)
+
+			this.softwareUpToDate = false
+
+			var event = new CustomEvent('deviceSoftwareMismatch', {
+				detail: {
+					id: this.id
+				}
+			})
+
+			document.dispatchEvent(event)
+
+		}
 
 	}
 

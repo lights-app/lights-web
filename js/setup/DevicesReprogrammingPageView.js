@@ -13,6 +13,7 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 		this.url = "/static/bin/lights-v" + lights.app.requiresParticleVersion[0] + '.' + lights.app.requiresParticleVersion[1] + '.' + lights.app.requiresParticleVersion[2] + '.bin'
 
 		this.devices = args.devices
+		this.setup = args.setup
 
 		this.views.lightsDeviceList.reset(this.devices)
 
@@ -209,9 +210,20 @@ class DevicesReprogrammingPageView extends lrs.views.Page {
 
 			setTimeout(function() {
 
-				self.owner.showView(new lrs.views.DevicesNamingPage({devices: self.devices}))
+				if (self.setup) {
 
-			}, 3000)
+					self.owner.showView(new lrs.views.DevicesNamingPage({devices: self.devices}))
+
+				}
+
+				if (!self.setup) {
+
+					self.owner.showView(self.owner.views.content[0])
+
+				}
+				
+
+			}, 2000)
 
 		}
 

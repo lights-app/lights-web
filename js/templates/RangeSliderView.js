@@ -116,10 +116,12 @@ class RangeSliderView extends lrs.LRSView {
 			if (this.value === this.default) {
 
 				this.views.track.views.thumb.classList.add('default')
+				this.views.defaultTrack.views.defaultThumb.classList.add('set')
 
 			} else {
 
 				this.views.track.views.thumb.classList.remove('default')
+				this.views.defaultTrack.views.defaultThumb.classList.remove('set')
 
 			}
 

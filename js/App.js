@@ -13,7 +13,7 @@ class App extends lrs.View {
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.eventStreamsConfigured = false
 		this.roomsLoaded = false
-		this.requiresParticleVersion = [0, 2, 2]
+		this.requiresParticleVersion = [0, 2, 3]
 
 		navigator.geolocation.getCurrentPosition(function(e) {
 
@@ -31,6 +31,8 @@ class App extends lrs.View {
 		this.devices = new lights.Collection()
 		// Contains all Particle devices associated with this account
 		this.particleDevices = []
+		// List of devices that require an update
+		this.devicesUpdateList = []
 
 		this.userSettings = {}
 		
@@ -87,6 +89,7 @@ class App extends lrs.View {
 			this.setRooms()
 
 			this.subscribeToEventStreams()
+			this.attachEventListeners()
 			
 			this.views.setup.hide()
 			this.views.rooms.show()
@@ -116,11 +119,26 @@ class App extends lrs.View {
 
 		}
 
-		// Track focus of window to update devices when app is in focus again
-		window.addEventListener("focus", this.getDevicesConfig, true)
+		setTimeout( () => {
+
+			return this.checkDeviceUpdates()
+
+		}, 2000)
 		
 		return this
 		
+	}
+
+	checkDeviceUpdates() {
+
+		if (this.devicesUpdateList.length > 0) {
+
+			if (confirm("One or more of your Lights devices is running older software. These devices need to be updated to keep working. Do you want to update?")) {
+				this.views.rooms.showView(new lrs.views.DevicesReprogrammingPage({devices: this.devicesUpdateList, setup: false}))
+			}
+
+		}
+
 	}
 
 	getDevicesConfig() {
@@ -222,14 +240,14 @@ class App extends lrs.View {
 
 						console.log(lights.app.devices)
 
+						lights.app.devices.recordsById[data.coreid].config = data.data
+						lights.app.devices.recordsById[data.coreid].parseConfig()
+
 						var event = new CustomEvent('deviceConfigChanged', {
 							detail: {
 								id: data.coreid
 							}
 						})
-
-						lights.app.devices.recordsById[data.coreid].config = data.data
-						lights.app.devices.recordsById[data.coreid].parseConfig()
 
 						document.dispatchEvent(event)
 
@@ -282,6 +300,36 @@ class App extends lrs.View {
 
 			this.eventStreamsConfigured = true
 
+		}
+
+	}
+
+	attachEventListeners() {
+
+		// Track focus of window to update devices when app is in focus again
+		window.addEventListener("focus", this.getDevicesConfig, true)
+
+		document.addEventListener('deviceSoftwareMismatch', (e) => {
+
+			return this.deviceSoftwareMismatchEventHandler(e);
+
+		})
+
+	}
+
+	deviceSoftwareMismatchEventHandler(e) {
+
+		if (this.devices.recordsById[e.detail.id].connected) {
+
+			// Check if the object is not already in the array, otherwise one device will be listed multiple times
+			if (this.devicesUpdateList.indexOf(this.devices.recordsById[e.detail.id]) == -1) {
+
+				this.devicesUpdateList.push(this.devices.recordsById[e.detail.id])
+
+				console.log(this.devices.recordsById[e.detail.id])
+			
+			}
+		
 		}
 
 	}

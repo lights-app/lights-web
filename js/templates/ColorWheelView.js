@@ -378,8 +378,6 @@ class ColorWheelView extends lrs.views.Page {
 		// This prevents the color wheel from picking up 'echos' of our own data and resetting the picker
 		if (!this.dragging && Date.now() - this.lastDataTransmission > 2000) {
 
-			this.checkOnOffBtnState()
-
 			for (let device of this.devices) {
 
 				console.log(device)
@@ -392,6 +390,8 @@ class ColorWheelView extends lrs.views.Page {
 				}
 
 			}
+
+			this.checkOnOffBtnState()
 
 		}
 
@@ -533,23 +533,20 @@ class ColorWheelView extends lrs.views.Page {
 
 		if (this.views.onOffBtn.el.dataset.ison === 'true') {
 
-			this.setOnOffBtnState(false)
-
 			for (let device of this.views.roomDeviceList.views.content) {
 
 				if(device.views.checkmark.checked) {
 
 					lights.app.devices.recordsById[device.object.id].turnOff()
 
-					this.setBrightnessSlider(0)
-
 				}
 
 			}
 
-		} else {
+			this.setOnOffBtnState(false)
+			// this.setBrightnessSlider(0)
 
-			this.setOnOffBtnState(true)
+		} else {
 
 			for (let device of this.views.roomDeviceList.views.content) {
 
@@ -562,22 +559,9 @@ class ColorWheelView extends lrs.views.Page {
 
 			}
 
+			this.setOnOffBtnState(true)
+
 		}
-
-		// for (let device of this.views.roomDeviceList.views.content) {
-
-		// 	if(device.views.checkmark.checked) {
-
-		// 		console.log(device)
-
-		// 		// var lightsDevice = lights.app.devices[devices.id]
-		// 		console.log(device.object.id)
-
-		// 		lights.app.devices[device.object.id].turnOff()
-
-		// 	}
-
-		// }
 
 	}
 
