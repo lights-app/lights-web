@@ -4,13 +4,22 @@ class Channel extends lrs.LRSObject {
 
 		super()
 
-		if(rgb.length === 3) {
+		try {
 
-			this.rgb = rgb
-			
-		} else {
+			if(rgb.length === 3) {
 
-			this.rgb = []
+				this.rgb = rgb
+				
+			} else {
+
+				this.rgb = []
+			}
+
+		} catch(err) {
+
+			// Something went wrong. Set channel to black
+			this.rgb = [0, 0, 0]
+
 		}
 		
 
