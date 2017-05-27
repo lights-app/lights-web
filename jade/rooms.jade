@@ -65,7 +65,7 @@ mixin roomTemplates
 			button.box-btn(data-action='click:done()') Done
 
 	li.room-list-item(data-template='RoomListItem')
-		button(data-action='mouseup:openColorWheel();touchend:openColorWheel()')
+		button.room-list-btn(data-action='mousedown:roomListItemTouchStart();touchstart:roomListItemTouchStart()')
 		.horizontal-container
 			.room-data
 				span(data-outlet='name')
@@ -75,6 +75,8 @@ mixin roomTemplates
 			img.room-icon(data-outlet='icon')
 		.lights-config(data-view='lightsConfig1')
 			.lights-config.front.active(data-view='lightsConfig2')
+		.delete-room-btn(data-action='click:deleteRoom()' data-view='deleteRoomBtn')
+			img.delete-btn-icon(src='/static/img/icons/trash-bin.svg' data-view='deleteRoomIcon')
 
 	li.moment-list-item.border-2.border-radius.fill-4(data-template='MomentListItem' data-action='click:select()')
 		span(data-outlet='name')

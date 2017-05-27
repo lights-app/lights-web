@@ -123,7 +123,7 @@
 
 	}
 
-	> button {
+	.room-list-btn {
 
 		pointer-events: auto;
 
@@ -136,9 +136,78 @@
 
 	}
 
+	.delete-room-btn {
+
+		color: #fff;
+
+		@this-width: 100px;
+
+		text-align: center;
+		font-weight: 500;
+
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		top: 0;
+		right: -@this-width;
+
+		width: @this-width;
+		height: 100%;
+		background-color: red;
+
+		// z-index: 100000;
+
+		pointer-events: auto;
+
+		&:active {
+
+			background-color: rgb(128, 0, 0);
+
+		}
+
+		&::after {
+
+			content: '';
+			display: block;
+			position: absolute;
+			width: 1000px;
+			height: 100%;
+			background-color: red;
+			left: 0;
+			top: 0;
+			z-index: -1;
+
+		}
+
+		.delete-btn-icon {
+
+			transition: @hover-transition;
+
+		}
+
+		img {
+
+			width: 25px;
+
+		}
+
+	}
+
 	&.out-of-view {
 
 		transform: translate3d(-100%, 0, 0);
+
+	}
+
+	&.deleted {
+
+		transition: all 0.5s;
+
+		transform: translate3d(-100%, 0, 0);
+		opacity: 0;
 
 	}
 
