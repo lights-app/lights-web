@@ -54,15 +54,51 @@ class SetupLoginView extends lrs.views.Page {
 			
 			self.enable()
 			console.error(err)
-			window.alert('Something went wrong')
+
+			switch(err.statusCode) {
+
+				case 400:
+				window.alert('Wrong username and/or password.')
+				break;
+
+				case 401:
+				window.alert('Sorry, you are not authorised to do this.')
+				break;
+
+				case 403:
+				window.alert('Sorry, this is forbidden.')
+				break;
+
+				case 408:
+				window.alert('The login request timed out, please check your internet connection, or try again later. It could be that our services are temporarily down.')
+				break;
+
+				case 500: 
+				window.alert('Something went wrong on our end, we\'re sorry. Please try again later.')
+				break;
+
+				case 503:
+				window.alert('It appears the server is offline, please try again later. Or check http://status.particle.io/ to see current system status.')
+
+				default:
+
+				if (err.statusCode >= 500 && err.statusCode < 600) {
+
+					window.alert('Something went wrong on our end, we\'re sorry.')
+
+				} else {
+
+					window.alert('Whoops, something went wrong, please check your credentials, try again later or contact the developer with the follwing information: ' + err.errorDescription)
+
+				}
+
+			}
 			
 		})
 		
 	}
 
 	contentChanged(e, el) {
-
-		console.log(e)
 
 		if(e.type === 'focus') {
 
