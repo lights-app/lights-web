@@ -13,7 +13,28 @@ class App extends lrs.View {
 		this.didLoginToParticle = this.didLoginToParticle.bind(this)
 		this.eventStreamsConfigured = false
 		this.roomsLoaded = false
+		this.version = [0, 0, 1]
 		this.requiresParticleVersion = [0, 2, 3]
+
+		if (lights.app.storage('version')) {
+
+			if (!this.arraysEqual(lights.app.storage('version'), this.version) ) {
+
+				lights.app.storage('version', this.version)
+
+				location.reload(true)
+
+			}
+
+		} else {
+
+			lights.app.storage('version', this.version)
+			
+			location.reload(true)
+
+		}
+
+		
 
 		navigator.geolocation.getCurrentPosition(function(e) {
 

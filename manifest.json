@@ -29,5 +29,6 @@
   ],
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "landscape"
+  "orientation": "landscape",
+  "version": "0.0.1"
 }

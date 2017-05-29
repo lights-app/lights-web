@@ -13,7 +13,7 @@ html
 	meta(name='apple-mobile-web-app-status-bar-style' content='black-translucent')
 
 	//- Android web-app settings
-	link(rel='manifest' href='manifest.json')
+	link(rel='manifest' href='manifest.json?001')
 
 	//- Apple web-app icons
 	link(rel='apple-touch-icon' sizes='120x120' href='/static/img/icons/lights-app-icon-120px.png')
@@ -28,7 +28,7 @@ html
 	link(rel='icon' sizes='180x180' href='/static/img/icons/lights-app-icon-180px.png')
 
 	title Lights
-	link(href='/static/css/app.css' rel='stylesheet' type='text/css')
+	link(href='/static/css/app.css?001' rel='stylesheet' type='text/css')
 	link(href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700italic,700,900,900italic' rel='stylesheet' type='text/css')
 
 body(ontouchstart)
@@ -62,8 +62,8 @@ body(ontouchstart)
 		+setupTemplates
 		+settings
 	
-	script(src='/static/js/vendor.js')
-	script(src='/static/js/app.js')
+	script(src='/static/js/vendor.js?001')
+	script(src='/static/js/app.js?001')
 	script.
 		document.addEventListener('DOMContentLoaded', function() {
 			window.lrs.View.parseTemplates()
